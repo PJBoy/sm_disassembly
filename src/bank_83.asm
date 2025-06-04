@@ -1234,137 +1234,481 @@ FXHeader_PostCrocPowerBombs:                                             ;838530
     %animTiles(0),
     %paletteBlend(2))
 
-FXHeader_PostCrocShaft:
-    dw $0000,$FFFF,$FFFF,$0000                                           ;838540;
-    db $00,$00,$02,$02,$00,$00,$00,$00                                   ;838548;
+FXHeader_PostCrocShaft:                                                  ;838540;
+    %FXHeader(\
+    %door(0),
+    %baseY($FFFF),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(0),
+    %layerBlendConfig(2, 2),
+    %liquidOptions(0),
+    %paletteFX(0),
+    %animTiles(0),
+    %paletteBlend(0))
 
-FXHeader_PostCrocMissile:
-    dw $0000,$00C8,$FFFF,$0000                                           ;838550;
-    db $00,$04,$02,$1E,$41,$00,$02,$00                                   ;838558;
+FXHeader_PostCrocMissile:                                                ;838550;
+    %FXHeader(\
+    %door(0),
+    %baseY($00C8),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(4),
+    %layerBlendConfig(2, $1E),
+    %liquidOptions($41),
+    %paletteFX(0),
+    %animTiles(2),
+    %paletteBlend(0))
 
-FXHeader_GrappleTutorial3:
-    dw $0000,$00B8,$FFFF,$0000                                           ;838560;
-    db $00,$06,$02,$18,$83,$00,$00,$48                                   ;838568;
+FXHeader_GrappleTutorial3:                                               ;838560;
+    %FXHeader(\
+    %door(0),
+    %baseY($00B8),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(6),
+    %layerBlendConfig(2, $18),
+    %liquidOptions($83),
+    %paletteFX(0),
+    %animTiles(0),
+    %paletteBlend($48))
 
-FXHeader_PostCrocJump:
-    dw $0000,$02B4,$FFFF,$0000                                           ;838570;
-    db $00,$04,$02,$1E,$80,$00,$00,$00                                   ;838578;
+FXHeader_PostCrocJump:                                                   ;838570;
+    %FXHeader(\
+    %door(0),
+    %baseY($02B4),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(4),
+    %layerBlendConfig(2, $1E),
+    %liquidOptions($80),
+    %paletteFX(0),
+    %animTiles(0),
+    %paletteBlend(0))
 
-FXHeader_GrappleTutorial2:
-    dw $0000,$FFFF,$FFFF,$0000                                           ;838580;
-    db $00,$00,$02,$02,$00,$00,$00,$00                                   ;838588;
+FXHeader_GrappleTutorial2:                                               ;838580;
+    %FXHeader(\
+    %door(0),
+    %baseY($FFFF),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(0),
+    %layerBlendConfig(2, 2),
+    %liquidOptions(0),
+    %paletteFX(0),
+    %animTiles(0),
+    %paletteBlend(0))
 
-FXHeader_GrappleTutorial1:
-    dw $0000,$00C0,$FFFF,$0000                                           ;838590;
-    db $00,$06,$02,$18,$83,$00,$00,$48                                   ;838598;
+FXHeader_GrappleTutorial1:                                               ;838590;
+    %FXHeader(\
+    %door(0),
+    %baseY($00C0),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(6),
+    %layerBlendConfig(2, $18),
+    %liquidOptions($83),
+    %paletteFX(0),
+    %animTiles(0),
+    %paletteBlend($48))
 
-FXHeader_GrappleBeam:
-    dw $0000,$FFFF,$FFFF,$0000                                           ;8385A0;
-    db $00,$00,$02,$02,$00,$00,$03,$00                                   ;8385A8;
+FXHeader_GrappleBeam:                                                    ;8385A0;
+    %FXHeader(\
+    %door(0),
+    %baseY($FFFF),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(0),
+    %layerBlendConfig(2, 2),
+    %liquidOptions(0),
+    %paletteFX(0),
+    %animTiles(3),
+    %paletteBlend(0))
 
-FXHeader_NorfairReserveTank:
-    dw $0000,$00C7,$FFFF,$0000                                           ;8385B0;
-    db $00,$02,$02,$1E,$0B,$1F,$00,$02                                   ;8385B8;
+FXHeader_NorfairReserveTank:                                             ;8385B0;
+    %FXHeader(\
+    %door(0),
+    %baseY($00C7),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(2),
+    %layerBlendConfig(2, $1E),
+    %liquidOptions($0B),
+    %paletteFX($1F),
+    %animTiles(0),
+    %paletteBlend(2))
 
-FXHeader_GreenBubblesMissiles:
-    dw $0000,$00C6,$FFFF,$0000                                           ;8385C0;
-    db $00,$02,$02,$1E,$0B,$1F,$00,$02                                   ;8385C8;
+FXHeader_GreenBubblesMissiles:                                           ;8385C0;
+    %FXHeader(\
+    %door(0),
+    %baseY($00C6),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(2),
+    %layerBlendConfig(2, $1E),
+    %liquidOptions($0B),
+    %paletteFX($1F),
+    %animTiles(0),
+    %paletteBlend(2))
 
-FXHeader_BubbleMountain:
-    dw $0000,$FFFF,$FFFF,$0000                                           ;8385D0;
-    db $00,$02,$02,$1E,$03,$00,$02,$02                                   ;8385D8;
+FXHeader_BubbleMountain:                                                 ;8385D0;
+    %FXHeader(\
+    %door(0),
+    %baseY($FFFF),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(2),
+    %layerBlendConfig(2, $1E),
+    %liquidOptions(3),
+    %paletteFX(0),
+    %animTiles(2),
+    %paletteBlend(2))
 
-FXHeader_SpeedBoosterHall:
-    dw Door_SpeedBooster_0                                               ;8385E0;
-    dw $01DA,$00B0,$0000                                                 ;8385E2;
-    db $F0,$02,$02,$1E,$0B,$1F,$02,$02                                   ;8385E8;
-    dw $0000,$01DA,$FFFF,$0000                                           ;8385F0;
-    db $00,$02,$02,$1E,$0B,$1F,$02,$02                                   ;8385F8;
+FXHeader_SpeedBoosterHall:                                               ;8385E0;
+    %FXHeader(\
+    %door(Door_SpeedBooster_0),
+    %baseY($01DA),
+    %targetY($00B0),
+    %velocity(0),
+    %timer($F0),
+    %FXType(2),
+    %layerBlendConfig(2, $1E),
+    %liquidOptions($0B),
+    %paletteFX($1F),
+    %animTiles(2),
+    %paletteBlend(2))
 
-FXHeader_SpeedBooster:
-    dw $0000,$00DA,$0000,$0000                                           ;838600;
-    db $20,$02,$02,$1E,$0B,$1F,$00,$02                                   ;838608;
+FXHeader_SpeedBoosterHall_Part2:                                         ;8385F0;
+    %FXHeader(\
+    %door(0),
+    %baseY($01DA),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(2),
+    %layerBlendConfig(2, $1E),
+    %liquidOptions($0B),
+    %paletteFX($1F),
+    %animTiles(2),
+    %paletteBlend(2))
 
-FXHeader_SingleChamber:
-    dw $0000,$FFFF,$FFFF,$0000                                           ;838610;
-    db $00,$02,$02,$1E,$03,$1F,$02,$02                                   ;838618;
+FXHeader_SpeedBooster:                                                   ;838600;
+    %FXHeader(\
+    %door(0),
+    %baseY($00DA),
+    %targetY(0),
+    %velocity(0),
+    %timer($20),
+    %FXType(2),
+    %layerBlendConfig(2, $1E),
+    %liquidOptions($0B),
+    %paletteFX($1F),
+    %animTiles(0),
+    %paletteBlend(2))
 
-FXHeader_DoubleChamber:
-    dw $0000,$FFFF,$FFFF,$0000                                           ;838620;
-    db $00,$02,$02,$1E,$03,$1F,$02,$02                                   ;838628;
+FXHeader_SingleChamber:                                                  ;838610;
+    %FXHeader(\
+    %door(0),
+    %baseY($FFFF),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(2),
+    %layerBlendConfig(2, $1E),
+    %liquidOptions(3),
+    %paletteFX($1F),
+    %animTiles(2),
+    %paletteBlend(2))
 
-FXHeader_WaveBeam:
-    dw $0000,$FFFF,$FFFF,$0000                                           ;838630;
-    db $00,$02,$02,$1E,$01,$00,$00,$02                                   ;838638;
+FXHeader_DoubleChamber:                                                  ;838620;
+    %FXHeader(\
+    %door(0),
+    %baseY($FFFF),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(2),
+    %layerBlendConfig(2, $1E),
+    %liquidOptions(3),
+    %paletteFX($1F),
+    %animTiles(2),
+    %paletteBlend(2))
 
-FXHeader_SpikyPlatformsTunnel:
-    dw $0000,$00C0,$FFFF,$0000                                           ;838640;
-    db $00,$02,$02,$1E,$03,$1F,$02,$02                                   ;838648;
+FXHeader_WaveBeam:                                                       ;838630;
+    %FXHeader(\
+    %door(0),
+    %baseY($FFFF),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(2),
+    %layerBlendConfig(2, $1E),
+    %liquidOptions(1),
+    %paletteFX(0),
+    %animTiles(0),
+    %paletteBlend(2))
 
-FXHeader_Volcano:
-    dw $9672,$02E0,$0260,$FFF6                                           ;838650;
-    db $40,$02,$02,$1E,$0B,$1F,$00,$02                                   ;838658;
-    dw $0000,$0268,$FFFF,$0000                                           ;838660;
-    db $00,$02,$02,$1E,$01,$00,$00,$02                                   ;838668;
+FXHeader_SpikyPlatformsTunnel:                                           ;838640;
+    %FXHeader(\
+    %door(0),
+    %baseY($00C0),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(2),
+    %layerBlendConfig(2, $1E),
+    %liquidOptions(3),
+    %paletteFX($1F),
+    %animTiles(2),
+    %paletteBlend(2))
 
-FXHeader_KronicBoost:
-    dw $0000,$02D4,$FFFF,$0000                                           ;838670;
-    db $00,$02,$02,$1E,$0B,$1F,$00,$02                                   ;838678;
+FXHeader_Volcano:                                                        ;838650;
+    %FXHeader(\
+    %door(Door_KronicBoost_1),
+    %baseY($02E0),
+    %targetY($0260),
+    %velocity($FFF6),
+    %timer($40),
+    %FXType(2),
+    %layerBlendConfig(2, $1E),
+    %liquidOptions($0B),
+    %paletteFX($1F),
+    %animTiles(0),
+    %paletteBlend(2))
 
-FXHeader_MagdolliteTunnel:
-    dw $0000,$00BE,$FFFF,$0000                                           ;838680;
-    db $00,$02,$02,$1E,$0B,$1F,$00,$02                                   ;838688;
+FXHeader_Volcano_Part2:                                                  ;838660;
+    %FXHeader(\
+    %door(0),
+    %baseY($0268),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(2),
+    %layerBlendConfig(2, $1E),
+    %liquidOptions(1),
+    %paletteFX(0),
+    %animTiles(0),
+    %paletteBlend(2))
 
-FXHeader_PurpleShaft:
-    dw $0000,$FFFF,$FFFF,$0000                                           ;838690;
-    db $00,$02,$02,$1E,$03,$1F,$03,$02                                   ;838698;
+FXHeader_KronicBoost:                                                    ;838670;
+    %FXHeader(\
+    %door(0),
+    %baseY($02D4),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(2),
+    %layerBlendConfig(2, $1E),
+    %liquidOptions($0B),
+    %paletteFX($1F),
+    %animTiles(0),
+    %paletteBlend(2))
 
-FXHeader_LavaDive:
-    dw $0000,$00D0,$FFFF,$0000                                           ;8386A0;
-    db $00,$02,$02,$1E,$0B,$1F,$03,$02                                   ;8386A8;
+FXHeader_MagdolliteTunnel:                                               ;838680;
+    %FXHeader(\
+    %door(0),
+    %baseY($00BE),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(2),
+    %layerBlendConfig(2, $1E),
+    %liquidOptions($0B),
+    %paletteFX($1F),
+    %animTiles(0),
+    %paletteBlend(2))
 
-FXHeader_LowerNorfairElev:
-    dw $0000,$FFFF,$FFFF,$0000                                           ;8386B0;
-    db $00,$02,$02,$1E,$03,$1F,$00,$02                                   ;8386B8;
+FXHeader_PurpleShaft:                                                    ;838690;
+    %FXHeader(\
+    %door(0),
+    %baseY($FFFF),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(2),
+    %layerBlendConfig(2, $1E),
+    %liquidOptions(3),
+    %paletteFX($1F),
+    %animTiles(3),
+    %paletteBlend(2))
 
-FXHeader_UpperNorfairFarming:
-    dw $0000,$01C0,$FFFF,$0000                                           ;8386C0;
-    db $00,$02,$02,$1E,$0B,$1F,$00,$02                                   ;8386C8;
+FXHeader_LavaDive:                                                       ;8386A0;
+    %FXHeader(\
+    %door(0),
+    %baseY($00D0),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(2),
+    %layerBlendConfig(2, $1E),
+    %liquidOptions($0B),
+    %paletteFX($1F),
+    %animTiles(3),
+    %paletteBlend(2))
 
-FXHeader_RisingTide:
-    dw Door_Cathedral_1                                                  ;8386D0;
-    dw $0108,$00C0,$FFE0                                                 ;8386D2;
-    db $40,$02,$02,$1E,$0B,$1F,$00,$02                                   ;8386D8;
-    dw $0000,$00C8,$FFFF,$0000                                           ;8386E0;
-    db $00,$02,$02,$1E,$0B,$1F,$00,$02                                   ;8386E8;
+FXHeader_LowerNorfairElev:                                               ;8386B0;
+    %FXHeader(\
+    %door(0),
+    %baseY($FFFF),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(2),
+    %layerBlendConfig(2, $1E),
+    %liquidOptions(3),
+    %paletteFX($1F),
+    %animTiles(0),
+    %paletteBlend(2))
 
-FXHeader_AcidSnakesTunnel:
-    dw $0000,$00C5,$FFFF,$0000                                           ;8386F0;
-    db $00,$02,$02,$1E,$0B,$1F,$00,$02                                   ;8386F8;
+FXHeader_UpperNorfairFarming:                                            ;8386C0;
+    %FXHeader(\
+    %door(0),
+    %baseY($01C0),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(2),
+    %layerBlendConfig(2, $1E),
+    %liquidOptions($0B),
+    %paletteFX($1F),
+    %animTiles(0),
+    %paletteBlend(2))
 
-FXHeader_SpikyAcidSnakesTunnel:
-    dw $0000,$00C6,$FFFF,$0000                                           ;838700;
-    db $00,$02,$02,$1E,$03,$1F,$02,$02                                   ;838708;
+FXHeader_RisingTide:                                                     ;8386D0;
+    %FXHeader(\
+    %door(Door_Cathedral_1),
+    %baseY($0108),
+    %targetY($00C0),
+    %velocity($FFE0),
+    %timer($40),
+    %FXType(2),
+    %layerBlendConfig(2, $1E),
+    %liquidOptions($0B),
+    %paletteFX($1F),
+    %animTiles(0),
+    %paletteBlend(2))
 
-FXHeader_UpperNorfairRefill:
-    dw $0000,$FFFF,$FFFF,$0000                                           ;838710;
-    db $00,$02,$02,$1E,$01,$00,$00,$02                                   ;838718;
+FXHeader_RisingTide_Part2:                                               ;8386E0;
+    %FXHeader(\
+    %door(0),
+    %baseY($00C8),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(2),
+    %layerBlendConfig(2, $1E),
+    %liquidOptions($0B),
+    %paletteFX($1F),
+    %animTiles(0),
+    %paletteBlend(2))
 
-FXHeader_PurpleFarming:
-    dw $0000,$FFFF,$FFFF,$0000                                           ;838720;
-    db $00,$02,$02,$1E,$03,$1F,$00,$02                                   ;838728;
+FXHeader_AcidSnakesTunnel:                                               ;8386F0;
+    %FXHeader(\
+    %door(0),
+    %baseY($00C5),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(2),
+    %layerBlendConfig(2, $1E),
+    %liquidOptions($0B),
+    %paletteFX($1F),
+    %animTiles(0),
+    %paletteBlend(2))
 
-FXHeader_BatCave:
-    dw $0000,$01B4,$FFFF,$0000                                           ;838730;
-    db $00,$02,$02,$1E,$03,$1F,$00,$02                                   ;838738;
+FXHeader_SpikyAcidSnakesTunnel:                                          ;838700;
+    %FXHeader(\
+    %door(0),
+    %baseY($00C6),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(2),
+    %layerBlendConfig(2, $1E),
+    %liquidOptions(3),
+    %paletteFX($1F),
+    %animTiles(2),
+    %paletteBlend(2))
 
-FXHeader_NorfairMap:
-    dw $0000,$FFFF,$FFFF,$0000                                           ;838740;
-    db $00,$02,$02,$1E,$01,$00,$00,$02                                   ;838748;
+FXHeader_UpperNorfairRefill:                                             ;838710;
+    %FXHeader(\
+    %door(0),
+    %baseY($FFFF),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(2),
+    %layerBlendConfig(2, $1E),
+    %liquidOptions(1),
+    %paletteFX(0),
+    %animTiles(0),
+    %paletteBlend(2))
 
-FXHeader_BubbleMountainSave:
-    dw $0000,$FFFF,$FFFF,$0000                                           ;838750;
-    db $00,$02,$02,$1E,$01,$00,$00,$02                                   ;838758;
+FXHeader_PurpleFarming:                                                  ;838720;
+    %FXHeader(\
+    %door(0),
+    %baseY($FFFF),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(2),
+    %layerBlendConfig(2, $1E),
+    %liquidOptions(3),
+    %paletteFX($1F),
+    %animTiles(0),
+    %paletteBlend(2))
+
+FXHeader_BatCave:                                                        ;838730;
+    %FXHeader(\
+    %door(0),
+    %baseY($01B4),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(2),
+    %layerBlendConfig(2, $1E),
+    %liquidOptions(3),
+    %paletteFX($1F),
+    %animTiles(0),
+    %paletteBlend(2))
+
+FXHeader_NorfairMap:                                                     ;838740;
+    %FXHeader(\
+    %door(0),
+    %baseY($FFFF),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(2),
+    %layerBlendConfig(2, $1E),
+    %liquidOptions(1),
+    %paletteFX(0),
+    %animTiles(0),
+    %paletteBlend(2))
+
+FXHeader_BubbleMountainSave:                                             ;838750;
+    %FXHeader(\
+    %door(0),
+    %baseY($FFFF),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(2),
+    %layerBlendConfig(2, $1E),
+    %liquidOptions(1),
+    %paletteFX(0),
+    %animTiles(0),
+    %paletteBlend(2))
 
 FXHeader_FrogSpeedway:
     dw $FFFF                                                             ;838760;
@@ -1381,106 +1725,360 @@ FXHeader_CrocomireSave:
 FXHeader_LNElevSave:
     dw $FFFF                                                             ;838768;
 
-FXHeader_AcidStatue:
-    dw $9876,$02D2,$FFFF,$0000                                           ;83876A;
-    db $00,$04,$02,$1E,$82,$1F,$00,$00                                   ;838772;
-    dw $0000,$00C8,$02D2,$0000                                           ;83877A;
-    db $00,$04,$02,$1E,$02,$1F,$00,$00                                   ;838782;
+FXHeader_AcidStatue:                                                     ;83876A;
+    %FXHeader(\
+    %door(Door_GoldenTorizo_0),
+    %baseY($02D2),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(4),
+    %layerBlendConfig(2, $1E),
+    %liquidOptions($82),
+    %paletteFX($1F),
+    %animTiles(0),
+    %paletteBlend(0))
 
-FXHeader_MainHall:
-    dw $0000,$02C1,$FFFF,$0000                                           ;83878A;
-    db $00,$04,$02,$1E,$82,$1F,$00,$00                                   ;838792;
+FXHeader_AcidStatue_Part2:                                               ;83877A;
+    %FXHeader(\
+    %door(0),
+    %baseY($00C8),
+    %targetY($02D2),
+    %velocity(0),
+    %timer(0),
+    %FXType(4),
+    %layerBlendConfig(2, $1E),
+    %liquidOptions(2),
+    %paletteFX($1F),
+    %animTiles(0),
+    %paletteBlend(0))
 
-FXHeader_GoldenTorizo_State0_1:
-    dw $0000,$02C6,$FFFF,$0000                                           ;83879A;
-    db $00,$04,$02,$1E,$82,$1F,$00,$00                                   ;8387A2;
+FXHeader_MainHall:                                                       ;83878A;
+    %FXHeader(\
+    %door(0),
+    %baseY($02C1),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(4),
+    %layerBlendConfig(2, $1E),
+    %liquidOptions($82),
+    %paletteFX($1F),
+    %animTiles(0),
+    %paletteBlend(0))
 
-FXHeader_FastRipper:
-    dw $0000,$00B8,$FFFF,$0000                                           ;8387AA;
-    db $00,$04,$02,$1E,$82,$1F,$00,$00                                   ;8387B2;
+FXHeader_GoldenTorizo_State0_1:                                          ;83879A;
+    %FXHeader(\
+    %door(0),
+    %baseY($02C6),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(4),
+    %layerBlendConfig(2, $1E),
+    %liquidOptions($82),
+    %paletteFX($1F),
+    %animTiles(0),
+    %paletteBlend(0))
+
+FXHeader_FastRipper:                                                     ;8387AA;
+    %FXHeader(\
+    %door(0),
+    %baseY($00B8),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(4),
+    %layerBlendConfig(2, $1E),
+    %liquidOptions($82),
+    %paletteFX($1F),
+    %animTiles(0),
+    %paletteBlend(0))
 
 FXHeader_GTEnergyRefill:
     dw $FFFF                                                             ;8387BA;
 
-FXHeader_Ridley_State0_1:
-    dw $0000,$0210,$01D0,$0000                                           ;8387BC;
-    db $00,$04,$02,$1E,$82,$1F,$00,$00                                   ;8387C4;
+FXHeader_Ridley_State0_1:                                                ;8387BC;
+    %FXHeader(\
+    %door(0),
+    %baseY($0210),
+    %targetY($01D0),
+    %velocity(0),
+    %timer(0),
+    %FXType(4),
+    %layerBlendConfig(2, $1E),
+    %liquidOptions($82),
+    %paletteFX($1F),
+    %animTiles(0),
+    %paletteBlend(0))
 
-FXHeader_LNFarming:
-    dw $0000,$00D0,$FFFF,$0000                                           ;8387CC;
-    db $00,$04,$02,$1E,$82,$1F,$00,$00                                   ;8387D4;
+FXHeader_LNFarming:                                                      ;8387CC;
+    %FXHeader(\
+    %door(0),
+    %baseY($00D0),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(4),
+    %layerBlendConfig(2, $1E),
+    %liquidOptions($82),
+    %paletteFX($1F),
+    %animTiles(0),
+    %paletteBlend(0))
 
-FXHeader_FastPillarsSetup:
-    dw $0000,$FFFF,$FFFF,$0000                                           ;8387DC;
-    db $00,$04,$02,$1E,$02,$1F,$00,$00                                   ;8387E4;
+FXHeader_FastPillarsSetup:                                               ;8387DC;
+    %FXHeader(\
+    %door(0),
+    %baseY($FFFF),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(4),
+    %layerBlendConfig(2, $1E),
+    %liquidOptions(2),
+    %paletteFX($1F),
+    %animTiles(0),
+    %paletteBlend(0))
 
 if !FEATURE_KEEP_UNREFERENCED
-UNUSED_FXHeader_8387EC:
-    dw $0000,$FFFF,$FFFF,$0000                                           ;8387EC;
-    db $00,$04,$02,$1E,$02,$1F,$00,$00                                   ;8387F4;
+UNUSED_FXHeader_8387EC:                                                  ;8387EC;
+    %FXHeader(\
+    %door(0),
+    %baseY($FFFF),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(4),
+    %layerBlendConfig(2, $1E),
+    %liquidOptions(2),
+    %paletteFX($1F),
+    %animTiles(0),
+    %paletteBlend(0))
 endif ; !FEATURE_KEEP_UNREFERENCED
 
-FXHeader_MickeyMouse:
-    dw $0000,$FFFF,$FFFF,$0000                                           ;8387FC;
-    db $00,$04,$02,$1E,$02,$1F,$00,$00                                   ;838804;
+FXHeader_MickeyMouse:                                                    ;8387FC;
+    %FXHeader(\
+    %door(0),
+    %baseY($FFFF),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(4),
+    %layerBlendConfig(2, $1E),
+    %liquidOptions(2),
+    %paletteFX($1F),
+    %animTiles(0),
+    %paletteBlend(0))
 
-FXHeader_Pillar:
-    dw $0000,$00E8,$0010,$FFE0                                           ;83880C;
-    db $50,$04,$02,$1E,$82,$1F,$00,$00                                   ;838814;
+FXHeader_Pillar:                                                         ;83880C;
+    %FXHeader(\
+    %door(0),
+    %baseY($00E8),
+    %targetY($0010),
+    %velocity($FFE0),
+    %timer($50),
+    %FXType(4),
+    %layerBlendConfig(2, $1E),
+    %liquidOptions($82),
+    %paletteFX($1F),
+    %animTiles(0),
+    %paletteBlend(0))
 
-FXHeader_Plowerhouse:
-    dw $0000,$00CD,$FFFF,$0000                                           ;83881C;
-    db $00,$04,$02,$1E,$82,$1F,$00,$00                                   ;838824;
+FXHeader_Plowerhouse:                                                    ;83881C;
+    %FXHeader(\
+    %door(0),
+    %baseY($00CD),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(4),
+    %layerBlendConfig(2, $1E),
+    %liquidOptions($82),
+    %paletteFX($1F),
+    %animTiles(0),
+    %paletteBlend(0))
 
-FXHeader_WorstRoomInTheGame:
-    dw $0000,$FFFF,$FFFF,$0000                                           ;83882C;
-    db $20,$04,$02,$1E,$02,$1F,$02,$00                                   ;838834;
+FXHeader_WorstRoomInTheGame:                                             ;83882C;
+    %FXHeader(\
+    %door(0),
+    %baseY($FFFF),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer($20),
+    %FXType(4),
+    %layerBlendConfig(2, $1E),
+    %liquidOptions(2),
+    %paletteFX($1F),
+    %animTiles(2),
+    %paletteBlend(0))
 
-FXHeader_Amphitheatre:
-    dw $99F6,$00D0,$FFFF,$0000                                           ;83883C;
-    db $00,$04,$02,$1E,$82,$1F,$00,$00                                   ;838844;
-    dw $0000,$04E8,$00D0,$FF80                                           ;83884C;
-    db $60,$04,$02,$1E,$82,$1F,$02,$00                                   ;838854;
+FXHeader_Amphitheatre:                                                   ;83883C;
+    %FXHeader(\
+    %door(Door_RedKihunterShaft_1),
+    %baseY($00D0),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(4),
+    %layerBlendConfig(2, $1E),
+    %liquidOptions($82),
+    %paletteFX($1F),
+    %animTiles(0),
+    %paletteBlend(0))
 
-FXHeader_LNSpringballMaze:
-    dw $0000,$FFFF,$FFFF,$0000                                           ;83885C;
-    db $00,$04,$02,$1E,$02,$1F,$02,$00                                   ;838864;
+FXHeader_Amphitheatre_Part2:                                             ;83884C;
+    %FXHeader(\
+    %door(0),
+    %baseY($04E8),
+    %targetY($00D0),
+    %velocity($FF80),
+    %timer($60),
+    %FXType(4),
+    %layerBlendConfig(2, $1E),
+    %liquidOptions($82),
+    %paletteFX($1F),
+    %animTiles(2),
+    %paletteBlend(0))
 
-FXHeader_LNEscapePowerBombs:
-    dw $0000,$00B3,$FFFF,$0000                                           ;83886C;
-    db $00,$04,$02,$1E,$82,$1F,$00,$00                                   ;838874;
+FXHeader_LNSpringballMaze:                                               ;83885C;
+    %FXHeader(\
+    %door(0),
+    %baseY($FFFF),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(4),
+    %layerBlendConfig(2, $1E),
+    %liquidOptions(2),
+    %paletteFX($1F),
+    %animTiles(2),
+    %paletteBlend(0))
 
-FXHeader_RedKihunterShaft:
-    dw $0000,$FFFF,$FFFF,$0000                                           ;83887C;
-    db $00,$04,$02,$1E,$02,$1F,$00,$00                                   ;838884;
+FXHeader_LNEscapePowerBombs:                                             ;83886C;
+    %FXHeader(\
+    %door(0),
+    %baseY($00B3),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(4),
+    %layerBlendConfig(2, $1E),
+    %liquidOptions($82),
+    %paletteFX($1F),
+    %animTiles(0),
+    %paletteBlend(0))
 
-FXHeader_Wasteland:
-    dw $0000,$02C0,$FFFF,$0000                                           ;83888C;
-    db $00,$04,$02,$1E,$02,$1F,$03,$00                                   ;838894;
+FXHeader_RedKihunterShaft:                                               ;83887C;
+    %FXHeader(\
+    %door(0),
+    %baseY($FFFF),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(4),
+    %layerBlendConfig(2, $1E),
+    %liquidOptions(2),
+    %paletteFX($1F),
+    %animTiles(0),
+    %paletteBlend(0))
 
-FXHeader_MetalPirates:
-    dw $0000,$FFFF,$FFFF,$0000                                           ;83889C;
-    db $00,$04,$02,$1E,$02,$1F,$00,$00                                   ;8388A4;
+FXHeader_Wasteland:                                                      ;83888C;
+    %FXHeader(\
+    %door(0),
+    %baseY($02C0),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(4),
+    %layerBlendConfig(2, $1E),
+    %liquidOptions(2),
+    %paletteFX($1F),
+    %animTiles(3),
+    %paletteBlend(0))
 
-FXHeader_ThreeMusketeers:
-    dw $0000,$02D0,$FFFF,$0000                                           ;8388AC;
-    db $00,$04,$02,$1E,$42,$1F,$00,$00                                   ;8388B4;
+FXHeader_MetalPirates:                                                   ;83889C;
+    %FXHeader(\
+    %door(0),
+    %baseY($FFFF),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(4),
+    %layerBlendConfig(2, $1E),
+    %liquidOptions(2),
+    %paletteFX($1F),
+    %animTiles(0),
+    %paletteBlend(0))
 
-FXHeader_RidleyETank:
-    dw $0000,$00DD,$FFFF,$0000                                           ;8388BC;
-    db $00,$04,$02,$1E,$82,$1F,$00,$00                                   ;8388C4;
+FXHeader_ThreeMusketeers:                                                ;8388AC;
+    %FXHeader(\
+    %door(0),
+    %baseY($02D0),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(4),
+    %layerBlendConfig(2, $1E),
+    %liquidOptions($42),
+    %paletteFX($1F),
+    %animTiles(0),
+    %paletteBlend(0))
 
-FXHeader_ScrewAttack:
-    dw $0000,$02DD,$FFFF,$0000                                           ;8388CC;
-    db $00,$04,$02,$1E,$82,$1F,$00,$00                                   ;8388D4;
+FXHeader_RidleyETank:                                                    ;8388BC;
+    %FXHeader(\
+    %door(0),
+    %baseY($00DD),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(4),
+    %layerBlendConfig(2, $1E),
+    %liquidOptions($82),
+    %paletteFX($1F),
+    %animTiles(0),
+    %paletteBlend(0))
 
-FXHeader_LNFireflea:
-    dw $0000,$FFFF,$FFFF,$0000                                           ;8388DC;
-    db $00,$24,$02,$02,$00,$00,$02,$00                                   ;8388E4;
+FXHeader_ScrewAttack:                                                    ;8388CC;
+    %FXHeader(\
+    %door(0),
+    %baseY($02DD),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(4),
+    %layerBlendConfig(2, $1E),
+    %liquidOptions($82),
+    %paletteFX($1F),
+    %animTiles(0),
+    %paletteBlend(0))
 
-FXHeader_LNSave:
-    dw $0000,$FFFF,$FFFF,$0000                                           ;8388EC;
-    db $00,$02,$02,$1E,$01,$00,$00,$02                                   ;8388F4;
+FXHeader_LNFireflea:                                                     ;8388DC;
+    %FXHeader(\
+    %door(0),
+    %baseY($FFFF),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType($24),
+    %layerBlendConfig(2, 2),
+    %liquidOptions(0),
+    %paletteFX(0),
+    %animTiles(2),
+    %paletteBlend(0))
+
+FXHeader_LNSave:                                                         ;8388EC;
+    %FXHeader(\
+    %door(0),
+    %baseY($FFFF),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(2),
+    %layerBlendConfig(2, $1E),
+    %liquidOptions(1),
+    %paletteFX(0),
+    %animTiles(0),
+    %paletteBlend(2))
 
 
 ; see labels.asm for DoorHeaders:
@@ -5309,429 +5907,1481 @@ Door_LNSave_0:                                                           ;839AB6
 ;       |   |   |   |   |   |   |    _ Fh: Palette blend
 ;       |   |   |   |   |   |   |   |
 ;       tt, ff, AA, BB, CC, pp, aa, bb
-FXHeader_BowlingAlley_State1:
-    dw $0000,$01B0,$FFFF,$0000                                           ;839AC2;
-    db $00,$00,$02,$02,$00,$01,$0B,$00                                   ;839ACA;
+FXHeader_BowlingAlley_State1:                                            ;839AC2;
+    %FXHeader(\
+    %door(0),
+    %baseY($01B0),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(0),
+    %layerBlendConfig(2, 2),
+    %liquidOptions(0),
+    %paletteFX(1),
+    %animTiles($0B),
+    %paletteBlend(0))
 
-FXHeader_WreckedShipEntrance_State1:
-    dw $0000,$FFFF,$FFFF,$0000                                           ;839AD2;
-    db $00,$00,$02,$02,$00,$01,$00,$00                                   ;839ADA;
+FXHeader_WreckedShipEntrance_State1:                                     ;839AD2;
+    %FXHeader(\
+    %door(0),
+    %baseY($FFFF),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(0),
+    %layerBlendConfig(2, 2),
+    %liquidOptions(0),
+    %paletteFX(1),
+    %animTiles(0),
+    %paletteBlend(0))
 
-FXHeader_Attic_State1:
-    dw $0000,$FFFF,$FFFF,$0000                                           ;839AE2;
-    db $00,$00,$02,$02,$00,$01,$10,$00                                   ;839AEA;
+FXHeader_Attic_State1:                                                   ;839AE2;
+    %FXHeader(\
+    %door(0),
+    %baseY($FFFF),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(0),
+    %layerBlendConfig(2, 2),
+    %liquidOptions(0),
+    %paletteFX(1),
+    %animTiles($10),
+    %paletteBlend(0))
 
-FXHeader_AssemblyLine_State1:
-    dw $0000,$FFFF,$FFFF,$0000                                           ;839AF2;
-    db $00,$00,$02,$02,$00,$01,$18,$00                                   ;839AFA;
+FXHeader_AssemblyLine_State1:                                            ;839AF2;
+    %FXHeader(\
+    %door(0),
+    %baseY($FFFF),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(0),
+    %layerBlendConfig(2, 2),
+    %liquidOptions(0),
+    %paletteFX(1),
+    %animTiles($18),
+    %paletteBlend(0))
 
-FXHeader_WreckedShipMainShaft_State1:
-    dw $0000,$FFFF,$FFFF,$0000                                           ;839B02;
-    db $00,$00,$02,$02,$00,$01,$06,$00                                   ;839B0A;
+FXHeader_WreckedShipMainShaft_State1:                                    ;839B02;
+    %FXHeader(\
+    %door(0),
+    %baseY($FFFF),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(0),
+    %layerBlendConfig(2, 2),
+    %liquidOptions(0),
+    %paletteFX(1),
+    %animTiles(6),
+    %paletteBlend(0))
 
-FXHeader_SpikyDeath_State1:
-    dw $0000,$00A8,$FFFF,$0000                                           ;839B12;
-    db $00,$06,$02,$18,$03,$01,$0A,$48                                   ;839B1A;
+FXHeader_SpikyDeath_State1:                                              ;839B12;
+    %FXHeader(\
+    %door(0),
+    %baseY($00A8),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(6),
+    %layerBlendConfig(2, $18),
+    %liquidOptions(3),
+    %paletteFX(1),
+    %animTiles($0A),
+    %paletteBlend($48))
 
-FXHeader_ElectricDeath_State1:
-    dw $0000,$02A8,$FFFF,$0000                                           ;839B22;
-    db $00,$06,$02,$18,$03,$01,$02,$48                                   ;839B2A;
+FXHeader_ElectricDeath_State1:                                           ;839B22;
+    %FXHeader(\
+    %door(0),
+    %baseY($02A8),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(6),
+    %layerBlendConfig(2, $18),
+    %liquidOptions(3),
+    %paletteFX(1),
+    %animTiles(2),
+    %paletteBlend($48))
 
-FXHeader_WreckedShipETank_State1:
-    dw $0000,$00B0,$FFFF,$0000                                           ;839B32;
-    db $00,$06,$02,$18,$83,$01,$06,$48                                   ;839B3A;
+FXHeader_WreckedShipETank_State1:                                        ;839B32;
+    %FXHeader(\
+    %door(0),
+    %baseY($00B0),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(6),
+    %layerBlendConfig(2, $18),
+    %liquidOptions($83),
+    %paletteFX(1),
+    %animTiles(6),
+    %paletteBlend($48))
 
-FXHeader_Basement_State1:
-    dw $0000,$FFFF,$FFFF,$0000                                           ;839B42;
-    db $00,$00,$02,$02,$00,$01,$00,$00                                   ;839B4A;
+FXHeader_Basement_State1:                                                ;839B42;
+    %FXHeader(\
+    %door(0),
+    %baseY($FFFF),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(0),
+    %layerBlendConfig(2, 2),
+    %liquidOptions(0),
+    %paletteFX(1),
+    %animTiles(0),
+    %paletteBlend(0))
 
-FXHeader_WreckedShipMap_State1:
-    dw $0000,$FFFF,$FFFF,$0000                                           ;839B52;
-    db $00,$00,$02,$02,$00,$00,$00,$00                                   ;839B5A;
+FXHeader_WreckedShipMap_State1:                                          ;839B52;
+    %FXHeader(\
+    %door(0),
+    %baseY($FFFF),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(0),
+    %layerBlendConfig(2, 2),
+    %liquidOptions(0),
+    %paletteFX(0),
+    %animTiles(0),
+    %paletteBlend(0))
 
 FXHeader_Phantoon_State1:
     dw $FFFF                                                             ;839B62;
 
-FXHeader_SpongeBath_State1:
-    dw $0000,$00A8,$FFFF,$0000                                           ;839B64;
-    db $00,$06,$02,$18,$03,$00,$00,$48                                   ;839B6C;
-
-FXHeader_WSWestSuper_State1:
-    dw $0000,$FFFF,$FFFF,$0000                                           ;839B74;
-    db $00,$00,$02,$02,$00,$01,$00,$00                                   ;839B7C;
-
-FXHeader_WSEastSuper_State1:
-    dw $0000,$FFFF,$FFFF,$0000                                           ;839B84;
-    db $00,$00,$02,$02,$00,$01,$09,$00                                   ;839B8C;
-
-FXHeader_GravitySuit_State1_WreckedShipSave_State1:
-    dw $0000,$FFFF,$FFFF,$0000                                           ;839B94;
-    db $00,$00,$02,$02,$00,$01,$00,$00                                   ;839B9C;
-
-FXHeader_BowlingAlley_State0:
-    dw $0000,$FFFF,$FFFF,$0000                                           ;839BA4;
-    db $00,$00,$28,$02,$00,$00,$00,$00                                   ;839BAC;
-
-FXHeader_WreckedShipEntrance_State0:
-    dw $0000,$FFFF,$FFFF,$0000                                           ;839BB4;
-    db $00,$00,$02,$02,$00,$00,$00,$00                                   ;839BBC;
-
-FXHeader_Attic_State0:
-    dw $0000,$FFFF,$FFFF,$0000                                           ;839BC4;
-    db $00,$00,$08,$02,$00,$00,$00,$00                                   ;839BCC;
-
-FXHeader_AssemblyLine_State0:
-    dw $0000,$FFFF,$FFFF,$0000                                           ;839BD4;
-    db $00,$00,$02,$02,$00,$00,$00,$00                                   ;839BDC;
-
-FXHeader_WreckedShipMainShaft_State0:
-    dw $0000,$FFFF,$FFFF,$0000                                           ;839BE4;
-    db $00,$00,$08,$02,$00,$00,$00,$00                                   ;839BEC;
-
-FXHeader_SpikyDeath_State0:
-    dw $0000,$FFFF,$FFFF,$0000                                           ;839BF4;
-    db $00,$00,$02,$02,$00,$00,$00,$00                                   ;839BFC;
-
-FXHeader_ElectricDeath_State0:
-    dw $0000,$FFFF,$FFFF,$0000                                           ;839C04;
-    db $00,$00,$02,$02,$00,$00,$00,$00                                   ;839C0C;
-
-FXHeader_WreckedShipETank_State0:
-    dw $0000,$FFFF,$FFFF,$0000                                           ;839C14;
-    db $00,$00,$02,$02,$00,$00,$00,$00                                   ;839C1C;
-
-FXHeader_Basement_State0:
-    dw $0000,$FFFF,$FFFF,$0000                                           ;839C24;
-    db $00,$00,$28,$02,$00,$00,$00,$00                                   ;839C2C;
-
-FXHeader_WreckedShipMap_State0:
-    dw $0000,$FFFF,$FFFF,$0000                                           ;839C34;
-    db $00,$00,$08,$02,$00,$00,$00,$00                                   ;839C3C;
-
-FXHeader_Phantoon_State0:
-    dw $0000,$FFFF,$FFFF,$0000                                           ;839C44;
-    db $00,$00,$02,$02,$00,$00,$00,$00                                   ;839C4C;
-
-FXHeader_SpongeBath_State0:
-    dw $0000,$FFFF,$FFFF,$0000                                           ;839C54;
-    db $00,$00,$02,$02,$00,$00,$00,$00                                   ;839C5C;
-
-FXHeader_WSWestSuper_State0:
-    dw $0000,$FFFF,$FFFF,$0000                                           ;839C64;
-    db $00,$00,$02,$02,$00,$00,$00,$00                                   ;839C6C;
-
-FXHeader_VariousRooms_State0_839C74:
-    dw $0000,$FFFF,$FFFF,$0000                                           ;839C74;
-    db $00,$00,$02,$02,$00,$00,$00,$00                                   ;839C7C;
-
-FXHeader_GlassTunnelSave:
-    dw $0000,$0010,$FFFF,$0000                                           ;839C84;
-    db $00,$06,$02,$14,$82,$00,$00,$E2                                   ;839C8C;
-
-FXHeader_GlassTunnel_State0_1:
-    dw $0000,$0010,$FFFF,$0000                                           ;839C94;
-    db $00,$06,$02,$14,$84,$00,$00,$E2                                   ;839C9C;
-
-FXHeader_WestTunnel:
-    dw $0000,$FFFF,$FFFF,$0000                                           ;839CA4;
-    db $00,$00,$2A,$02,$00,$00,$00,$00                                   ;839CAC;
-
-FXHeader_EastTunnel:
-    dw $0000,$FFFF,$FFFF,$0000                                           ;839CB4;
-    db $00,$00,$2A,$02,$00,$00,$00,$00                                   ;839CBC;
-
-FXHeader_MainStreet:
-    dw $0000,$0010,$FFFF,$0000                                           ;839CC4;
-    db $00,$06,$02,$14,$83,$00,$00,$E2                                   ;839CCC;
-
-FXHeader_FishTank:
-    dw $0000,$0010,$FFFF,$0000                                           ;839CD4;
-    db $00,$06,$02,$14,$83,$00,$00,$E2                                   ;839CDC;
-
-FXHeader_MamaTurtle:
-    dw $0000,$02BA,$FFFF,$0000                                           ;839CE4;
-    db $00,$06,$02,$14,$80,$00,$00,$E2                                   ;839CEC;
-
-FXHeader_CrabTunnel:
-    dw $0000,$0010,$FFFF,$0000                                           ;839CF4;
-    db $00,$06,$02,$14,$80,$00,$00,$E2                                   ;839CFC;
-
-FXHeader_MtEverest:
-    dw $0000,$0010,$FFFF,$0000                                           ;839D04;
-    db $00,$06,$02,$14,$83,$00,$00,$E2                                   ;839D0C;
-
-FXHeader_RedFish:
-    dw $0000,$0180,$FFFF,$0000                                           ;839D14;
-    db $00,$06,$02,$14,$81,$00,$00,$E2                                   ;839D1C;
-
-FXHeader_WateringHole:
-    dw $0000,$01B5,$FFFF,$0000                                           ;839D24;
-    db $00,$06,$02,$14,$83,$00,$00,$42                                   ;839D2C;
-
-FXHeader_NWestMaridiaBug:
-    dw $0000,$01B5,$FFFF,$0000                                           ;839D34;
-    db $00,$06,$02,$14,$83,$00,$00,$42                                   ;839D3C;
-
-FXHeader_CrabShaft:
-    dw $0000,$0010,$FFFF,$0000                                           ;839D44;
-    db $00,$06,$02,$14,$81,$00,$00,$E2                                   ;839D4C;
-
-FXHeader_PseudoPlasmaSpark:
-    dw $0000,$01B5,$FFFF,$0000                                           ;839D54;
-    db $00,$06,$02,$14,$83,$00,$00,$42                                   ;839D5C;
-
-FXHeader_CrabHole:
-    dw $0000,$0010,$FFFF,$0000                                           ;839D64;
-    db $00,$06,$02,$14,$80,$00,$00,$E2                                   ;839D6C;
-
-FXHeader_WestSandHallTunnel:
-    dw $0000,$0010,$FFFF,$0000                                           ;839D74;
-    db $00,$06,$02,$14,$80,$00,$00,$E2                                   ;839D7C;
-
-FXHeader_PlasmaTutorial:
-    dw $0000,$FFFF,$FFFF,$0000                                           ;839D84;
-    db $00,$00,$28,$02,$00,$00,$00,$42                                   ;839D8C;
-
-FXHeader_Plasma:
-    dw $0000,$FFFF,$FFFF,$0000                                           ;839D94;
-    db $00,$00,$2A,$02,$00,$00,$00,$42                                   ;839D9C;
-
-FXHeader_ThreadTheNeedle:
-    dw $0000,$00B5,$FFFF,$0000                                           ;839DA4;
-    db $00,$06,$02,$14,$83,$00,$00,$42                                   ;839DAC;
-
-FXHeader_MaridiaElev:
-    dw $0000,$05B5,$FFFF,$0000                                           ;839DB4;
-    db $00,$06,$02,$14,$83,$00,$02,$42                                   ;839DBC;
-
-FXHeader_PlasmaSpark:
-    dw $0000,$03B4,$FFFF,$0000                                           ;839DC4;
-    db $00,$06,$02,$14,$83,$00,$00,$42                                   ;839DCC;
-
-FXHeader_Kassiuz:
-    dw $0000,$FFFF,$FFFF,$0000                                           ;839DD4;
-    db $00,$00,$28,$02,$00,$00,$00,$42                                   ;839DDC;
-
-FXHeader_MaridiaMap:
-    dw $0000,$0010,$FFFF,$0000                                           ;839DE4;
-    db $00,$06,$02,$14,$82,$00,$00,$E2                                   ;839DEC;
-
-FXHeader_ForgottenHighwaySave:
-    dw $0000,$FFFF,$FFFF,$0000                                           ;839DF4;
-    db $00,$00,$02,$02,$00,$00,$00,$42                                   ;839DFC;
-
-FXHeader_Toilet:
-    dw Door_PlasmaSpark_1                                                ;839E04;
-    dw $0080,$FFFF,$0000                                                 ;839E06;
-    db $00,$06,$02,$14,$85,$00,$00,$E8                                   ;839E0C;
-    dw Door_Oasis_2                                                      ;839E14;
-    dw $0080,$FFFF,$0000                                                 ;839E16;
-    db $00,$06,$02,$14,$85,$00,$00,$E8                                   ;839E1C;
-    dw $0000,$0080,$FFFF,$0000                                           ;839E24;
-    db $00,$06,$02,$14,$81,$00,$00,$E8                                   ;839E2C;
-
-FXHeader_BugSandHole:
-    dw $0000,$00B5,$FFFF,$0000                                           ;839E34;
-    db $00,$06,$02,$14,$83,$01,$00,$42                                   ;839E3C;
-
-FXHeader_WestSandHall:
-    dw $0000,$0010,$FFFF,$0000                                           ;839E44;
-    db $00,$06,$02,$14,$82,$01,$0C,$E8                                   ;839E4C;
-
-FXHeader_Oasis:
-    dw $0000,$0010,$FFFF,$0000                                           ;839E54;
-    db $00,$06,$02,$14,$82,$01,$00,$E8                                   ;839E5C;
-
-FXHeader_EastSandHall:
-    dw $0000,$0010,$FFFF,$0000                                           ;839E64;
-    db $00,$06,$02,$14,$82,$01,$0C,$E8                                   ;839E6C;
-
-FXHeader_WestSandHole:
-    dw $0000,$00D6,$FFFF,$0000                                           ;839E74;
-    db $00,$06,$02,$14,$03,$01,$0C,$EE                                   ;839E7C;
-
-FXHeader_EastSandHole:
-    dw $0000,$00D6,$FFFF,$0000                                           ;839E84;
-    db $00,$06,$02,$14,$03,$01,$0C,$EE                                   ;839E8C;
-
-FXHeader_EastAqueductQuicksand_WestAqueductQuicksand:
-    dw $0000,$FFFF,$FFFF,$0000                                           ;839E94;
-    db $00,$00,$2A,$02,$00,$02,$00,$00                                   ;839E9C;
-
-FXHeader_Aqueduct:
-    dw $0000,$0010,$FFFF,$0000                                           ;839EA4;
-    db $00,$06,$02,$14,$83,$01,$00,$EE                                   ;839EAC;
-
-FXHeader_Butterfly:
-    dw $0000,$0049,$FFFF,$0000                                           ;839EB4;
-    db $00,$06,$02,$14,$83,$01,$0C,$42                                   ;839EBC;
-
-FXHeader_BotwoonHallway:
-    dw $0000,$0010,$FFFF,$0000                                           ;839EC4;
-    db $00,$06,$02,$14,$83,$00,$00,$EE                                   ;839ECC;
-
-FXHeader_Pants:
-    dw $0000,$02B0,$FFFF,$0000                                           ;839ED4;
-    db $00,$06,$02,$14,$82,$01,$00,$E8                                   ;839EDC;
-
-FXHeader_EastPants:
-    dw $0000,$00B0,$FFFF,$0000                                           ;839EE4;
-    db $00,$06,$02,$14,$82,$01,$00,$E8                                   ;839EEC;
-
-FXHeader_Springball:
-    dw $0000,$00B0,$FFFF,$0000                                           ;839EF4;
-    db $00,$06,$02,$14,$82,$01,$00,$E8                                   ;839EFC;
-
-FXHeader_BelowBotwoonETank:
-    dw $0000,$0048,$FFFF,$0000                                           ;839F04;
-    db $00,$06,$02,$14,$03,$01,$0C,$EE                                   ;839F0C;
-
-FXHeader_Colosseum:
-    dw $0000,$0117,$FFFF,$0000                                           ;839F14;
-    db $00,$06,$02,$16,$01,$05,$02,$EE                                   ;839F1C;
-
-FXHeader_AqueductSave:
-    dw $0000,$0010,$FFFF,$0000                                           ;839F24;
-    db $00,$06,$02,$14,$82,$02,$00,$42                                   ;839F2C;
-
-FXHeader_ThePrecious_State0_1:
-    dw $0000,$00BF,$FFFF,$0000                                           ;839F34;
-    db $00,$06,$02,$14,$83,$00,$00,$EE                                   ;839F3C;
-
-FXHeader_BotwoonETank:
-    dw $0000,$0010,$FFFF,$0000                                           ;839F44;
-    db $00,$06,$02,$14,$83,$01,$00,$EE                                   ;839F4C;
-
-FXHeader_DraygonSave:
-    dw $0000,$FFFF,$FFFF,$0000                                           ;839F54;
-    db $00,$00,$02,$02,$00,$00,$00,$EE                                   ;839F5C;
-
-FXHeader_MaridiaMissileRefill:
-    dw $0000,$0000,$FFFF,$0000                                           ;839F64;
-    db $00,$06,$02,$14,$03,$00,$00,$EE                                   ;839F6C;
-
-FXHeader_PlasmaBeachQuicksand_BotwoonQuicksand:
-    dw $0000,$FFFF,$FFFF,$0000                                           ;839F74;
-    db $00,$00,$2A,$02,$00,$02,$00,$00                                   ;839F7C;
-
-FXHeader_Shaktool_State0_1:
-    dw $0000,$00B0,$FFFF,$0000                                           ;839F84;
-    db $00,$06,$02,$14,$82,$00,$00,$E8                                   ;839F8C;
-
-FXHeader_HalfieClimb:
-    dw $0000,$0135,$FFFF,$0000                                           ;839F94;
-    db $00,$06,$02,$16,$03,$04,$02,$EE                                   ;839F9C;
-
-FXHeader_Botwoon_State0_1:
-    dw $0000,$0010,$FFFF,$0000                                           ;839FA4;
-    db $00,$06,$02,$14,$83,$02,$00,$EE                                   ;839FAC;
-
-FXHeader_SpaceJump:
-    dw $0000,$0010,$FFFF,$0000                                           ;839FB4;
-    db $00,$06,$02,$14,$83,$00,$00,$EE                                   ;839FBC;
-
-FXHeader_MaridiaEnergyRefill:
-    dw $0000,$FFFF,$FFFF,$0000                                           ;839FC4;
-    db $00,$00,$02,$02,$00,$00,$00,$EE                                   ;839FCC;
-
-FXHeader_WestCactusAlley:
-    dw $0000,$00B9,$FFFF,$0000                                           ;839FD4;
-    db $00,$06,$02,$14,$83,$00,$00,$EE                                   ;839FDC;
-
-FXHeader_EastCactusAlley:
-    dw $0000,$0135,$FFFF,$0000                                           ;839FE4;
-    db $00,$06,$02,$16,$01,$04,$02,$EE                                   ;839FEC;
-
-FXHeader_Draygon_State0_1:
-    dw $0000,$0010,$FFFF,$0000                                           ;839FF4;
-    db $00,$06,$02,$14,$81,$00,$00,$42                                   ;839FFC;
-
-FXHeader_TourianFirst:
-    dw $0000,$03BC,$FFFF,$0000                                           ;83A004;
-    db $00,$04,$02,$1E,$01,$02,$00,$02                                   ;83A00C;
-
-FXHeader_Metroids1_State0_1:
-    dw $0000,$00D0,$FFFF,$0000                                           ;83A014;
-    db $10,$04,$02,$1E,$01,$02,$00,$02                                   ;83A01C;
-
-FXHeader_Metroids2_State0_1:
-    dw $0000,$FFFF,$FFFF,$0000                                           ;83A024;
-    db $00,$00,$02,$02,$00,$02,$00,$00                                   ;83A02C;
-
-FXHeader_Metroids3_State0_1:
-    dw $0000,$00D0,$FFFF,$0000                                           ;83A034;
-    db $10,$04,$02,$1E,$01,$02,$00,$02                                   ;83A03C;
-
-FXHeader_Metroids4_State0_1:
-    dw $0000,$FFFF,$FFFF,$0000                                           ;83A044;
-    db $00,$00,$02,$02,$00,$02,$00,$00                                   ;83A04C;
-
-FXHeader_BlueHopper_State0_1:
-    dw $0000,$FFFF,$FFFF,$0000                                           ;83A054;
-    db $00,$00,$02,$02,$00,$02,$00,$00                                   ;83A05C;
-
-FXHeader_DustTorizo_State0_1:
-    dw $0000,$FFFF,$FFFF,$0000                                           ;83A064;
-    db $00,$00,$02,$02,$00,$02,$00,$00                                   ;83A06C;
-
-FXHeader_BigBoy_State0_1:
-    dw $0000,$FFFF,$FFFF,$0000                                           ;83A074;
-    db $00,$00,$02,$02,$00,$02,$00,$00                                   ;83A07C;
-
-FXHeader_Seaweed:
-    dw $0000,$FFFF,$FFFF,$0000                                           ;83A084;
-    db $00,$00,$02,$02,$00,$02,$00,$00                                   ;83A08C;
-
-FXHeader_TourianRecharge:
-    dw $0000,$FFFF,$FFFF,$0000                                           ;83A094;
-    db $00,$00,$02,$02,$00,$00,$00,$00                                   ;83A09C;
-
-FXHeader_MotherBrain_State0_1:
-    dw $0000,$00E8,$FFFF,$0000                                           ;83A0A4;
-    db $10,$04,$02,$1E,$01,$02,$00,$02                                   ;83A0AC;
-
-FXHeader_SetByMotherBrain_0:
-    dw $0000,$00E8,$00B8,$FFF0                                           ;83A0B4;
-    db $10,$04,$02,$1E,$01,$02,$00,$02                                   ;83A0BC;
-
-FXHeader_SetByMotherBrain_1:
-    dw $0000,$00B8,$00E8,$0030                                           ;83A0C4;
-    db $10,$04,$02,$1E,$01,$02,$00,$02                                   ;83A0CC;
-
-FXHeader_TourianEyeDoor:
-    dw $0000,$FFFF,$FFFF,$0000                                           ;83A0D4;
-    db $00,$00,$02,$02,$00,$02,$00,$00                                   ;83A0DC;
-
-FXHeader_RinkaShaft:
-    dw $0000,$FFFF,$FFFF,$0000                                           ;83A0E4;
-    db $00,$00,$02,$02,$00,$02,$00,$00                                   ;83A0EC;
-
-FXHeader_MotherBrainSave:
-    dw $0000,$FFFF,$FFFF,$0000                                           ;83A0F4;
-    db $00,$00,$02,$02,$00,$00,$00,$00                                   ;83A0FC;
-
-FXHeader_TourianEscape1:
-    dw $0000,$FFFF,$FFFF,$0000                                           ;83A104;
-    db $00,$00,$02,$02,$00,$78,$00,$00                                   ;83A10C;
-
-FXHeader_TourianEscape2:
-    dw $0000,$FFFF,$FFFF,$0000                                           ;83A114;
-    db $00,$00,$02,$02,$00,$70,$00,$00                                   ;83A11C;
-
-FXHeader_TourianEscape3:
-    dw $0000,$FFFF,$FFFF,$0000                                           ;83A124;
-    db $00,$00,$02,$02,$00,$70,$00,$00                                   ;83A12C;
-
-FXHeader_ToruianEscaper4:
-    dw $0000,$05E0,$0010,$0000                                           ;83A134;
-    db $40,$04,$02,$1E,$01,$70,$02,$00                                   ;83A13C;
+FXHeader_SpongeBath_State1:                                              ;839B64;
+    %FXHeader(\
+    %door(0),
+    %baseY($00A8),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(6),
+    %layerBlendConfig(2, $18),
+    %liquidOptions(3),
+    %paletteFX(0),
+    %animTiles(0),
+    %paletteBlend($48))
+
+FXHeader_WSWestSuper_State1:                                             ;839B74;
+    %FXHeader(\
+    %door(0),
+    %baseY($FFFF),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(0),
+    %layerBlendConfig(2, 2),
+    %liquidOptions(0),
+    %paletteFX(1),
+    %animTiles(0),
+    %paletteBlend(0))
+
+FXHeader_WSEastSuper_State1:                                             ;839B84;
+    %FXHeader(\
+    %door(0),
+    %baseY($FFFF),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(0),
+    %layerBlendConfig(2, 2),
+    %liquidOptions(0),
+    %paletteFX(1),
+    %animTiles(9),
+    %paletteBlend(0))
+
+FXHeader_GravitySuit_State1_WreckedShipSave_State1:                      ;839B94;
+    %FXHeader(\
+    %door(0),
+    %baseY($FFFF),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(0),
+    %layerBlendConfig(2, 2),
+    %liquidOptions(0),
+    %paletteFX(1),
+    %animTiles(0),
+    %paletteBlend(0))
+
+FXHeader_BowlingAlley_State0:                                            ;839BA4;
+    %FXHeader(\
+    %door(0),
+    %baseY($FFFF),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(0),
+    %layerBlendConfig($28, 2),
+    %liquidOptions(0),
+    %paletteFX(0),
+    %animTiles(0),
+    %paletteBlend(0))
+
+FXHeader_WreckedShipEntrance_State0:                                     ;839BB4;
+    %FXHeader(\
+    %door(0),
+    %baseY($FFFF),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(0),
+    %layerBlendConfig(2, 2),
+    %liquidOptions(0),
+    %paletteFX(0),
+    %animTiles(0),
+    %paletteBlend(0))
+
+FXHeader_Attic_State0:                                                   ;839BC4;
+    %FXHeader(\
+    %door(0),
+    %baseY($FFFF),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(0),
+    %layerBlendConfig(8, 2),
+    %liquidOptions(0),
+    %paletteFX(0),
+    %animTiles(0),
+    %paletteBlend(0))
+
+FXHeader_AssemblyLine_State0:                                            ;839BD4;
+    %FXHeader(\
+    %door(0),
+    %baseY($FFFF),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(0),
+    %layerBlendConfig(2, 2),
+    %liquidOptions(0),
+    %paletteFX(0),
+    %animTiles(0),
+    %paletteBlend(0))
+
+FXHeader_WreckedShipMainShaft_State0:                                    ;839BE4;
+    %FXHeader(\
+    %door(0),
+    %baseY($FFFF),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(0),
+    %layerBlendConfig(8, 2),
+    %liquidOptions(0),
+    %paletteFX(0),
+    %animTiles(0),
+    %paletteBlend(0))
+
+FXHeader_SpikyDeath_State0:                                              ;839BF4;
+    %FXHeader(\
+    %door(0),
+    %baseY($FFFF),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(0),
+    %layerBlendConfig(2, 2),
+    %liquidOptions(0),
+    %paletteFX(0),
+    %animTiles(0),
+    %paletteBlend(0))
+
+FXHeader_ElectricDeath_State0:                                           ;839C04;
+    %FXHeader(\
+    %door(0),
+    %baseY($FFFF),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(0),
+    %layerBlendConfig(2, 2),
+    %liquidOptions(0),
+    %paletteFX(0),
+    %animTiles(0),
+    %paletteBlend(0))
+
+FXHeader_WreckedShipETank_State0:                                        ;839C14;
+    %FXHeader(\
+    %door(0),
+    %baseY($FFFF),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(0),
+    %layerBlendConfig(2, 2),
+    %liquidOptions(0),
+    %paletteFX(0),
+    %animTiles(0),
+    %paletteBlend(0))
+
+FXHeader_Basement_State0:                                                ;839C24;
+    %FXHeader(\
+    %door(0),
+    %baseY($FFFF),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(0),
+    %layerBlendConfig($28, 2),
+    %liquidOptions(0),
+    %paletteFX(0),
+    %animTiles(0),
+    %paletteBlend(0))
+
+FXHeader_WreckedShipMap_State0:                                          ;839C34;
+    %FXHeader(\
+    %door(0),
+    %baseY($FFFF),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(0),
+    %layerBlendConfig(8, 2),
+    %liquidOptions(0),
+    %paletteFX(0),
+    %animTiles(0),
+    %paletteBlend(0))
+
+FXHeader_Phantoon_State0:                                                ;839C44;
+    %FXHeader(\
+    %door(0),
+    %baseY($FFFF),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(0),
+    %layerBlendConfig(2, 2),
+    %liquidOptions(0),
+    %paletteFX(0),
+    %animTiles(0),
+    %paletteBlend(0))
+
+FXHeader_SpongeBath_State0:                                              ;839C54;
+    %FXHeader(\
+    %door(0),
+    %baseY($FFFF),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(0),
+    %layerBlendConfig(2, 2),
+    %liquidOptions(0),
+    %paletteFX(0),
+    %animTiles(0),
+    %paletteBlend(0))
+
+FXHeader_WSWestSuper_State0:                                             ;839C64;
+    %FXHeader(\
+    %door(0),
+    %baseY($FFFF),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(0),
+    %layerBlendConfig(2, 2),
+    %liquidOptions(0),
+    %paletteFX(0),
+    %animTiles(0),
+    %paletteBlend(0))
+
+FXHeader_VariousRooms_State0_839C74:                                     ;839C74;
+    %FXHeader(\
+    %door(0),
+    %baseY($FFFF),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(0),
+    %layerBlendConfig(2, 2),
+    %liquidOptions(0),
+    %paletteFX(0),
+    %animTiles(0),
+    %paletteBlend(0))
+
+FXHeader_GlassTunnelSave:                                                ;839C84;
+    %FXHeader(\
+    %door(0),
+    %baseY($0010),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(6),
+    %layerBlendConfig(2, $14),
+    %liquidOptions($82),
+    %paletteFX(0),
+    %animTiles(0),
+    %paletteBlend($E2))
+
+FXHeader_GlassTunnel_State0_1:                                           ;839C94;
+    %FXHeader(\
+    %door(0),
+    %baseY($0010),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(6),
+    %layerBlendConfig(2, $14),
+    %liquidOptions($84),
+    %paletteFX(0),
+    %animTiles(0),
+    %paletteBlend($E2))
+
+FXHeader_WestTunnel:                                                     ;839CA4;
+    %FXHeader(\
+    %door(0),
+    %baseY($FFFF),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(0),
+    %layerBlendConfig($2A, 2),
+    %liquidOptions(0),
+    %paletteFX(0),
+    %animTiles(0),
+    %paletteBlend(0))
+
+FXHeader_EastTunnel:                                                     ;839CB4;
+    %FXHeader(\
+    %door(0),
+    %baseY($FFFF),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(0),
+    %layerBlendConfig($2A, 2),
+    %liquidOptions(0),
+    %paletteFX(0),
+    %animTiles(0),
+    %paletteBlend(0))
+
+FXHeader_MainStreet:                                                     ;839CC4;
+    %FXHeader(\
+    %door(0),
+    %baseY($0010),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(6),
+    %layerBlendConfig(2, $14),
+    %liquidOptions($83),
+    %paletteFX(0),
+    %animTiles(0),
+    %paletteBlend($E2))
+
+FXHeader_FishTank:                                                       ;839CD4;
+    %FXHeader(\
+    %door(0),
+    %baseY($0010),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(6),
+    %layerBlendConfig(2, $14),
+    %liquidOptions($83),
+    %paletteFX(0),
+    %animTiles(0),
+    %paletteBlend($E2))
+
+FXHeader_MamaTurtle:                                                     ;839CE4;
+    %FXHeader(\
+    %door(0),
+    %baseY($02BA),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(6),
+    %layerBlendConfig(2, $14),
+    %liquidOptions($80),
+    %paletteFX(0),
+    %animTiles(0),
+    %paletteBlend($E2))
+
+FXHeader_CrabTunnel:                                                     ;839CF4;
+    %FXHeader(\
+    %door(0),
+    %baseY($0010),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(6),
+    %layerBlendConfig(2, $14),
+    %liquidOptions($80),
+    %paletteFX(0),
+    %animTiles(0),
+    %paletteBlend($E2))
+
+FXHeader_MtEverest:                                                      ;839D04;
+    %FXHeader(\
+    %door(0),
+    %baseY($0010),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(6),
+    %layerBlendConfig(2, $14),
+    %liquidOptions($83),
+    %paletteFX(0),
+    %animTiles(0),
+    %paletteBlend($E2))
+
+FXHeader_RedFish:                                                        ;839D14;
+    %FXHeader(\
+    %door(0),
+    %baseY($0180),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(6),
+    %layerBlendConfig(2, $14),
+    %liquidOptions($81),
+    %paletteFX(0),
+    %animTiles(0),
+    %paletteBlend($E2))
+
+FXHeader_WateringHole:                                                   ;839D24;
+    %FXHeader(\
+    %door(0),
+    %baseY($01B5),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(6),
+    %layerBlendConfig(2, $14),
+    %liquidOptions($83),
+    %paletteFX(0),
+    %animTiles(0),
+    %paletteBlend($42))
+
+FXHeader_NWestMaridiaBug:                                                ;839D34;
+    %FXHeader(\
+    %door(0),
+    %baseY($01B5),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(6),
+    %layerBlendConfig(2, $14),
+    %liquidOptions($83),
+    %paletteFX(0),
+    %animTiles(0),
+    %paletteBlend($42))
+
+FXHeader_CrabShaft:                                                      ;839D44;
+    %FXHeader(\
+    %door(0),
+    %baseY($0010),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(6),
+    %layerBlendConfig(2, $14),
+    %liquidOptions($81),
+    %paletteFX(0),
+    %animTiles(0),
+    %paletteBlend($E2))
+
+FXHeader_PseudoPlasmaSpark:                                              ;839D54;
+    %FXHeader(\
+    %door(0),
+    %baseY($01B5),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(6),
+    %layerBlendConfig(2, $14),
+    %liquidOptions($83),
+    %paletteFX(0),
+    %animTiles(0),
+    %paletteBlend($42))
+
+FXHeader_CrabHole:                                                       ;839D64;
+    %FXHeader(\
+    %door(0),
+    %baseY($0010),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(6),
+    %layerBlendConfig(2, $14),
+    %liquidOptions($80),
+    %paletteFX(0),
+    %animTiles(0),
+    %paletteBlend($E2))
+
+FXHeader_WestSandHallTunnel:                                             ;839D74;
+    %FXHeader(\
+    %door(0),
+    %baseY($0010),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(6),
+    %layerBlendConfig(2, $14),
+    %liquidOptions($80),
+    %paletteFX(0),
+    %animTiles(0),
+    %paletteBlend($E2))
+
+FXHeader_PlasmaTutorial:                                                 ;839D84;
+    %FXHeader(\
+    %door(0),
+    %baseY($FFFF),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(0),
+    %layerBlendConfig($28, 2),
+    %liquidOptions(0),
+    %paletteFX(0),
+    %animTiles(0),
+    %paletteBlend($42))
+
+FXHeader_Plasma:                                                         ;839D94;
+    %FXHeader(\
+    %door(0),
+    %baseY($FFFF),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(0),
+    %layerBlendConfig($2A, 2),
+    %liquidOptions(0),
+    %paletteFX(0),
+    %animTiles(0),
+    %paletteBlend($42))
+
+FXHeader_ThreadTheNeedle:                                                ;839DA4;
+    %FXHeader(\
+    %door(0),
+    %baseY($00B5),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(6),
+    %layerBlendConfig(2, $14),
+    %liquidOptions($83),
+    %paletteFX(0),
+    %animTiles(0),
+    %paletteBlend($42))
+
+FXHeader_MaridiaElev:                                                    ;839DB4;
+    %FXHeader(\
+    %door(0),
+    %baseY($05B5),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(6),
+    %layerBlendConfig(2, $14),
+    %liquidOptions($83),
+    %paletteFX(0),
+    %animTiles(2),
+    %paletteBlend($42))
+
+FXHeader_PlasmaSpark:                                                    ;839DC4;
+    %FXHeader(\
+    %door(0),
+    %baseY($03B4),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(6),
+    %layerBlendConfig(2, $14),
+    %liquidOptions($83),
+    %paletteFX(0),
+    %animTiles(0),
+    %paletteBlend($42))
+
+FXHeader_Kassiuz:                                                        ;839DD4;
+    %FXHeader(\
+    %door(0),
+    %baseY($FFFF),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(0),
+    %layerBlendConfig($28, 2),
+    %liquidOptions(0),
+    %paletteFX(0),
+    %animTiles(0),
+    %paletteBlend($42))
+
+FXHeader_MaridiaMap:                                                     ;839DE4;
+    %FXHeader(\
+    %door(0),
+    %baseY($0010),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(6),
+    %layerBlendConfig(2, $14),
+    %liquidOptions($82),
+    %paletteFX(0),
+    %animTiles(0),
+    %paletteBlend($E2))
+
+FXHeader_ForgottenHighwaySave:                                           ;839DF4;
+    %FXHeader(\
+    %door(0),
+    %baseY($FFFF),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(0),
+    %layerBlendConfig(2, 2),
+    %liquidOptions(0),
+    %paletteFX(0),
+    %animTiles(0),
+    %paletteBlend($42))
+
+FXHeader_Toilet:                                                         ;839E04;
+    %FXHeader(\
+    %door(Door_PlasmaSpark_1),
+    %baseY($0080),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(6),
+    %layerBlendConfig(2, $14),
+    %liquidOptions($85),
+    %paletteFX(0),
+    %animTiles(0),
+    %paletteBlend($E8))
+
+FXHeader_Toilet_Part2:                                                   ;839E14;
+    %FXHeader(\
+    %door(Door_Oasis_2),
+    %baseY($0080),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(6),
+    %layerBlendConfig(2, $14),
+    %liquidOptions($85),
+    %paletteFX(0),
+    %animTiles(0),
+    %paletteBlend($E8))
+
+FXHeader_Toilet_Part3:                                                   ;839E24;
+    %FXHeader(\
+    %door(0),
+    %baseY($0080),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(6),
+    %layerBlendConfig(2, $14),
+    %liquidOptions($81),
+    %paletteFX(0),
+    %animTiles(0),
+    %paletteBlend($E8))
+
+FXHeader_BugSandHole:                                                    ;839E34;
+    %FXHeader(\
+    %door(0),
+    %baseY($00B5),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(6),
+    %layerBlendConfig(2, $14),
+    %liquidOptions($83),
+    %paletteFX(1),
+    %animTiles(0),
+    %paletteBlend($42))
+
+FXHeader_WestSandHall:                                                   ;839E44;
+    %FXHeader(\
+    %door(0),
+    %baseY($0010),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(6),
+    %layerBlendConfig(2, $14),
+    %liquidOptions($82),
+    %paletteFX(1),
+    %animTiles($0C),
+    %paletteBlend($E8))
+
+FXHeader_Oasis:                                                          ;839E54;
+    %FXHeader(\
+    %door(0),
+    %baseY($0010),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(6),
+    %layerBlendConfig(2, $14),
+    %liquidOptions($82),
+    %paletteFX(1),
+    %animTiles(0),
+    %paletteBlend($E8))
+
+FXHeader_EastSandHall:                                                   ;839E64;
+    %FXHeader(\
+    %door(0),
+    %baseY($0010),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(6),
+    %layerBlendConfig(2, $14),
+    %liquidOptions($82),
+    %paletteFX(1),
+    %animTiles($0C),
+    %paletteBlend($E8))
+
+FXHeader_WestSandHole:                                                   ;839E74;
+    %FXHeader(\
+    %door(0),
+    %baseY($00D6),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(6),
+    %layerBlendConfig(2, $14),
+    %liquidOptions(3),
+    %paletteFX(1),
+    %animTiles($0C),
+    %paletteBlend($EE))
+
+FXHeader_EastSandHole:                                                   ;839E84;
+    %FXHeader(\
+    %door(0),
+    %baseY($00D6),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(6),
+    %layerBlendConfig(2, $14),
+    %liquidOptions(3),
+    %paletteFX(1),
+    %animTiles($0C),
+    %paletteBlend($EE))
+
+FXHeader_EastAqueductQuicksand_WestAqueductQuicksand:                    ;839E94;
+    %FXHeader(\
+    %door(0),
+    %baseY($FFFF),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(0),
+    %layerBlendConfig($2A, 2),
+    %liquidOptions(0),
+    %paletteFX(2),
+    %animTiles(0),
+    %paletteBlend(0))
+
+FXHeader_Aqueduct:                                                       ;839EA4;
+    %FXHeader(\
+    %door(0),
+    %baseY($0010),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(6),
+    %layerBlendConfig(2, $14),
+    %liquidOptions($83),
+    %paletteFX(1),
+    %animTiles(0),
+    %paletteBlend($EE))
+
+FXHeader_Butterfly:                                                      ;839EB4;
+    %FXHeader(\
+    %door(0),
+    %baseY($0049),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(6),
+    %layerBlendConfig(2, $14),
+    %liquidOptions($83),
+    %paletteFX(1),
+    %animTiles($0C),
+    %paletteBlend($42))
+
+FXHeader_BotwoonHallway:                                                 ;839EC4;
+    %FXHeader(\
+    %door(0),
+    %baseY($0010),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(6),
+    %layerBlendConfig(2, $14),
+    %liquidOptions($83),
+    %paletteFX(0),
+    %animTiles(0),
+    %paletteBlend($EE))
+
+FXHeader_Pants:                                                          ;839ED4;
+    %FXHeader(\
+    %door(0),
+    %baseY($02B0),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(6),
+    %layerBlendConfig(2, $14),
+    %liquidOptions($82),
+    %paletteFX(1),
+    %animTiles(0),
+    %paletteBlend($E8))
+
+FXHeader_EastPants:                                                      ;839EE4;
+    %FXHeader(\
+    %door(0),
+    %baseY($00B0),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(6),
+    %layerBlendConfig(2, $14),
+    %liquidOptions($82),
+    %paletteFX(1),
+    %animTiles(0),
+    %paletteBlend($E8))
+
+FXHeader_Springball:                                                     ;839EF4;
+    %FXHeader(\
+    %door(0),
+    %baseY($00B0),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(6),
+    %layerBlendConfig(2, $14),
+    %liquidOptions($82),
+    %paletteFX(1),
+    %animTiles(0),
+    %paletteBlend($E8))
+
+FXHeader_BelowBotwoonETank:                                              ;839F04;
+    %FXHeader(\
+    %door(0),
+    %baseY($0048),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(6),
+    %layerBlendConfig(2, $14),
+    %liquidOptions(3),
+    %paletteFX(1),
+    %animTiles($0C),
+    %paletteBlend($EE))
+
+FXHeader_Colosseum:                                                      ;839F14;
+    %FXHeader(\
+    %door(0),
+    %baseY($0117),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(6),
+    %layerBlendConfig(2, $16),
+    %liquidOptions(1),
+    %paletteFX(5),
+    %animTiles(2),
+    %paletteBlend($EE))
+
+FXHeader_AqueductSave:                                                   ;839F24;
+    %FXHeader(\
+    %door(0),
+    %baseY($0010),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(6),
+    %layerBlendConfig(2, $14),
+    %liquidOptions($82),
+    %paletteFX(2),
+    %animTiles(0),
+    %paletteBlend($42))
+
+FXHeader_ThePrecious_State0_1:                                           ;839F34;
+    %FXHeader(\
+    %door(0),
+    %baseY($00BF),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(6),
+    %layerBlendConfig(2, $14),
+    %liquidOptions($83),
+    %paletteFX(0),
+    %animTiles(0),
+    %paletteBlend($EE))
+
+FXHeader_BotwoonETank:                                                   ;839F44;
+    %FXHeader(\
+    %door(0),
+    %baseY($0010),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(6),
+    %layerBlendConfig(2, $14),
+    %liquidOptions($83),
+    %paletteFX(1),
+    %animTiles(0),
+    %paletteBlend($EE))
+
+FXHeader_DraygonSave:                                                    ;839F54;
+    %FXHeader(\
+    %door(0),
+    %baseY($FFFF),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(0),
+    %layerBlendConfig(2, 2),
+    %liquidOptions(0),
+    %paletteFX(0),
+    %animTiles(0),
+    %paletteBlend($EE))
+
+FXHeader_MaridiaMissileRefill:                                           ;839F64;
+    %FXHeader(\
+    %door(0),
+    %baseY(0),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(6),
+    %layerBlendConfig(2, $14),
+    %liquidOptions(3),
+    %paletteFX(0),
+    %animTiles(0),
+    %paletteBlend($EE))
+
+FXHeader_PlasmaBeachQuicksand_BotwoonQuicksand:                          ;839F74;
+    %FXHeader(\
+    %door(0),
+    %baseY($FFFF),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(0),
+    %layerBlendConfig($2A, 2),
+    %liquidOptions(0),
+    %paletteFX(2),
+    %animTiles(0),
+    %paletteBlend(0))
+
+FXHeader_Shaktool_State0_1:                                              ;839F84;
+    %FXHeader(\
+    %door(0),
+    %baseY($00B0),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(6),
+    %layerBlendConfig(2, $14),
+    %liquidOptions($82),
+    %paletteFX(0),
+    %animTiles(0),
+    %paletteBlend($E8))
+
+FXHeader_HalfieClimb:                                                    ;839F94;
+    %FXHeader(\
+    %door(0),
+    %baseY($0135),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(6),
+    %layerBlendConfig(2, $16),
+    %liquidOptions(3),
+    %paletteFX(4),
+    %animTiles(2),
+    %paletteBlend($EE))
+
+FXHeader_Botwoon_State0_1:                                               ;839FA4;
+    %FXHeader(\
+    %door(0),
+    %baseY($0010),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(6),
+    %layerBlendConfig(2, $14),
+    %liquidOptions($83),
+    %paletteFX(2),
+    %animTiles(0),
+    %paletteBlend($EE))
+
+FXHeader_SpaceJump:                                                      ;839FB4;
+    %FXHeader(\
+    %door(0),
+    %baseY($0010),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(6),
+    %layerBlendConfig(2, $14),
+    %liquidOptions($83),
+    %paletteFX(0),
+    %animTiles(0),
+    %paletteBlend($EE))
+
+FXHeader_MaridiaEnergyRefill:                                            ;839FC4;
+    %FXHeader(\
+    %door(0),
+    %baseY($FFFF),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(0),
+    %layerBlendConfig(2, 2),
+    %liquidOptions(0),
+    %paletteFX(0),
+    %animTiles(0),
+    %paletteBlend($EE))
+
+FXHeader_WestCactusAlley:                                                ;839FD4;
+    %FXHeader(\
+    %door(0),
+    %baseY($00B9),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(6),
+    %layerBlendConfig(2, $14),
+    %liquidOptions($83),
+    %paletteFX(0),
+    %animTiles(0),
+    %paletteBlend($EE))
+
+FXHeader_EastCactusAlley:                                                ;839FE4;
+    %FXHeader(\
+    %door(0),
+    %baseY($0135),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(6),
+    %layerBlendConfig(2, $16),
+    %liquidOptions(1),
+    %paletteFX(4),
+    %animTiles(2),
+    %paletteBlend($EE))
+
+FXHeader_Draygon_State0_1:                                               ;839FF4;
+    %FXHeader(\
+    %door(0),
+    %baseY($0010),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(6),
+    %layerBlendConfig(2, $14),
+    %liquidOptions($81),
+    %paletteFX(0),
+    %animTiles(0),
+    %paletteBlend($42))
+
+FXHeader_TourianFirst:                                                   ;83A004;
+    %FXHeader(\
+    %door(0),
+    %baseY($03BC),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(4),
+    %layerBlendConfig(2, $1E),
+    %liquidOptions(1),
+    %paletteFX(2),
+    %animTiles(0),
+    %paletteBlend(2))
+
+FXHeader_Metroids1_State0_1:                                             ;83A014;
+    %FXHeader(\
+    %door(0),
+    %baseY($00D0),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer($10),
+    %FXType(4),
+    %layerBlendConfig(2, $1e),
+    %liquidOptions(1),
+    %paletteFX(2),
+    %animTiles(0),
+    %paletteBlend(2))
+
+FXHeader_Metroids2_State0_1:                                             ;83A024;
+    %FXHeader(\
+    %door(0),
+    %baseY($FFFF),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(0),
+    %layerBlendConfig(2, 2),
+    %liquidOptions(0),
+    %paletteFX(2),
+    %animTiles(0),
+    %paletteBlend(0))
+
+FXHeader_Metroids3_State0_1:                                             ;83A034;
+    %FXHeader(\
+    %door(0),
+    %baseY($00D0),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer($10),
+    %FXType(4),
+    %layerBlendConfig(2, $1e),
+    %liquidOptions(1),
+    %paletteFX(2),
+    %animTiles(0),
+    %paletteBlend(2))
+
+FXHeader_Metroids4_State0_1:                                             ;83A044;
+    %FXHeader(\
+    %door(0),
+    %baseY($FFFF),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(0),
+    %layerBlendConfig(2, 2),
+    %liquidOptions(0),
+    %paletteFX(2),
+    %animTiles(0),
+    %paletteBlend(0))
+
+FXHeader_BlueHopper_State0_1:                                            ;83A054;
+    %FXHeader(\
+    %door(0),
+    %baseY($FFFF),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(0),
+    %layerBlendConfig(2, 2),
+    %liquidOptions(0),
+    %paletteFX(2),
+    %animTiles(0),
+    %paletteBlend(0))
+
+FXHeader_DustTorizo_State0_1:                                            ;83A064;
+    %FXHeader(\
+    %door(0),
+    %baseY($FFFF),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(0),
+    %layerBlendConfig(2, 2),
+    %liquidOptions(0),
+    %paletteFX(2),
+    %animTiles(0),
+    %paletteBlend(0))
+
+FXHeader_BigBoy_State0_1:                                                ;83A074;
+    %FXHeader(\
+    %door(0),
+    %baseY($FFFF),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(0),
+    %layerBlendConfig(2, 2),
+    %liquidOptions(0),
+    %paletteFX(2),
+    %animTiles(0),
+    %paletteBlend(0))
+
+FXHeader_Seaweed:                                                        ;83A084;
+    %FXHeader(\
+    %door(0),
+    %baseY($FFFF),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(0),
+    %layerBlendConfig(2, 2),
+    %liquidOptions(0),
+    %paletteFX(2),
+    %animTiles(0),
+    %paletteBlend(0))
+
+FXHeader_TourianRecharge:                                                ;83A094;
+    %FXHeader(\
+    %door(0),
+    %baseY($FFFF),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(0),
+    %layerBlendConfig(2, 2),
+    %liquidOptions(0),
+    %paletteFX(0),
+    %animTiles(0),
+    %paletteBlend(0))
+
+FXHeader_MotherBrain_State0_1:                                           ;83A0A4;
+    %FXHeader(\
+    %door(0),
+    %baseY($00E8),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer($10),
+    %FXType(4),
+    %layerBlendConfig(2, $1e),
+    %liquidOptions(1),
+    %paletteFX(2),
+    %animTiles(0),
+    %paletteBlend(2))
+
+FXHeader_SetByMotherBrain_0:                                             ;83A0B4;
+    %FXHeader(\
+    %door(0),
+    %baseY($00E8),
+    %targetY($00B8),
+    %velocity($FFF0),
+    %timer($10),
+    %FXType(4),
+    %layerBlendConfig(2, $1E),
+    %liquidOptions(1),
+    %paletteFX(2),
+    %animTiles(0),
+    %paletteBlend(2))
+
+FXHeader_SetByMotherBrain_1:                                             ;83A0C4;
+    %FXHeader(\
+    %door(0),
+    %baseY($00B8),
+    %targetY($00E8),
+    %velocity($0030),
+    %timer($10),
+    %FXType(4),
+    %layerBlendConfig(2, $1E),
+    %liquidOptions(1),
+    %paletteFX(2),
+    %animTiles(0),
+    %paletteBlend(2))
+
+FXHeader_TourianEyeDoor:                                                 ;83A0D4;
+    %FXHeader(\
+    %door(0),
+    %baseY($FFFF),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(0),
+    %layerBlendConfig(2, 2),
+    %liquidOptions(0),
+    %paletteFX(2),
+    %animTiles(0),
+    %paletteBlend(0))
+
+FXHeader_RinkaShaft:                                                     ;83A0E4;
+    %FXHeader(\
+    %door(0),
+    %baseY($FFFF),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(0),
+    %layerBlendConfig(2, 2),
+    %liquidOptions(0),
+    %paletteFX(2),
+    %animTiles(0),
+    %paletteBlend(0))
+
+FXHeader_MotherBrainSave:                                                ;83A0F4;
+    %FXHeader(\
+    %door(0),
+    %baseY($FFFF),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(0),
+    %layerBlendConfig(2, 2),
+    %liquidOptions(0),
+    %paletteFX(0),
+    %animTiles(0),
+    %paletteBlend(0))
+
+FXHeader_TourianEscape1:                                                 ;83A104;
+    %FXHeader(\
+    %door(0),
+    %baseY($FFFF),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(0),
+    %layerBlendConfig(2, 2),
+    %liquidOptions(0),
+    %paletteFX($78),
+    %animTiles(0),
+    %paletteBlend(0))
+
+FXHeader_TourianEscape2:                                                 ;83A114;
+    %FXHeader(\
+    %door(0),
+    %baseY($FFFF),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(0),
+    %layerBlendConfig(2, 2),
+    %liquidOptions(0),
+    %paletteFX($70),
+    %animTiles(0),
+    %paletteBlend(0))
+
+FXHeader_TourianEscape3:                                                 ;83A124;
+    %FXHeader(\
+    %door(0),
+    %baseY($FFFF),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType(0),
+    %layerBlendConfig(2, 2),
+    %liquidOptions(0),
+    %paletteFX($70),
+    %animTiles(0),
+    %paletteBlend(0))
+
+FXHeader_ToruianEscaper4:                                                ;83A134;
+    %FXHeader(\
+    %door(0),
+    %baseY($05E0),
+    %targetY($0010),
+    %velocity(0),
+    %timer($40),
+    %FXType(4),
+    %layerBlendConfig(2, $1E),
+    %liquidOptions(1),
+    %paletteFX($70),
+    %animTiles(2),
+    %paletteBlend(0))
 
 FXHeader_UpperTourianSave:
     dw $FFFF                                                             ;83A144;
 
-FXHeader_CeresElev_State0_1:
-    dw $0000,$FFFF,$FFFF,$0000                                           ;83A146;
-    db $00,$2A,$02,$02,$00,$00,$00,$00                                   ;83A14E;
+FXHeader_CeresElev_State0_1:                                             ;83A146;
+    %FXHeader(\
+    %door(0),
+    %baseY($FFFF),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType($2A),
+    %layerBlendConfig(2, 2),
+    %liquidOptions(0),
+    %paletteFX(0),
+    %animTiles(0),
+    %paletteBlend(0))
 
 FXHeader_FallingTile_State0:
     dw $FFFF                                                             ;83A156;
@@ -5745,14 +7395,34 @@ FXHeader_DeadScientist_State0:
 FXHeader_58Escape_State0:
     dw $FFFF                                                             ;83A15C;
 
-FXHeader_CeresRidley_State0:
-    dw $0000,$FFFF,$FFFF,$0000                                           ;83A15E;
-    db $00,$28,$02,$02,$00,$00,$00,$00                                   ;83A166;
+FXHeader_CeresRidley_State0:                                             ;83A15E;
+    %FXHeader(\
+    %door(0),
+    %baseY($FFFF),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType($28),
+    %layerBlendConfig(2, 2),
+    %liquidOptions(0),
+    %paletteFX(0),
+    %animTiles(0),
+    %paletteBlend(0))
 
 if !FEATURE_KEEP_UNREFERENCED
-UNUSED_FXHeader_83A16E:
-    dw $0000,$FFFF,$FFFF,$0000                                           ;83A16E;
-    db $00,$2A,$02,$02,$00,$00,$00,$00                                   ;83A176;
+UNUSED_FXHeader_83A16E:                                                  ;83A16E;
+    %FXHeader(\
+    %door(0),
+    %baseY($FFFF),
+    %targetY($FFFF),
+    %velocity(0),
+    %timer(0),
+    %FXType($2A),
+    %layerBlendConfig(2, 2),
+    %liquidOptions(0),
+    %paletteFX(0),
+    %animTiles(0),
+    %paletteBlend(0))
 endif ; !FEATURE_KEEP_UNREFERENCED
 
 FXHeader_FallingTile_State1:
@@ -5773,9 +7443,6 @@ FXHeader_CeresRidley_State1:
 FXHeader_Debug_MotherBrain_State2:
     dw $FFFF                                                             ;83A188;
 
-Door_MaridiaElev_3_TourianFirst_2:
-    dw $0000                                                             ;83A18A;
-
 
 ; Door header format
 ;        _____________________________ 0: Destination room header pointer (bank $8F)
@@ -5789,6 +7456,9 @@ Door_MaridiaElev_3_TourianFirst_2:
 ;       |    |  |  |  |  |  |  |     _ Ah: Custom door ASM to execute (bank $8F)
 ;       |    |  |  |  |  |  |  |    |
 ;       rrrr ee oo xx yy XX YY dddd aaaa
+Door_MaridiaElev_3_TourianFirst_2:
+    dw $0000                                                             ;83A18A;
+
 Door_BowlingAlley_0:                                                     ;83A18C;
     %DoorHeader(\
     %destination(RoomHeader_WestOcean),

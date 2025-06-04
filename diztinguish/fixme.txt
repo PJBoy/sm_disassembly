@@ -1,0 +1,4 @@
+
+$838650 Should be 16bit pointer to bank $83
+$83876A Should be 16bit pointer to bank $83
+$83883C Should be 16bit pointer to bank $83
