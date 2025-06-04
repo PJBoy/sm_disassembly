@@ -2082,18 +2082,20 @@ UNUSED_PreInstruction_EnemyProjectile_868A7D:
 
 
 ;;; $8AAF: Unused. Enemy projectile ;;;
-UNUSED_EnemyProjectile_868AAF:
+UNUSED_EnemyProjectile_868AAF:                                           ;868AAF;
 ; There's no way of knowing what this enemy projectile might have been (especially with the garbage instruction lists)
 ; It has no hitbox and falls 48h pixels at a constant velocity (initialised to Enemy.var3),
 ; so my best guess would have to be a sweat drop (a la eye door) or falling debris (a la Ceres pre elevator hall)
 
 ; Initial instruction list ignored
-    dw UNUSED_EnemyProjectile_868A39                                     ;868AAF; Initialisation AI
-    dw UNUSED_PreInstruction_EnemyProjectile_868A7D                      ;868AB1; Initial pre-instruction
-    dw UNUSED_EnemyProjectile_868A39                                     ;868AB3; Initial instruction list
-    db $00,$00                                                           ;868AB5; X/Y radius
-    dw $0002,$0000                                                       ;868AB7; Properties, Hit instruction list
-    dw InstList_EnemyProjectile_Delete                                   ;868ABB; Shot instruction list
+    %EnemyProjectile(\
+    %initAI(UNUSED_EnemyProjectile_868A39),
+    %preInst(UNUSED_PreInstruction_EnemyProjectile_868A7D),
+    %instList(UNUSED_EnemyProjectile_868A39),
+    %radius(0, 0),
+    %properties($0002),
+    %hitList(0),
+    %shotList(InstList_EnemyProjectile_Delete))
 endif ; !FEATURE_KEEP_UNREFERENCED
 
 
@@ -2248,69 +2250,85 @@ PreInstruction_EnemyProjectile_MetalSkreeParticle:
 
 
 ;;; $8BC2: Enemy projectiles - skree particles ;;;
-EnemyProjectile_SkreeParticles_DownRight:
-    dw InitAI_EnemyProjectile_MetalSkreeParticle_DownRight               ;868BC2; Initialisation AI
-    dw PreInstruction_EnemyProjectile_MetalSkreeParticle                 ;868BC4; Initial pre-instruction
-    dw InstList_SkreeParticle                                            ;868BC6; Initial instruction list
-    db $02,$02                                                           ;868BC8; X/Y radius
-    dw $0004,$0000                                                       ;868BCA; Properties, Hit instruction list
-    dw InstList_EnemyProjectile_Delete                                   ;868BCE; Shot instruction list
+EnemyProjectile_SkreeParticles_DownRight:                                ;868BC2;
+    %EnemyProjectile(\
+    %initAI(InitAI_EnemyProjectile_MetalSkreeParticle_DownRight),
+    %preInst(PreInstruction_EnemyProjectile_MetalSkreeParticle),
+    %instList(InstList_SkreeParticle),
+    %radius(2, 2),
+    %properties($0004),
+    %hitList(0),
+    %shotList(InstList_EnemyProjectile_Delete))
 
-EnemyProjectile_SkreeParticles_UpRight:
-    dw InitAI_EnemyProjectile_MetalSkreeParticle_UpRight                 ;868BD0; Initialisation AI
-    dw PreInstruction_EnemyProjectile_MetalSkreeParticle                 ;868BD2; Initial pre-instruction
-    dw InstList_SkreeParticle                                            ;868BD4; Initial instruction list
-    db $02,$02                                                           ;868BD6; X/Y radius
-    dw $0004,$0000                                                       ;868BD8; Properties, Hit instruction list
-    dw InstList_EnemyProjectile_Delete                                   ;868BDC; Shot instruction list
+EnemyProjectile_SkreeParticles_UpRight:                                  ;868BD0;
+    %EnemyProjectile(\
+    %initAI(InitAI_EnemyProjectile_MetalSkreeParticle_UpRight),
+    %preInst(PreInstruction_EnemyProjectile_MetalSkreeParticle),
+    %instList(InstList_SkreeParticle),
+    %radius(2, 2),
+    %properties($0004),
+    %hitList(0),
+    %shotList(InstList_EnemyProjectile_Delete))
 
-EnemyProjectile_SkreeParticles_DownLeft:
-    dw InitAI_EnemyProjectile_MetalSkreeParticle_DownLeft                ;868BDE; Initialisation AI
-    dw PreInstruction_EnemyProjectile_MetalSkreeParticle                 ;868BE0; Initial pre-instruction
-    dw InstList_SkreeParticle                                            ;868BE2; Initial instruction list
-    db $02,$02                                                           ;868BE4; X/Y radius
-    dw $0004,$0000                                                       ;868BE6; Properties, Hit instruction list
-    dw InstList_EnemyProjectile_Delete                                   ;868BEA; Shot instruction list
+EnemyProjectile_SkreeParticles_DownLeft:                                 ;868BDE;
+    %EnemyProjectile(\
+    %initAI(InitAI_EnemyProjectile_MetalSkreeParticle_DownLeft),
+    %preInst(PreInstruction_EnemyProjectile_MetalSkreeParticle),
+    %instList(InstList_SkreeParticle),
+    %radius(2, 2),
+    %properties($0004),
+    %hitList(0),
+    %shotList(InstList_EnemyProjectile_Delete))
 
-EnemyProjectile_SkreeParticles_UpLeft:
-    dw InitAI_EnemyProjectile_MetalSkreeParticle_UpLeft                  ;868BEC; Initialisation AI
-    dw PreInstruction_EnemyProjectile_MetalSkreeParticle                 ;868BEE; Initial pre-instruction
-    dw InstList_SkreeParticle                                            ;868BF0; Initial instruction list
-    db $02,$02                                                           ;868BF2; X/Y radius
-    dw $0004,$0000                                                       ;868BF4; Properties, Hit instruction list
-    dw InstList_EnemyProjectile_Delete                                   ;868BF8; Shot instruction list
+EnemyProjectile_SkreeParticles_UpLeft:                                   ;868BEC;
+    %EnemyProjectile(\
+    %initAI(InitAI_EnemyProjectile_MetalSkreeParticle_UpLeft),
+    %preInst(PreInstruction_EnemyProjectile_MetalSkreeParticle),
+    %instList(InstList_SkreeParticle),
+    %radius(2, 2),
+    %properties($0004),
+    %hitList(0),
+    %shotList(InstList_EnemyProjectile_Delete))
 
-EnemyProjectile_MetalSkreeParticles_DownRight:
-    dw InitAI_EnemyProjectile_MetalSkreeParticle_DownRight               ;868BFA; Initialisation AI
-    dw PreInstruction_EnemyProjectile_MetalSkreeParticle                 ;868BFC; Initial pre-instruction
-    dw InstList_MetalSkreeParticle                                       ;868BFE; Initial instruction list
-    db $02,$02                                                           ;868C00; X/Y radius
-    dw $0004,$0000                                                       ;868C02; Properties, Hit instruction list
-    dw InstList_EnemyProjectile_Delete                                   ;868C06; Shot instruction list
+EnemyProjectile_MetalSkreeParticles_DownRight:                           ;868BFA;
+    %EnemyProjectile(\
+    %initAI(InitAI_EnemyProjectile_MetalSkreeParticle_DownRight),
+    %preInst(PreInstruction_EnemyProjectile_MetalSkreeParticle),
+    %instList(InstList_MetalSkreeParticle),
+    %radius(2, 2),
+    %properties($0004),
+    %hitList(0),
+    %shotList(InstList_EnemyProjectile_Delete))
 
-EnemyProjectile_MetalSkreeParticles_UpRight:
-    dw InitAI_EnemyProjectile_MetalSkreeParticle_UpRight                 ;868C08; Initialisation AI
-    dw PreInstruction_EnemyProjectile_MetalSkreeParticle                 ;868C0A; Initial pre-instruction
-    dw InstList_MetalSkreeParticle                                       ;868C0C; Initial instruction list
-    db $02,$02                                                           ;868C0E; X/Y radius
-    dw $0004,$0000                                                       ;868C10; Properties, Hit instruction list
-    dw InstList_EnemyProjectile_Delete                                   ;868C14; Shot instruction list
+EnemyProjectile_MetalSkreeParticles_UpRight:                             ;868C08;
+    %EnemyProjectile(\
+    %initAI(InitAI_EnemyProjectile_MetalSkreeParticle_UpRight),
+    %preInst(PreInstruction_EnemyProjectile_MetalSkreeParticle),
+    %instList(InstList_MetalSkreeParticle),
+    %radius(2, 2),
+    %properties($0004),
+    %hitList(0),
+    %shotList(InstList_EnemyProjectile_Delete))
 
-EnemyProjectile_MetalSkreeParticles_DownLeft:
-    dw InitAI_EnemyProjectile_MetalSkreeParticle_DownLeft                ;868C16; Initialisation AI
-    dw PreInstruction_EnemyProjectile_MetalSkreeParticle                 ;868C18; Initial pre-instruction
-    dw InstList_MetalSkreeParticle                                       ;868C1A; Initial instruction list
-    db $02,$02                                                           ;868C1C; X/Y radius
-    dw $0004,$0000                                                       ;868C1E; Properties, Hit instruction list
-    dw InstList_EnemyProjectile_Delete                                   ;868C22; Shot instruction list
+EnemyProjectile_MetalSkreeParticles_DownLeft:                            ;868C16;
+    %EnemyProjectile(\
+    %initAI(InitAI_EnemyProjectile_MetalSkreeParticle_DownLeft),
+    %preInst(PreInstruction_EnemyProjectile_MetalSkreeParticle),
+    %instList(InstList_MetalSkreeParticle),
+    %radius(2, 2),
+    %properties($0004),
+    %hitList(0),
+    %shotList(InstList_EnemyProjectile_Delete))
 
-EnemyProjectile_MetalSkreeParticles_UpLeft:
-    dw InitAI_EnemyProjectile_MetalSkreeParticle_UpLeft                  ;868C24; Initialisation AI
-    dw PreInstruction_EnemyProjectile_MetalSkreeParticle                 ;868C26; Initial pre-instruction
-    dw InstList_MetalSkreeParticle                                       ;868C28; Initial instruction list
-    db $02,$02                                                           ;868C2A; X/Y radius
-    dw $0004,$0000                                                       ;868C2C; Properties, Hit instruction list
-    dw InstList_EnemyProjectile_Delete                                   ;868C30; Shot instruction list
+EnemyProjectile_MetalSkreeParticles_UpLeft:                              ;868C24;
+    %EnemyProjectile(\
+    %initAI(InitAI_EnemyProjectile_MetalSkreeParticle_UpLeft),
+    %preInst(PreInstruction_EnemyProjectile_MetalSkreeParticle),
+    %instList(InstList_MetalSkreeParticle),
+    %radius(2, 2),
+    %properties($0004),
+    %hitList(0),
+    %shotList(InstList_EnemyProjectile_Delete))
 
 
 if !FEATURE_KEEP_UNREFERENCED
@@ -2656,36 +2674,39 @@ PreInstruction_EnemyProjectile_DraygonGoop:
 
 
 ;;; $8E50: Enemy projectiles - Draygon ;;;
-EnemyProjectile_DraygonGoop:
-    dw InitAI_EnemyProjectile_DraygonGoop                                ;868E50; Initialisation AI
-    dw PreInstruction_EnemyProjectile_DraygonGoop                        ;868E52; Initial pre-instruction
-    dw InstList_EnemyProjectile_DraygonGoop                              ;868E54; Initial instruction list
-    db $08,$08                                                           ;868E56; X/Y radius
-    dw $D000                                                             ;868E58; Properties
-    dw InstList_EnemyProjectile_DraygonGoop_Touch                        ;868E5A; Hit instruction list
-    dw InstList_EnemyProjectile_DraygonGoop_Shot                         ;868E5C; Shot instruction list
+EnemyProjectile_DraygonGoop:                                             ;868E50;
+    %EnemyProjectile(\
+    %initAI(InitAI_EnemyProjectile_DraygonGoop),
+    %preInst(PreInstruction_EnemyProjectile_DraygonGoop),
+    %instList(InstList_EnemyProjectile_DraygonGoop),
+    %radius(8, 8),
+    %properties($D000),
+    %hitList(InstList_EnemyProjectile_DraygonGoop_Touch),
+    %shotList(InstList_EnemyProjectile_DraygonGoop_Shot))
 
-EnemyProjectile_DraygonWallTurret:
-    dw InitAI_EnemyProjectile_DraygonsWallTurretProjectile               ;868E5E; Initialisation AI
-    dw PreInstruction_EnemyProj_DraygonsWallTurretProjectile_Fired       ;868E60; Initial pre-instruction
-    dw InstList_EnemyProjectile_DraygonsWallTurretProjectile_0           ;868E62; Initial instruction list
-    db $08,$08                                                           ;868E64; X/Y radius
-    dw $1080                                                             ;868E66; Properties
-    dw $0000                                                             ;868E68; Hit instruction list
-    dw InstList_EnemyProj_MiscDust_3_SmallExplosion                      ;868E6A; Shot instruction list
+EnemyProjectile_DraygonWallTurret:                                       ;868E5E;
+    %EnemyProjectile(\
+    %initAI(InitAI_EnemyProjectile_DraygonsWallTurretProjectile),
+    %preInst(PreInstruction_EnemyProj_DraygonsWallTurretProjectile_Fired),
+    %instList(InstList_EnemyProjectile_DraygonsWallTurretProjectile_0),
+    %radius(8, 8),
+    %properties($1080),
+    %hitList(0),
+    %shotList(InstList_EnemyProj_MiscDust_3_SmallExplosion))
 
 if !FEATURE_KEEP_UNREFERENCED
-UNUSED_EnemyProjectile_Draygon_868E6C:
+UNUSED_EnemyProjectile_Draygon_868E6C:                                   ;868E6C;
 ; This enemy projectile is a partially coded, small sprite with a fairly short animation loop that travels towards Draygon
 ; It doesn't collide with Samus, but it is shootable
 ; Uses the last row of evir tiles ($B1:9400), though I doubt those are the correct graphics for this enemy projectile
-    dw UNUSED_InitAI_EnemyProjectile_Draygon_868E7A                      ;868E6C; Initialisation AI
-    dw UNUSED_PreInstruction_EnemyProjectile_Draygon_868E99              ;868E6E; Initial pre-instruction
-    dw InstList_EnemyProjectile_DraygonsWallTurretProjectile_0           ;868E70; Initial instruction list
-    db $08,$08                                                           ;868E72; X/Y radius
-    dw $7000                                                             ;868E74; Properties
-    dw $0000                                                             ;868E76; Hit instruction list
-    dw InstList_EnemyProj_MiscDust_3_SmallExplosion                      ;868E78; Shot instruction list
+    %EnemyProjectile(\
+    %initAI(UNUSED_InitAI_EnemyProjectile_Draygon_868E7A),
+    %preInst(UNUSED_PreInstruction_EnemyProjectile_Draygon_868E99),
+    %instList(InstList_EnemyProjectile_DraygonsWallTurretProjectile_0),
+    %radius(8, 8),
+    %properties($7000),
+    %hitList(0),
+    %shotList(InstList_EnemyProj_MiscDust_3_SmallExplosion))
 
 
 ;;; $8E7A: Initialisation AI - enemy projectile $8E6C ;;;
@@ -2838,23 +2859,25 @@ endif ; !FEATURE_KEEP_UNREFERENCED
 
 
 ;;; $8F8F: Enemy projectiles - Crocomire ;;;
-EnemyProjectile_CrocomiresProjectile:
-    dw InitAI_EnemyProjectile_CrocomiresProjectile                       ;868F8F; Initialisation AI
-    dw PreInstruction_EnemyProjectile_CrocomiresProjectile_Setup         ;868F91; Initial pre-instruction
-    dw InstList_EnemyProjectile_CrocomiresProjectile                     ;868F93; Initial instruction list
-    db $08,$08                                                           ;868F95; X/Y radius
-    dw $8014                                                             ;868F97; Properties
-    dw $0000                                                             ;868F99; Hit instruction list
-    dw InstList_EnemyProjectile_Shot_CrocomiresProjectile                ;868F9B; Shot instruction list
+EnemyProjectile_CrocomiresProjectile:                                    ;868F8F;
+    %EnemyProjectile(\
+    %initAI(InitAI_EnemyProjectile_CrocomiresProjectile),
+    %preInst(PreInstruction_EnemyProjectile_CrocomiresProjectile_Setup),
+    %instList(InstList_EnemyProjectile_CrocomiresProjectile),
+    %radius(8, 8),
+    %properties($8014),
+    %hitList(0),
+    %shotList(InstList_EnemyProjectile_Shot_CrocomiresProjectile))
 
-EnemyProjectile_CrocomireBridgeCrumbling:
-    dw InitAI_EnemyProjectile_CrocomireBridgeCrumbling                   ;868F9D; Initialisation AI
-    dw PreInstruction_EnemyProjectile_CrocomireBridgeCrumbling           ;868F9F; Initial pre-instruction
-    dw InstList_EnemyProjectile_CrocomireBridgeCrumbling                 ;868FA1; Initial instruction list
-    db $04,$04                                                           ;868FA3; X/Y radius
-    dw $8000                                                             ;868FA5; Properties
-    dw $0000                                                             ;868FA7; Hit instruction list
-    dw InstList_EnemyProjectile_Delete                                   ;868FA9; Shot instruction list
+EnemyProjectile_CrocomireBridgeCrumbling:                                ;868F9D;
+    %EnemyProjectile(\
+    %initAI(InitAI_EnemyProjectile_CrocomireBridgeCrumbling),
+    %preInst(PreInstruction_EnemyProjectile_CrocomireBridgeCrumbling),
+    %instList(InstList_EnemyProjectile_CrocomireBridgeCrumbling),
+    %radius(4, 4),
+    %properties($8000),
+    %hitList(0),
+    %shotList(InstList_EnemyProjectile_Delete))
 
 
 ;;; $8FAB: Unused. Instruction list - Crocomire's projectile - part 1/3 ;;;
@@ -3026,14 +3049,15 @@ PreInstruction_EnemyProjectile_CrocomiresProjectile_Fired:
 
 
 ;;; $90C1: Enemy projectile - Crocomire spike wall pieces ;;;
-EnemyProjectile_CrocomireSpikeWallPieces:
-    dw InitAI_EnemyProjectile_CrocomireSpikeWallPieces                   ;8690C1; Initialisation AI
-    dw PreInstruction_EnemyProjectile_CrocomireSpikeWallPieces           ;8690C3; Initial pre-instruction
-    dw InstList_EnemyProjectile_CrocomireSpikeWallPieces                 ;8690C5; Initial instruction list
-    db $00,$00                                                           ;8690C7; X/Y radius
-    dw $0000                                                             ;8690C9; Properties
-    dw $0000                                                             ;8690CB; Hit instruction list
-    dw InstList_EnemyProjectile_Delete                                   ;8690CD; Shot instruction list
+EnemyProjectile_CrocomireSpikeWallPieces:                                ;8690C1;
+    %EnemyProjectile(\
+    %initAI(InitAI_EnemyProjectile_CrocomireSpikeWallPieces),
+    %preInst(PreInstruction_EnemyProjectile_CrocomireSpikeWallPieces),
+    %instList(InstList_EnemyProjectile_CrocomireSpikeWallPieces),
+    %radius(0, 0),
+    %properties($0000),
+    %hitList(0),
+    %shotList(InstList_EnemyProjectile_Delete))
 
 
 ;;; $90CF: Initialisation AI - enemy projectile $90C1 (Crocomire spike wall pieces) ;;;
@@ -3867,115 +3891,127 @@ if !FEATURE_KEEP_UNREFERENCED
 ; Enemy projectiles $96A4/B2/C0/CE are just the same as $966C/7A/88/96 except they instantly delete themselves on collision instead of playing the $9574 animation
 
 ; Note that Mother Brain's bombs also spawn the afterburn, not just Ridley's fireballs
-UNUSED_EnemyProjectile_Ridley_869634:
-    dw UNUSED_InitAI_EnemyProj_RidleysFireball_Afterburn_86934D          ;869634; Initialisation AI
-    dw UNUSED_PreInst_EnemyProj_RidleyFireball_Afterburn_869392          ;869636; Initial pre-instruction
-    dw InstList_EnemyProjectile_RidleysFireball_0                        ;869638; Initial instruction list
-    db $06,$06                                                           ;86963A; X/Y radius
-    dw $1003                                                             ;86963C; Properties
-    dw $0000                                                             ;86963E; Hit instruction list
-    dw InstList_EnemyProjectile_Delete                                   ;869640; Shot instruction list
+UNUSED_EnemyProjectile_Ridley_869634:                                    ;869634;
+    %EnemyProjectile(\
+    %initAI(UNUSED_InitAI_EnemyProj_RidleysFireball_Afterburn_86934D),
+    %preInst(UNUSED_PreInst_EnemyProj_RidleyFireball_Afterburn_869392),
+    %instList(InstList_EnemyProjectile_RidleysFireball_0),
+    %radius(6, 6),
+    %properties($1003),
+    %hitList(0),
+    %shotList(InstList_EnemyProjectile_Delete))
 endif ; !FEATURE_KEEP_UNREFERENCED
 
-EnemyProjectile_RidleysFireball:
-    dw InitAI_EnemyProjectile_RidleyFireball                             ;869642; Initialisation AI
-    dw PreInstruction_EnemyProjectile_RidleyFireball                     ;869644; Initial pre-instruction
-    dw InstList_EnemyProjectile_RidleysFireball_0                        ;869646; Initial instruction list
-    db $06,$06                                                           ;869648; X/Y radius
-    dw $5003                                                             ;86964A; Properties
-    dw $0000                                                             ;86964C; Hit instruction list
-    dw InstList_EnemyProjectile_Delete                                   ;86964E; Shot instruction list
+EnemyProjectile_RidleysFireball:                                         ;869642;
+    %EnemyProjectile(\
+    %initAI(InitAI_EnemyProjectile_RidleyFireball),
+    %preInst(PreInstruction_EnemyProjectile_RidleyFireball),
+    %instList(InstList_EnemyProjectile_RidleysFireball_0),
+    %radius(6, 6),
+    %properties($5003),
+    %hitList(0),
+    %shotList(InstList_EnemyProjectile_Delete))
 
-EnemyProjectile_RidleyHorizontalAfterburn_Center:
-    dw InitAI_EnemyProjectile_Afterburn_Center                           ;869650; Initialisation AI
-    dw RTS_86950C                                                        ;869652; Initial pre-instruction
-    dw InstList_EnemyProjectile_HorizontalAfterburn_Center               ;869654; Initial instruction list
-    db $06,$06                                                           ;869656; X/Y radius
-    dw $5003                                                             ;869658; Properties
-    dw $0000                                                             ;86965A; Hit instruction list
-    dw InstList_EnemyProjectile_Delete                                   ;86965C; Shot instruction list
+EnemyProjectile_RidleyHorizontalAfterburn_Center:                        ;869650;
+    %EnemyProjectile(\
+    %initAI(InitAI_EnemyProjectile_Afterburn_Center),
+    %preInst(RTS_86950C),
+    %instList(InstList_EnemyProjectile_HorizontalAfterburn_Center),
+    %radius(6, 6),
+    %properties($5003),
+    %hitList(0),
+    %shotList(InstList_EnemyProjectile_Delete))
 
-EnemyProjectile_RidleyVerticalAfterburn_Center:
-    dw InitAI_EnemyProjectile_Afterburn_Center                           ;86965E; Initialisation AI
-    dw RTS_86950C                                                        ;869660; Initial pre-instruction
-    dw InstList_EnemyProjectile_VerticalAfterburn_Center                 ;869662; Initial instruction list
-    db $06,$06                                                           ;869664; X/Y radius
-    dw $5003                                                             ;869666; Properties
-    dw $0000                                                             ;869668; Hit instruction list
-    dw InstList_EnemyProjectile_Delete                                   ;86966A; Shot instruction list
+EnemyProjectile_RidleyVerticalAfterburn_Center:                          ;86965E;
+    %EnemyProjectile(\
+    %initAI(InitAI_EnemyProjectile_Afterburn_Center),
+    %preInst(RTS_86950C),
+    %instList(InstList_EnemyProjectile_VerticalAfterburn_Center),
+    %radius(6, 6),
+    %properties($5003),
+    %hitList(0),
+    %shotList(InstList_EnemyProjectile_Delete))
 
-EnemyProjectile_RidleyHorizontalAfterburn_Right:
-    dw InitAI_EnemyProjectile_HorizontalAfterburn_Right                  ;86966C; Initialisation AI
-    dw PreInstruction_EnemyProjectile_HorizontalAfterburn                ;86966E; Initial pre-instruction
-    dw InstList_EnemyProjectile_Afterburn                                ;869670; Initial instruction list
-    db $06,$06                                                           ;869672; X/Y radius
-    dw $5003                                                             ;869674; Properties
-    dw $0000                                                             ;869676; Hit instruction list
-    dw InstList_EnemyProjectile_Delete                                   ;869678; Shot instruction list
+EnemyProjectile_RidleyHorizontalAfterburn_Right:                         ;86966C;
+    %EnemyProjectile(\
+    %initAI(InitAI_EnemyProjectile_HorizontalAfterburn_Right),
+    %preInst(PreInstruction_EnemyProjectile_HorizontalAfterburn),
+    %instList(InstList_EnemyProjectile_Afterburn),
+    %radius(6, 6),
+    %properties($5003),
+    %hitList(0),
+    %shotList(InstList_EnemyProjectile_Delete))
 
-EnemyProjectile_RidleyHorizontalAfterburn_Left:
-    dw InitAI_EnemyProjectile_HorizontalAfterburn_Left                   ;86967A; Initialisation AI
-    dw PreInstruction_EnemyProjectile_HorizontalAfterburn                ;86967C; Initial pre-instruction
-    dw InstList_EnemyProjectile_Afterburn                                ;86967E; Initial instruction list
-    db $06,$06                                                           ;869680; X/Y radius
-    dw $5003                                                             ;869682; Properties
-    dw $0000                                                             ;869684; Hit instruction list
-    dw InstList_EnemyProjectile_Delete                                   ;869686; Shot instruction list
+EnemyProjectile_RidleyHorizontalAfterburn_Left:                          ;86967A;
+    %EnemyProjectile(\
+    %initAI(InitAI_EnemyProjectile_HorizontalAfterburn_Left),
+    %preInst(PreInstruction_EnemyProjectile_HorizontalAfterburn),
+    %instList(InstList_EnemyProjectile_Afterburn),
+    %radius(6, 6),
+    %properties($5003),
+    %hitList(0),
+    %shotList(InstList_EnemyProjectile_Delete))
 
-EnemyProjectile_RidleyVerticalAfterburn_Up:
-    dw InitAI_EnemyProjectile_VerticalAfterburn_Up                       ;869688; Initialisation AI
-    dw PreInstruction_EnemyProjectile_VerticalAfterburn                  ;86968A; Initial pre-instruction
-    dw InstList_EnemyProjectile_Afterburn                                ;86968C; Initial instruction list
-    db $06,$06                                                           ;86968E; X/Y radius
-    dw $5003                                                             ;869690; Properties
-    dw $0000                                                             ;869692; Hit instruction list
-    dw InstList_EnemyProjectile_Delete                                   ;869694; Shot instruction list
+EnemyProjectile_RidleyVerticalAfterburn_Up:                              ;869688;
+    %EnemyProjectile(\
+    %initAI(InitAI_EnemyProjectile_VerticalAfterburn_Up),
+    %preInst(PreInstruction_EnemyProjectile_VerticalAfterburn),
+    %instList(InstList_EnemyProjectile_Afterburn),
+    %radius(6, 6),
+    %properties($5003),
+    %hitList(0),
+    %shotList(InstList_EnemyProjectile_Delete))
 
-EnemyProjectile_RidleyVerticalAfterburn_Down:
-    dw InitAI_EnemyProjectile_VerticalAfterburn_Down                     ;869696; Initialisation AI
-    dw PreInstruction_EnemyProjectile_VerticalAfterburn                  ;869698; Initial pre-instruction
-    dw InstList_EnemyProjectile_Afterburn                                ;86969A; Initial instruction list
-    db $06,$06                                                           ;86969C; X/Y radius
-    dw $5003                                                             ;86969E; Properties
-    dw $0000                                                             ;8696A0; Hit instruction list
-    dw InstList_EnemyProjectile_Delete                                   ;8696A2; Shot instruction list
+EnemyProjectile_RidleyVerticalAfterburn_Down:                            ;869696;
+    %EnemyProjectile(\
+    %initAI(InitAI_EnemyProjectile_VerticalAfterburn_Down),
+    %preInst(PreInstruction_EnemyProjectile_VerticalAfterburn),
+    %instList(InstList_EnemyProjectile_Afterburn),
+    %radius(6, 6),
+    %properties($5003),
+    %hitList(0),
+    %shotList(InstList_EnemyProjectile_Delete))
 
 if !FEATURE_KEEP_UNREFERENCED
-UNUSED_EnemyProjectile_RidleyProtoHorizontalAfterburn_8696A4:
-    dw InitAI_EnemyProjectile_HorizontalAfterburn_Right                  ;8696A4; Initialisation AI
-    dw UNUSED_PreInstruction_ProtoHorizontalAfterburn_869537             ;8696A6; Initial pre-instruction
-    dw InstList_EnemyProjectile_Afterburn                                ;8696A8; Initial instruction list
-    db $06,$06                                                           ;8696AA; X/Y radius
-    dw $5003                                                             ;8696AC; Properties
-    dw $0000                                                             ;8696AE; Hit instruction list
-    dw InstList_EnemyProjectile_Delete                                   ;8696B0; Shot instruction list
+UNUSED_EnemyProjectile_RidleyProtoHorizontalAfterburn_8696A4:            ;8696A4;
+    %EnemyProjectile(\
+    %initAI(InitAI_EnemyProjectile_HorizontalAfterburn_Right),
+    %preInst(UNUSED_PreInstruction_ProtoHorizontalAfterburn_869537),
+    %instList(InstList_EnemyProjectile_Afterburn),
+    %radius(6, 6),
+    %properties($5003),
+    %hitList(0),
+    %shotList(InstList_EnemyProjectile_Delete))
 
-UNUSED_EnemyProjectile_RidleyProtoHorizontalAfterburn_8696B2:
-    dw InitAI_EnemyProjectile_HorizontalAfterburn_Left                   ;8696B2; Initialisation AI
-    dw UNUSED_PreInstruction_ProtoHorizontalAfterburn_869537             ;8696B4; Initial pre-instruction
-    dw InstList_EnemyProjectile_Afterburn                                ;8696B6; Initial instruction list
-    db $06,$06                                                           ;8696B8; X/Y radius
-    dw $5003                                                             ;8696BA; Properties
-    dw $0000                                                             ;8696BC; Hit instruction list
-    dw InstList_EnemyProjectile_Delete                                   ;8696BE; Shot instruction list
+UNUSED_EnemyProjectile_RidleyProtoHorizontalAfterburn_8696B2:            ;8696B2;
+    %EnemyProjectile(\
+    %initAI(InitAI_EnemyProjectile_HorizontalAfterburn_Left),
+    %preInst(UNUSED_PreInstruction_ProtoHorizontalAfterburn_869537),
+    %instList(InstList_EnemyProjectile_Afterburn),
+    %radius(6, 6),
+    %properties($5003),
+    %hitList(0),
+    %shotList(InstList_EnemyProjectile_Delete))
 
-UNUSED_EnemyProjectile_RidleyProtoVerticalAfterburn_8696C0:
-    dw InitAI_EnemyProjectile_VerticalAfterburn_Up                       ;8696C0; Initialisation AI
-    dw UNUSED_PreInstruction_ProtoVerticalAfterburn_Up_869540            ;8696C2; Initial pre-instruction
-    dw InstList_EnemyProjectile_Afterburn                                ;8696C4; Initial instruction list
-    db $06,$06                                                           ;8696C6; X/Y radius
-    dw $5003                                                             ;8696C8; Properties
-    dw $0000                                                             ;8696CA; Hit instruction list
-    dw InstList_EnemyProjectile_Delete                                   ;8696CC; Shot instruction list
+UNUSED_EnemyProjectile_RidleyProtoVerticalAfterburn_8696C0:              ;8696C0;
+    %EnemyProjectile(\
+    %initAI(InitAI_EnemyProjectile_VerticalAfterburn_Up),
+    %preInst(UNUSED_PreInstruction_ProtoVerticalAfterburn_Up_869540),
+    %instList(InstList_EnemyProjectile_Afterburn),
+    %radius(6, 6),
+    %properties($5003),
+    %hitList(0),
+    %shotList(InstList_EnemyProjectile_Delete))
 
-UNUSED_EnemyProjectile_RidleyProtoVerticalAfterburn_8696CE:
-    dw InitAI_EnemyProjectile_VerticalAfterburn_Down                     ;8696CE; Initialisation AI
-    dw UNUSED_PreInstruction_ProtoVerticalAfterburn_Down_869549          ;8696D0; Initial pre-instruction
-    dw InstList_EnemyProjectile_Afterburn                                ;8696D2; Initial instruction list
-    db $06,$06                                                           ;8696D4; X/Y radius
-    dw $5003                                                             ;8696D6; Properties
-    dw $0000                                                             ;8696D8; Hit instruction list
-    dw InstList_EnemyProjectile_Delete                                   ;8696DA; Shot instruction list
+UNUSED_EnemyProjectile_RidleyProtoVerticalAfterburn_8696CE:              ;8696CE;
+    %EnemyProjectile(\
+    %initAI(InitAI_EnemyProjectile_VerticalAfterburn_Down),
+    %preInst(UNUSED_PreInstruction_ProtoVerticalAfterburn_Down_869549),
+    %instList(InstList_EnemyProjectile_Afterburn),
+    %radius(6, 6),
+    %properties($5003),
+    %hitList(0),
+    %shotList(InstList_EnemyProjectile_Delete))
 endif ; !FEATURE_KEEP_UNREFERENCED
 
 
@@ -4028,23 +4064,25 @@ PreInstruction_EnemyProjectile_CeresFallingTile:
 
 
 ;;; $9734: Enemy projectiles - Ceres falling debris ;;;
-EnemyProjectile_CeresFallingTile_Light:
-    dw InitAI_EnemyProjectile_CeresFallingTile                           ;869734; Initialisation AI
-    dw PreInstruction_EnemyProjectile_CeresFallingTile                   ;869736; Initial pre-instruction
-    dw InstList_EnemyProjectile_CeresFallingTile_Light                   ;869738; Initial instruction list
-    db $08,$08                                                           ;86973A; X/Y radius
-    dw $4000                                                             ;86973C; Properties
-    dw $0000                                                             ;86973E; Hit instruction list
-    dw InstList_EnemyProjectile_Delete                                   ;869740; Shot instruction list
+EnemyProjectile_CeresFallingTile_Light:                                  ;869734;
+    %EnemyProjectile(\
+    %initAI(InitAI_EnemyProjectile_CeresFallingTile),
+    %preInst(PreInstruction_EnemyProjectile_CeresFallingTile),
+    %instList(InstList_EnemyProjectile_CeresFallingTile_Light),
+    %radius(8, 8),
+    %properties($4000),
+    %hitList(0),
+    %shotList(InstList_EnemyProjectile_Delete))
 
-EnemyProjectile_CeresFallingTile_Dark:
-    dw InitAI_EnemyProjectile_CeresFallingTile                           ;869742; Initialisation AI
-    dw PreInstruction_EnemyProjectile_CeresFallingTile                   ;869744; Initial pre-instruction
-    dw InstList_EnemyProjectile_CeresFallingTile_Dark                    ;869746; Initial instruction list
-    db $08,$08                                                           ;869748; X/Y radius
-    dw $4000                                                             ;86974A; Properties
-    dw $0000                                                             ;86974C; Hit instruction list
-    dw InstList_EnemyProjectile_Delete                                   ;86974E; Shot instruction list
+EnemyProjectile_CeresFallingTile_Dark:                                   ;869742;
+    %EnemyProjectile(\
+    %initAI(InitAI_EnemyProjectile_CeresFallingTile),
+    %preInst(PreInstruction_EnemyProjectile_CeresFallingTile),
+    %instList(InstList_EnemyProjectile_CeresFallingTile_Dark),
+    %radius(8, 8),
+    %properties($4000),
+    %hitList(0),
+    %shotList(InstList_EnemyProjectile_Delete))
 
 
 ;;; $9750: Instruction list - enemy projectile $9734 (Ceres falling debris - light coloured) ;;;
@@ -4773,55 +4811,67 @@ DoSomeMathWithSineAndPi_869BF3:
 
 
 ;;; $9C29: Phantoon flame enemy projectiles ;;;
-EnemyProjectile_PhantoonDestroyableFlames:
-    dw InitAI_EnemyProjectile_PhantoonDestroyableFlames                  ;869C29; Initialisation AI
-    dw PreInst_EnemyProj_PhantoonDestroyableFlame_Casual_Falling         ;869C2B; Initial pre-instruction
-    dw InstList_EnemyProjectile_PhantoonDestroyableFlame_Idle            ;869C2D; Initial instruction list
-    db $08,$10                                                           ;869C2F; X/Y radius
-    dw $8028,$0000                                                       ;869C31; Properties, Hit instruction list
-    dw InstList_EnemyProjectile_Shot_PhantoonDestroyableFlames           ;869C35; Shot instruction list
+EnemyProjectile_PhantoonDestroyableFlames:                               ;869C29;
+    %EnemyProjectile(\
+    %initAI(InitAI_EnemyProjectile_PhantoonDestroyableFlames),
+    %preInst(PreInst_EnemyProj_PhantoonDestroyableFlame_Casual_Falling),
+    %instList(InstList_EnemyProjectile_PhantoonDestroyableFlame_Idle),
+    %radius(8, $10),
+    %properties($8028),
+    %hitList(0),
+    %shotList(InstList_EnemyProjectile_Shot_PhantoonDestroyableFlames))
 
-EnemyProjectile_PhantoonStartingFlames:
-    dw InitAI_EnemyProjectile_PhantoonStartingFlames                     ;869C37; Initialisation AI
-    dw PreInstruction_EnemyProjectile_PhantoonStartingFlames             ;869C39; Initial pre-instruction
-    dw InstList_EnemyProjectile_PhantoonStartingFlames                   ;869C3B; Initial instruction list
-    db $08,$10                                                           ;869C3D; X/Y radius
-    dw $4028,$0000                                                       ;869C3F; Properties, Hit instruction list
-    dw InstList_EnemyProjectile_PhantoonDestroyableFlame_Idle            ;869C43; Shot instruction list
+EnemyProjectile_PhantoonStartingFlames:                                  ;869C37;
+    %EnemyProjectile(\
+    %initAI(InitAI_EnemyProjectile_PhantoonStartingFlames),
+    %preInst(PreInstruction_EnemyProjectile_PhantoonStartingFlames),
+    %instList(InstList_EnemyProjectile_PhantoonStartingFlames),
+    %radius(8, $10),
+    %properties($4028),
+    %hitList(0),
+    %shotList(InstList_EnemyProjectile_PhantoonDestroyableFlame_Idle))
 
 
 ;;; $9C45: Kraid rock enemy projectiles ;;;
-EnemyProjectile_KraidRockSpit:
-    dw InitAI_EnemyProjectile_KraidRockSpit                              ;869C45; Initialisation AI
-    dw PreInstruction_EnemyProjectile_KraidRocks                         ;869C47; Initial pre-instruction
-    dw InstList_EnemyProjectile_KraidRocks_KagoBug                       ;869C49; Initial instruction list
-    db $04,$04                                                           ;869C4B; X/Y radius
-    dw $8002,$0000                                                       ;869C4D; Properties, Hit instruction list
-    dw InstList_EnemyProjectile_Shot_KraidRockSpit                       ;869C51; Shot instruction list
+EnemyProjectile_KraidRockSpit:                                           ;869C45;
+    %EnemyProjectile(\
+    %initAI(InitAI_EnemyProjectile_KraidRockSpit),
+    %preInst(PreInstruction_EnemyProjectile_KraidRocks),
+    %instList(InstList_EnemyProjectile_KraidRocks_KagoBug),
+    %radius(4, 4),
+    %properties($8002),
+    %hitList(0),
+    %shotList(InstList_EnemyProjectile_Shot_KraidRockSpit))
 
-EnemyProjectile_KraidCeilingRocks:
-    dw Instruction_EnemyProjectile_KraidCeilingRocks                     ;869C53; Initialisation AI
-    dw PreInstruction_EnemyProjectile_KraidCeilingRocks                  ;869C55; Initial pre-instruction
-    dw InstList_EnemyProjectile_KraidRocks_KagoBug                       ;869C57; Initial instruction list
-    db $04,$04                                                           ;869C59; X/Y radius
-    dw $A000,$0000                                                       ;869C5B; Properties, Hit instruction list
-    dw InstList_EnemyProjectile_Delete                                   ;869C5F; Shot instruction list
+EnemyProjectile_KraidCeilingRocks:                                       ;869C53;
+    %EnemyProjectile(\
+    %initAI(Instruction_EnemyProjectile_KraidCeilingRocks),
+    %preInst(PreInstruction_EnemyProjectile_KraidCeilingRocks),
+    %instList(InstList_EnemyProjectile_KraidRocks_KagoBug),
+    %radius(4, 4),
+    %properties($A000),
+    %hitList(0),
+    %shotList(InstList_EnemyProjectile_Delete))
 
-EnemyProjectile_KraidFloorRocks_Left:
-    dw Instruction_EnemyProjectile_KraidRisingRocks                      ;869C61; Initialisation AI
-    dw PreInstruction_EnemyProjectile_KraidRocks                         ;869C63; Initial pre-instruction
-    dw InstList_EnemyProjectile_KraidRocks_KagoBug                       ;869C65; Initial instruction list
-    db $04,$04                                                           ;869C67; X/Y radius
-    dw $A000,$0000                                                       ;869C69; Properties, Hit instruction list
-    dw InstList_EnemyProjectile_Delete                                   ;869C6D; Shot instruction list
+EnemyProjectile_KraidFloorRocks_Left:                                    ;869C61;
+    %EnemyProjectile(\
+    %initAI(Instruction_EnemyProjectile_KraidRisingRocks),
+    %preInst(PreInstruction_EnemyProjectile_KraidRocks),
+    %instList(InstList_EnemyProjectile_KraidRocks_KagoBug),
+    %radius(4, 4),
+    %properties($A000),
+    %hitList(0),
+    %shotList(InstList_EnemyProjectile_Delete))
 
-EnemyProjectile_KraidFloorRocks_Right:
-    dw Instruction_EnemyProjectile_KraidRisingRocks                      ;869C6F; Initialisation AI
-    dw PreInstruction_EnemyProjectile_KraidRocks                         ;869C71; Initial pre-instruction
-    dw InstList_EnemyProjectile_KraidFloorRocks_Right                    ;869C73; Initial instruction list
-    db $04,$04                                                           ;869C75; X/Y radius
-    dw $A000,$0000                                                       ;869C77; Properties, Hit instruction list
-    dw InstList_EnemyProjectile_Delete                                   ;869C7B; Shot instruction list
+EnemyProjectile_KraidFloorRocks_Right:                                   ;869C6F;
+    %EnemyProjectile(\
+    %initAI(Instruction_EnemyProjectile_KraidRisingRocks),
+    %preInst(PreInstruction_EnemyProjectile_KraidRocks),
+    %instList(InstList_EnemyProjectile_KraidFloorRocks_Right),
+    %radius(4, 4),
+    %properties($A000),
+    %hitList(0),
+    %shotList(InstList_EnemyProjectile_Delete))
 
 
 ;;; $9C7D: Instruction list - enemy projectile $9C45/$9C53/$9C61/$D02E (Kraid rocks / kago bug) ;;;
@@ -5008,31 +5058,35 @@ PreInstruction_EnemyProjectile_KraidRockSpit_UsePalette0:
 
 
 ;;; $9DB0: Enemy projectiles - fake Kraid ;;;
-EnemyProjectile_MiniKraidSpit:
-    dw InitAI_EnemyProjectile_MiniKraidSpit                              ;869DB0; Initialisation AI
-    dw PreInstruction_EnemyProjectile_MiniKraidSpit                      ;869DB2; Initial pre-instruction
-    dw InstList_EnemyProjectile_MiniKraidSpit                            ;869DB4; Initial instruction list
-    db $04,$04                                                           ;869DB6; X/Y radius
-    dw $0014                                                             ;869DB8; Properties
-    dw $0000                                                             ;869DBA; Hit instruction list
-    dw InstList_EnemyProjectile_Delete                                   ;869DBC; Shot instruction list
+EnemyProjectile_MiniKraidSpit:                                           ;869DB0;
+    %EnemyProjectile(\
+    %initAI(InitAI_EnemyProjectile_MiniKraidSpit),
+    %preInst(PreInstruction_EnemyProjectile_MiniKraidSpit),
+    %instList(InstList_EnemyProjectile_MiniKraidSpit),
+    %radius(4, 4),
+    %properties($0014),
+    %hitList(0),
+    %shotList(InstList_EnemyProjectile_Delete))
 
-EnemyProjectile_MiniKraidSpikes_Left:
-    dw InitAI_EnemyProjectile_MiniKraidSpikes_Left                       ;869DBE; Initialisation AI
-    dw PreInstruction_EnemyProjectile_MiniKraidSpikes                    ;869DC0; Initial pre-instruction
-    dw InstList_EnemyProjectile_MiniKraidSpikes_Left                     ;869DC2; Initial instruction list
-    db $04,$02                                                           ;869DC4; X/Y radius
-    dw $0006                                                             ;869DC6; Properties
-    dw $0000                                                             ;869DC8; Hit instruction list
-    dw InstList_EnemyProjectile_Delete                                   ;869DCA; Shot instruction list
+EnemyProjectile_MiniKraidSpikes_Left:                                    ;869DBE;
+    %EnemyProjectile(\
+    %initAI(InitAI_EnemyProjectile_MiniKraidSpikes_Left),
+    %preInst(PreInstruction_EnemyProjectile_MiniKraidSpikes),
+    %instList(InstList_EnemyProjectile_MiniKraidSpikes_Left),
+    %radius(4, 2),
+    %properties($0006),
+    %hitList(0),
+    %shotList(InstList_EnemyProjectile_Delete))
 
-EnemyProjectile_MiniKraidSpikes_Right:
-    dw InitAI_EnemyProjectile_MiniKraidSpikes_Right                      ;869DCC; Initialisation AI
-    dw PreInstruction_EnemyProjectile_MiniKraidSpikes                    ;869DCE; Initial pre-instruction
-    dw InstList_EnemyProjectile_MiniKraidSpikes_Right                    ;869DD0; Initial instruction list
-    db $04,$02                                                           ;869DD2; X/Y radius
-    dw $0006,$0000                                                       ;869DD4; Properties, Hit instruction list
-    dw InstList_EnemyProjectile_Delete                                   ;869DD8; Shot instruction list
+EnemyProjectile_MiniKraidSpikes_Right:                                   ;869DCC;
+    %EnemyProjectile(\
+    %initAI(InitAI_EnemyProjectile_MiniKraidSpikes_Right),
+    %preInst(PreInstruction_EnemyProjectile_MiniKraidSpikes),
+    %instList(InstList_EnemyProjectile_MiniKraidSpikes_Right),
+    %radius(4, 2),
+    %properties($0006),
+    %hitList(0),
+    %shotList(InstList_EnemyProjectile_Delete))
 
 
 ;;; $9DDA: Instruction list - enemy projectile $9DB0 (fake Kraid spit) ;;;
@@ -5165,13 +5219,15 @@ PreInstruction_EnemyProjectile_MiniKraidSpikes:
 
 
 ;;; $9E90: Enemy projectile - alcoon fireball ;;;
-EnemyProjectile_AlcoonFireball:
-    dw InitAI_EnemyProjectile_AlcoonFireball                             ;869E90; Initialisation AI
-    dw PreInstruction_EnemyProjectile_AlcoonFireball                     ;869E92; Initial pre-instruction
-    dw InstList_EnemyProjectile_AlcoonFireball                           ;869E94; Initial instruction list
-    db $04,$04                                                           ;869E96; X/Y radius
-    dw $0014,$0000                                                       ;869E98; Properties, Hit instruction list
-    dw InstList_EnemyProjectile_Delete                                   ;869E9C; Shot instruction list
+EnemyProjectile_AlcoonFireball:                                          ;869E90;
+    %EnemyProjectile(\
+    %initAI(InitAI_EnemyProjectile_AlcoonFireball),
+    %preInst(PreInstruction_EnemyProjectile_AlcoonFireball),
+    %instList(InstList_EnemyProjectile_AlcoonFireball),
+    %radius(4, 4),
+    %properties($0014),
+    %hitList(0),
+    %shotList(InstList_EnemyProjectile_Delete))
 
 
 ;;; $9E9E: Instruction list - enemy projectile $9E90 (alcoon fireball) ;;;
@@ -5585,22 +5641,25 @@ PreInstruction_EnemyProjectile_PirateClaw_Right:
 
 
 ;;; $A17B: Enemy projectiles - pirate ;;;
-EnemyProjectile_PirateMotherBrainLaser:
-    dw InitAI_EnemyProjectile_Pirate_MotherBrain_Laser                   ;86A17B; Initialisation AI
-    dw PreInstruction_EnemyProjectile_Pirate_MotherBrain_Laser_Left      ;86A17D; Initial pre-instruction
-    dw InstList_EnemyProjectile_Pirate_MotherBrain_Laser_Left_0          ;86A17F; Initial instruction list
-    db $10,$04                                                           ;86A181; X,Y radius
-    dw $100A                                                             ;86A183; Properties
-    dw $0000                                                             ;86A185; Hit instruction list
-    dw InstList_EnemyProjectile_Delete                                   ;86A187; Shot instruction list
+EnemyProjectile_PirateMotherBrainLaser:                                  ;86A17B;
+    %EnemyProjectile(\
+    %initAI(InitAI_EnemyProjectile_Pirate_MotherBrain_Laser),
+    %preInst(PreInstruction_EnemyProjectile_Pirate_MotherBrain_Laser_Left),
+    %instList(InstList_EnemyProjectile_Pirate_MotherBrain_Laser_Left_0),
+    %radius($10, 4),
+    %properties($100A),
+    %hitList(0),
+    %shotList(InstList_EnemyProjectile_Delete))
 
-EnemyProjectile_PirateClaw:
-    dw PreInstruction_EnemyProjectile_PirateClaw                         ;86A189; Initialisation AI
-    dw RTS_86A05B                                                        ;86A18B; Initial pre-instruction
-    dw $0000                                                             ;86A18D; Initial instruction list
-    db $08,$08                                                           ;86A18F; X,Y radius
-    dw $1014,$0000                                                       ;86A191; Properties, Hit instruction list
-    dw InstList_EnemyProjectile_Delete                                   ;86A195; Shot instruction list
+EnemyProjectile_PirateClaw:                                              ;86A189;
+    %EnemyProjectile(\
+    %initAI(PreInstruction_EnemyProjectile_PirateClaw),
+    %preInst(RTS_86A05B),
+    %instList(0),
+    %radius(8, 8),
+    %properties($1014),
+    %hitList(0),
+    %shotList(InstList_EnemyProjectile_Delete))
 
 
 ;;; $A197: Instruction list - gunship liftoff dust clouds - index = 0 ;;;
@@ -5867,32 +5926,35 @@ PreInst_EnemyProjectile_CeresElevatorPadLevelDataConcealer:
 
 
 ;;; $A379: Enemy projectiles - gunship liftoff dust clouds / Ceres elevator ;;;
-EnemyProjectile_GunShipLiftoffDustClouds:
-    dw InitAI_EnemyProjectile_GunshipLiftoffDustClouds                   ;86A379; Initialisation AI
-    dw RTS_86A327                                                        ;86A37B; Initial pre-instruction
-    dw InstList_EnemyProjectile_GunshipLiftoffDustClouds_Index0_0        ;86A37D; Initial instruction list
-    db $08,$08                                                           ;86A37F; X,Y radius
-    dw $3000                                                             ;86A381; Properties
-    dw $0000                                                             ;86A383; Hit instruction list
-    dw InstList_EnemyProjectile_GunshipLiftoffDustClouds_Index0_0        ;86A385; Shot instruction list
+EnemyProjectile_GunShipLiftoffDustClouds:                                ;86A379;
+    %EnemyProjectile(\
+    %initAI(InitAI_EnemyProjectile_GunshipLiftoffDustClouds),
+    %preInst(RTS_86A327),
+    %instList(InstList_EnemyProjectile_GunshipLiftoffDustClouds_Index0_0),
+    %radius(8, 8),
+    %properties($3000),
+    %hitList(0),
+    %shotList(InstList_EnemyProjectile_GunshipLiftoffDustClouds_Index0_0))
 
-EnemyProjectile_CeresElevatorPad:
-    dw InitAI_EnemyProjectile_CeresElevatorPad                           ;86A387; Initialisation AI
-    dw PreInstruction_EnemyProjectile_CeresElevatorPad                   ;86A389; Initial pre-instruction
-    dw InstList_EnemyProjectile_Shot_CeresElevatorPad                    ;86A38B; Initial instruction list
-    db $01,$01                                                           ;86A38D; X,Y radius
-    dw $3000                                                             ;86A38F; Properties
-    dw $0000                                                             ;86A391; Hit instruction list
-    dw InstList_EnemyProjectile_Shot_CeresElevatorPad                    ;86A393; Shot instruction list
+EnemyProjectile_CeresElevatorPad:                                        ;86A387;
+    %EnemyProjectile(\
+    %initAI(InitAI_EnemyProjectile_CeresElevatorPad),
+    %preInst(PreInstruction_EnemyProjectile_CeresElevatorPad),
+    %instList(InstList_EnemyProjectile_Shot_CeresElevatorPad),
+    %radius(1, 1),
+    %properties($3000),
+    %hitList(0),
+    %shotList(InstList_EnemyProjectile_Shot_CeresElevatorPad))
 
-EnemyProjectile_CeresElevatorPadLevelDataConcealer:
-    dw InitAI_EnemyProjectile_CeresElevatorPadLevelDataConcealer         ;86A395; Initialisation AI
-    dw PreInst_EnemyProjectile_CeresElevatorPadLevelDataConcealer        ;86A397; Initial pre-instruction
-    dw InstList_EnemyProj_Shot_CeresElevatorPadLevelDataConcealer        ;86A399; Initial instruction list
-    db $01,$01                                                           ;86A39B; X,Y radius
-    dw $3000                                                             ;86A39D; Properties
-    dw $0000                                                             ;86A39F; Hit instruction list
-    dw InstList_EnemyProj_Shot_CeresElevatorPadLevelDataConcealer        ;86A3A1; Shot instruction list
+EnemyProjectile_CeresElevatorPadLevelDataConcealer:                      ;86A395;
+    %EnemyProjectile(\
+    %initAI(InitAI_EnemyProjectile_CeresElevatorPadLevelDataConcealer),
+    %preInst(PreInst_EnemyProjectile_CeresElevatorPadLevelDataConcealer),
+    %instList(InstList_EnemyProj_Shot_CeresElevatorPadLevelDataConcealer),
+    %radius(1, 1),
+    %properties($3000),
+    %hitList(0),
+    %shotList(InstList_EnemyProj_Shot_CeresElevatorPadLevelDataConcealer))
 
 
 ;;; $A3A3: Initialisation AI / pre-instruction - enemy projectile $A3B0 (pre-Phantoon room) ;;;
@@ -5909,13 +5971,15 @@ InstList_EnemyProjectile_PrePhantoonRoom:
 
 
 ;;; $A3B0: Enemy projectile - pre-Phantoon room ;;;
-EnemyProjectile_PrePhantoonRoom:
-    dw InitAI_PreInstruction_EnemyProjectile_PrePhantoonRoom             ;86A3B0; Initialisation AI
-    dw InitAI_PreInstruction_EnemyProjectile_PrePhantoonRoom             ;86A3B2; Initial pre-instruction
-    dw InstList_EnemyProjectile_PrePhantoonRoom                          ;86A3B4; Initial instruction list
-    db $00,$00                                                           ;86A3B6; X,Y radius
-    dw $3000,$0000                                                       ;86A3B8; Properties, Hit instruction list
-    dw InstList_EnemyProjectile_Delete                                   ;86A3BC; Shot instruction list
+EnemyProjectile_PrePhantoonRoom:                                         ;86A3B0;
+    %EnemyProjectile(\
+    %initAI(InitAI_PreInstruction_EnemyProjectile_PrePhantoonRoom),
+    %preInst(InitAI_PreInstruction_EnemyProjectile_PrePhantoonRoom),
+    %instList(InstList_EnemyProjectile_PrePhantoonRoom),
+    %radius(0, 0),
+    %properties($3000),
+    %hitList(0),
+    %shotList(InstList_EnemyProjectile_Delete))
 
 
 ;;; $A3BE: Instruction - reset position ;;;
@@ -6699,70 +6763,77 @@ endif ; !FEATURE_KEEP_UNREFERENCED
 
 
 ;;; $A95B: Enemy projectiles - torizo ;;;
-EnemyProjectile_BombTorizoContinuousDrool:
-    dw InitAI_EnemyProjectile_BombTorizoContinuousDrool                  ;86A95B; Initialisation AI
-    dw RTS_8684FB                                                        ;86A95D; Initial pre-instruction
-    dw InstList_EnemyProj_BombTorizoLowHealthDrool_NoDelay_0             ;86A95F; Initial instruction list
-    db $01,$02                                                           ;86A961; X,Y radius
-    dw $3000                                                             ;86A963; Properties
-    dw $0000                                                             ;86A965; Hit instruction list
-    dw InstList_EnemyProjectile_Delete                                   ;86A967; Shot instruction list
+EnemyProjectile_BombTorizoContinuousDrool:                               ;86A95B;
+    %EnemyProjectile(\
+    %initAI(InitAI_EnemyProjectile_BombTorizoContinuousDrool),
+    %preInst(RTS_8684FB),
+    %instList(InstList_EnemyProj_BombTorizoLowHealthDrool_NoDelay_0),
+    %radius(1, 2),
+    %properties($3000),
+    %hitList(0),
+    %shotList(InstList_EnemyProjectile_Delete))
 
-EnemyProjectile_BombTorizoInitialDrool:
-    dw InitAI_EnemyProjectile_BombTorizoInitialDrool                     ;86A969; Initialisation AI
-    dw RTS_8684FB                                                        ;86A96B; Initial pre-instruction
-    dw InstList_EnemyProj_BombTorizoLowHealthDrool_NoDelay_0             ;86A96D; Initial instruction list
-    db $01,$02                                                           ;86A96F; X,Y radius
-    dw $2000                                                             ;86A971; Properties
-    dw $0000                                                             ;86A973; Hit instruction list
-    dw InstList_EnemyProjectile_Delete                                   ;86A975; Shot instruction list
+EnemyProjectile_BombTorizoInitialDrool:                                  ;86A969;
+    %EnemyProjectile(\
+    %initAI(InitAI_EnemyProjectile_BombTorizoInitialDrool),
+    %preInst(RTS_8684FB),
+    %instList(InstList_EnemyProj_BombTorizoLowHealthDrool_NoDelay_0),
+    %radius(1, 2),
+    %properties($2000),
+    %hitList(0),
+    %shotList(InstList_EnemyProjectile_Delete))
 
 if !FEATURE_KEEP_UNREFERENCED
-UNUSED_EnemyProjectile_BombTorizo_86A977:
-    dw UNUSED_InitAI_EnemyProjectile_BombTorizo_86A6C7                   ;86A977; Initialisation AI
-    dw PreInst_EnemyProjectile_BombTorizoChozoBreaking_Falling           ;86A979; Initial pre-instruction
-    dw UNUSED_InstList_EnemyProjectile_BombTorizo_86A49E                 ;86A97B; Initial instruction list
-    db $00,$00                                                           ;86A97D; X,Y radius
-    dw $3000                                                             ;86A97F; Properties
-    dw $0000                                                             ;86A981; Hit instruction list
-    dw InstList_EnemyProjectile_Delete                                   ;86A983; Shot instruction list
+UNUSED_EnemyProjectile_BombTorizo_86A977:                                ;86A977;
+    %EnemyProjectile(\
+    %initAI(UNUSED_InitAI_EnemyProjectile_BombTorizo_86A6C7),
+    %preInst(PreInst_EnemyProjectile_BombTorizoChozoBreaking_Falling),
+    %instList(UNUSED_InstList_EnemyProjectile_BombTorizo_86A49E),
+    %radius(0, 0),
+    %properties($3000),
+    %hitList(0),
+    %shotList(InstList_EnemyProjectile_Delete))
 endif ; !FEATURE_KEEP_UNREFERENCED
 
-EnemyProjectile_BombTorizoExplosiveSwipe:
-    dw InitAI_EnemyProjectile_BombTorizoExplosiveSwipe                   ;86A985; Initialisation AI
-    dw RTS_86A919                                                        ;86A987; Initial pre-instruction
-    dw InstList_EnemyProjectile_BombTorizoExplosionSwipe                 ;86A989; Initial instruction list
-    db $10,$10                                                           ;86A98B; X,Y radius
-    dw $500A                                                             ;86A98D; Properties
-    dw $0000                                                             ;86A98F; Hit instruction list
-    dw InstList_EnemyProjectile_Delete                                   ;86A991; Shot instruction list
+EnemyProjectile_BombTorizoExplosiveSwipe:                                ;86A985;
+    %EnemyProjectile(\
+    %initAI(InitAI_EnemyProjectile_BombTorizoExplosiveSwipe),
+    %preInst(RTS_86A919),
+    %instList(InstList_EnemyProjectile_BombTorizoExplosionSwipe),
+    %radius($10, $10),
+    %properties($500A),
+    %hitList(0),
+    %shotList(InstList_EnemyProjectile_Delete))
 
-EnemyProjectile_BombTorizoStatueBreaking:
-    dw InitAI_EnemyProj_BombTorizoChozoBreaking                          ;86A993; Initialisation AI
-    dw RTS_8684FB                                                        ;86A995; Initial pre-instruction
-    dw InstList_EnemyProjectile_BombTorizoChozoBreaking_Index10          ;86A997; Initial instruction list
-    db $08,$08                                                           ;86A999; X,Y radius
-    dw $3000                                                             ;86A99B; Properties
-    dw $0000                                                             ;86A99D; Hit instruction list
-    dw InstList_EnemyProjectile_Delete                                   ;86A99F; Shot instruction list
+EnemyProjectile_BombTorizoStatueBreaking:                                ;86A993;
+    %EnemyProjectile(\
+    %initAI(InitAI_EnemyProj_BombTorizoChozoBreaking),
+    %preInst(RTS_8684FB),
+    %instList(InstList_EnemyProjectile_BombTorizoChozoBreaking_Index10),
+    %radius(8, 8),
+    %properties($3000),
+    %hitList(0),
+    %shotList(InstList_EnemyProjectile_Delete))
 
-EnemyProjectile_BombTorizoLowHealthExplosion:
-    dw InitAI_EnemyProjectile_BombTorizoLowHealthExplosion               ;86A9A1; Initialisation AI
-    dw RTS_8684FB                                                        ;86A9A3; Initial pre-instruction
-    dw InstList_EnemyProjectile_BombTorizoLowHealthExplosion_0           ;86A9A5; Initial instruction list
-    db $04,$10                                                           ;86A9A7; X,Y radius
-    dw $3000                                                             ;86A9A9; Properties
-    dw $0000                                                             ;86A9AB; Hit instruction list
-    dw InstList_EnemyProjectile_Delete                                   ;86A9AD; Shot instruction list
+EnemyProjectile_BombTorizoLowHealthExplosion:                            ;86A9A1;
+    %EnemyProjectile(\
+    %initAI(InitAI_EnemyProjectile_BombTorizoLowHealthExplosion),
+    %preInst(RTS_8684FB),
+    %instList(InstList_EnemyProjectile_BombTorizoLowHealthExplosion_0),
+    %radius(4, $10),
+    %properties($3000),
+    %hitList(0),
+    %shotList(InstList_EnemyProjectile_Delete))
 
-EnemyProjectile_BombTorizoDeathExplosion:
-    dw InitAI_EnemyProjectile_TorizoDeathExplosion                       ;86A9AF; Initialisation AI
-    dw RTS_8684FB                                                        ;86A9B1; Initial pre-instruction
-    dw InstList_EnemyProjectile_TorizoDeathExplosion_0                   ;86A9B3; Initial instruction list
-    db $04,$10                                                           ;86A9B5; X,Y radius
-    dw $3000                                                             ;86A9B7; Properties
-    dw $0000                                                             ;86A9B9; Hit instruction list
-    dw InstList_EnemyProjectile_Delete                                   ;86A9BB; Shot instruction list
+EnemyProjectile_BombTorizoDeathExplosion:                                ;86A9AF;
+    %EnemyProjectile(\
+    %initAI(InitAI_EnemyProjectile_TorizoDeathExplosion),
+    %preInst(RTS_8684FB),
+    %instList(InstList_EnemyProjectile_TorizoDeathExplosion_0),
+    %radius(4, $10),
+    %properties($3000),
+    %hitList(0),
+    %shotList(InstList_EnemyProjectile_Delete))
 
 
 if !FEATURE_KEEP_UNREFERENCED
@@ -6884,13 +6955,15 @@ UNUSED_InstList_EnemyProjectile_Shot_QuestionMark_86AAF2:
 
 
 ;;; $AB07: Unused. Enemy projectile $AB07 ;;;
-UNUSED_EnemyProjectile_QuestionMark_86AB07:
-    dw UNUSED_InitAI_EnemyProjectile_QuestionMark_86AA3D                 ;86AB07; Initialisation AI
-    dw UNUSED_PreInstruction_EnemyProjectile_QuestionMark                ;86AB09; Initial pre-instruction
-    dw UNUSED_InstList_EnemyProjectile_QuestionMark_0_86AADB             ;86AB0B; Initial instruction list
-    db $00,$00                                                           ;86AB0D; X,Y radius
-    dw $B000,$0000                                                       ;86AB0F; Properties, Hit instruction list
-    dw UNUSED_InstList_EnemyProjectile_Shot_QuestionMark_86AAF2          ;86AB13; Shot instruction list
+UNUSED_EnemyProjectile_QuestionMark_86AB07:                              ;86AB07;
+    %EnemyProjectile(\
+    %initAI(UNUSED_InitAI_EnemyProjectile_QuestionMark_86AA3D),
+    %preInst(UNUSED_PreInstruction_EnemyProjectile_QuestionMark),
+    %instList(UNUSED_InstList_EnemyProjectile_QuestionMark_0_86AADB),
+    %radius(0, 0),
+    %properties($B000),
+    %hitList(0),
+    %shotList(UNUSED_InstList_EnemyProjectile_Shot_QuestionMark_86AAF2))
 endif ; !FEATURE_KEEP_UNREFERENCED
 
 
@@ -7236,32 +7309,35 @@ PreInstruction_EnemyProjectile_GoldenTorizosChozoOrbs:
 
 
 ;;; $AD5E: Enemy projectiles - torizo chozo orbs ;;;
-EnemyProjectile_BombTorizoChozoOrbs:
-    dw InitAI_EnemyProjectile_BombTorizoChozoOrbs                        ;86AD5E; Initialisation AI
-    dw PreInstruction_EnemyProjectile_BombTorizosChozoOrbs               ;86AD60; Initial pre-instruction
-    dw InstList_EnemyProjectile_TorizoChozoOrbs_Left                     ;86AD62; Initial instruction list
-    db $07,$07                                                           ;86AD64; X,Y radius
-    dw $9008                                                             ;86AD66; Properties
-    dw $0000                                                             ;86AD68; Hit instruction list
-    dw InstList_EnemyProjectile_Shot_TorizoChozoOrbs                     ;86AD6A; Shot instruction list
+EnemyProjectile_BombTorizoChozoOrbs:                                     ;86AD5E;
+    %EnemyProjectile(\
+    %initAI(InitAI_EnemyProjectile_BombTorizoChozoOrbs),
+    %preInst(PreInstruction_EnemyProjectile_BombTorizosChozoOrbs),
+    %instList(InstList_EnemyProjectile_TorizoChozoOrbs_Left),
+    %radius(7, 7),
+    %properties($9008),
+    %hitList(0),
+    %shotList(InstList_EnemyProjectile_Shot_TorizoChozoOrbs))
 
-EnemyProjectile_BombTorizoChozoOrbsHigherDamage:
-    dw InitAI_EnemyProjectile_BombTorizoChozoOrbs                        ;86AD6C; Initialisation AI
-    dw PreInstruction_EnemyProjectile_BombTorizosChozoOrbs               ;86AD6E; Initial pre-instruction
-    dw InstList_EnemyProjectile_TorizoChozoOrbs_Left                     ;86AD70; Initial instruction list
-    db $07,$07                                                           ;86AD72; X,Y radius
-    dw $900A                                                             ;86AD74; Properties
-    dw $0000                                                             ;86AD76; Hit instruction list
-    dw InstList_EnemyProjectile_Shot_TorizoChozoOrbs                     ;86AD78; Shot instruction list
+EnemyProjectile_BombTorizoChozoOrbsHigherDamage:                         ;86AD6C;
+    %EnemyProjectile(\
+    %initAI(InitAI_EnemyProjectile_BombTorizoChozoOrbs),
+    %preInst(PreInstruction_EnemyProjectile_BombTorizosChozoOrbs),
+    %instList(InstList_EnemyProjectile_TorizoChozoOrbs_Left),
+    %radius(7, 7),
+    %properties($900A),
+    %hitList(0),
+    %shotList(InstList_EnemyProjectile_Shot_TorizoChozoOrbs))
 
-EnemyProjectile_GoldenTorizoChozoOrbs:
-    dw InitAI_EnemyProjectile_GoldenTorizosChozoOrbs                     ;86AD7A; Initialisation AI
-    dw PreInstruction_EnemyProjectile_GoldenTorizosChozoOrbs             ;86AD7C; Initial pre-instruction
-    dw InstList_EnemyProjectile_TorizoChozoOrbs_Left                     ;86AD7E; Initial instruction list
-    db $07,$07                                                           ;86AD80; X,Y radius
-    dw $B050                                                             ;86AD82; Properties
-    dw $0000                                                             ;86AD84; Hit instruction list
-    dw InstList_EnemyProjectile_Shot_TorizoChozoOrbs                     ;86AD86; Shot instruction list
+EnemyProjectile_GoldenTorizoChozoOrbs:                                   ;86AD7A;
+    %EnemyProjectile(\
+    %initAI(InitAI_EnemyProjectile_GoldenTorizosChozoOrbs),
+    %preInst(PreInstruction_EnemyProjectile_GoldenTorizosChozoOrbs),
+    %instList(InstList_EnemyProjectile_TorizoChozoOrbs_Left),
+    %radius(7, 7),
+    %properties($B050),
+    %hitList(0),
+    %shotList(InstList_EnemyProjectile_Shot_TorizoChozoOrbs))
 
 
 if !FEATURE_KEEP_UNREFERENCED
@@ -7443,23 +7519,25 @@ PreInstruction_EnemyProjectile_TorizoSonicBoom:
 
 
 ;;; $AEA8: Enemy projectiles - torizo sonic boom ;;;
-EnemyProjectile_BombTorizoSonicBoom:
-    dw InitAI_EnemyProjectile_TorizoSonicBoom                            ;86AEA8; Initialisation AI
-    dw PreInstruction_EnemyProjectile_TorizoSonicBoom                    ;86AEAA; Initial pre-instruction
-    dw InstList_EnemyProjectile_TorizoSonicBoom_FiredLeft                ;86AEAC; Initial instruction list
-    db $03,$14                                                           ;86AEAE; X,Y radius
-    dw $100A                                                             ;86AEB0; Properties
-    dw $0000                                                             ;86AEB2; Hit instruction list
-    dw InstList_EnemyProjectile_Delete                                   ;86AEB4; Shot instruction list
+EnemyProjectile_BombTorizoSonicBoom:                                     ;86AEA8;
+    %EnemyProjectile(\
+    %initAI(InitAI_EnemyProjectile_TorizoSonicBoom),
+    %preInst(PreInstruction_EnemyProjectile_TorizoSonicBoom),
+    %instList(InstList_EnemyProjectile_TorizoSonicBoom_FiredLeft),
+    %radius(3, $14),
+    %properties($100A),
+    %hitList(0),
+    %shotList(InstList_EnemyProjectile_Delete))
 
-EnemyProjectile_GoldenTorizoSonicBoom:
-    dw InitAI_EnemyProjectile_TorizoSonicBoom                            ;86AEB6; Initialisation AI
-    dw PreInstruction_EnemyProjectile_TorizoSonicBoom                    ;86AEB8; Initial pre-instruction
-    dw InstList_EnemyProjectile_TorizoSonicBoom_FiredLeft                ;86AEBA; Initial instruction list
-    db $03,$14                                                           ;86AEBC; X,Y radius
-    dw $1078                                                             ;86AEBE; Properties
-    dw $0000                                                             ;86AEC0; Hit instruction list
-    dw InstList_EnemyProjectile_Delete                                   ;86AEC2; Shot instruction list
+EnemyProjectile_GoldenTorizoSonicBoom:                                   ;86AEB6;
+    %EnemyProjectile(\
+    %initAI(InitAI_EnemyProjectile_TorizoSonicBoom),
+    %preInst(PreInstruction_EnemyProjectile_TorizoSonicBoom),
+    %instList(InstList_EnemyProjectile_TorizoSonicBoom_FiredLeft),
+    %radius(3, $14),
+    %properties($1078),
+    %hitList(0),
+    %shotList(InstList_EnemyProjectile_Delete))
 
 
 ;;; $AEC4: Instruction list - enemy projectile $AF68 (Wrecked Ship chozo spike clearing footsteps) ;;;
@@ -7563,31 +7641,37 @@ InitAI_EnemyProjectile_TorizoLandingDustCloud_RightFoot:
 
 
 ;;; $AF68: Enemy projectiles ;;;
-EnemyProjectile_WreckedShipChozoSpikeClearingFootsteps:
-    dw InitAI_EnemyProj_WreckedShipChozoSpikeClearingFootsteps           ;86AF68; Initialisation AI
-    dw RTS_8684FB                                                        ;86AF6A; Initial pre-instruction
-    dw InstList_EnemyProj_WreckedShipChozoSpikeClearingFootsteps         ;86AF6C; Initial instruction list
-    db $00,$00                                                           ;86AF6E; X,Y radius
-    dw $3000,$0000                                                       ;86AF70; Properties, Hit instruction list
-    dw InstList_EnemyProjectile_Delete                                   ;86AF74; Shot instruction list
+EnemyProjectile_WreckedShipChozoSpikeClearingFootsteps:                  ;86AF68;
+    %EnemyProjectile(\
+    %initAI(InitAI_EnemyProj_WreckedShipChozoSpikeClearingFootsteps),
+    %preInst(RTS_8684FB),
+    %instList(InstList_EnemyProj_WreckedShipChozoSpikeClearingFootsteps),
+    %radius(0, 0),
+    %properties($3000),
+    %hitList(0),
+    %shotList(InstList_EnemyProjectile_Delete))
 
 if !FEATURE_KEEP_UNREFERENCED
-UNUSED_EnemyProjectile_SpikeClearingExplosions_86AF76:
-    dw InitAI_EnemyProj_WreckedShipChozoSpikeClearingFootsteps           ;86AF76; Initialisation AI
-    dw RTS_8684FB                                                        ;86AF78; Initial pre-instruction
-    dw UNUSED_InstList_EnemyProj_SpikeClearingExplosions_86AEDC          ;86AF7A; Initial instruction list
-    db $00,$00                                                           ;86AF7C; X,Y radius
-    dw $3000,$0000                                                       ;86AF7E; Properties, Hit instruction list
-    dw InstList_EnemyProjectile_Delete                                   ;86AF82; Shot instruction list
+UNUSED_EnemyProjectile_SpikeClearingExplosions_86AF76:                   ;86AF76;
+    %EnemyProjectile(\
+    %initAI(InitAI_EnemyProj_WreckedShipChozoSpikeClearingFootsteps),
+    %preInst(RTS_8684FB),
+    %instList(UNUSED_InstList_EnemyProj_SpikeClearingExplosions_86AEDC),
+    %radius(0, 0),
+    %properties($3000),
+    %hitList(0),
+    %shotList(InstList_EnemyProjectile_Delete))
 endif ; !FEATURE_KEEP_UNREFERENCED
 
-EnemyProjectile_TourianStatueDustClouds:
-    dw InitAI_EnemyProjectile_TourianStatueDustClouds                    ;86AF84; Initialisation AI
-    dw RTS_8684FB                                                        ;86AF86; Initial pre-instruction
-    dw InstList_EnemyProj_TourianStatueDustClouds_0                      ;86AF88; Initial instruction list
-    db $00,$00                                                           ;86AF8A; X,Y radius
-    dw $3000,$0000                                                       ;86AF8C; Properties, Hit instruction list
-    dw InstList_EnemyProjectile_Delete                                   ;86AF90; Shot instruction list
+EnemyProjectile_TourianStatueDustClouds:                                 ;86AF84;
+    %EnemyProjectile(\
+    %initAI(InitAI_EnemyProjectile_TourianStatueDustClouds),
+    %preInst(RTS_8684FB),
+    %instList(InstList_EnemyProj_TourianStatueDustClouds_0),
+    %radius(0, 0),
+    %properties($3000),
+    %hitList(0),
+    %shotList(InstList_EnemyProjectile_Delete))
 
 
 ;;; $AF92: Instruction - enemy projectile Y position -= 4 ;;;
@@ -7642,23 +7726,25 @@ InitAI_EnemyProjectile_TorizoLandingDustCloud_LeftFoot:
 
 
 ;;; $AFE5: Enemy projectiles - torizo landing dust cloud ;;;
-EnemyProjectile_TorizoLandingDustCloud_RightFoot:
-    dw InitAI_EnemyProjectile_TorizoLandingDustCloud_RightFoot           ;86AFE5; Initialisation AI
-    dw RTS_8684FB                                                        ;86AFE7; Initial pre-instruction
-    dw InstList_EnemyProjectile_TorizoLandingDustCloud_RightFoot         ;86AFE9; Initial instruction list
-    db $00,$00                                                           ;86AFEB; X,Y radius
-    dw $3000                                                             ;86AFED; Properties
-    dw $0000                                                             ;86AFEF; Hit instruction list
-    dw InstList_EnemyProjectile_Delete                                   ;86AFF1; Shot instruction list
+EnemyProjectile_TorizoLandingDustCloud_RightFoot:                        ;86AFE5;
+    %EnemyProjectile(\
+    %initAI(InitAI_EnemyProjectile_TorizoLandingDustCloud_RightFoot),
+    %preInst(RTS_8684FB),
+    %instList(InstList_EnemyProjectile_TorizoLandingDustCloud_RightFoot),
+    %radius(0, 0),
+    %properties($3000),
+    %hitList(0),
+    %shotList(InstList_EnemyProjectile_Delete))
 
-EnemyProjectile_TorizoLandingDustCloud_LeftFoot:
-    dw InitAI_EnemyProjectile_TorizoLandingDustCloud_LeftFoot            ;86AFF3; Initialisation AI
-    dw RTS_8684FB                                                        ;86AFF5; Initial pre-instruction
-    dw InstList_EnemyProjectile_TorizoLandingDustCloud_LeftFoot          ;86AFF7; Initial instruction list
-    db $00,$00                                                           ;86AFF9; X,Y radius
-    dw $3000                                                             ;86AFFB; Properties
-    dw $0000                                                             ;86AFFD; Hit instruction list
-    dw InstList_EnemyProjectile_Delete                                   ;86AFFF; Shot instruction list
+EnemyProjectile_TorizoLandingDustCloud_LeftFoot:                         ;86AFF3;
+    %EnemyProjectile(\
+    %initAI(InitAI_EnemyProjectile_TorizoLandingDustCloud_LeftFoot),
+    %preInst(RTS_8684FB),
+    %instList(InstList_EnemyProjectile_TorizoLandingDustCloud_LeftFoot),
+    %radius(0, 0),
+    %properties($3000),
+    %hitList(0),
+    %shotList(InstList_EnemyProjectile_Delete))
 
 
 ;;; $B001: Initialisation AI - enemy projectile $B1C0 (Golden Torizo egg) ;;;
@@ -7946,13 +8032,15 @@ InstList_EnemyProjectile_GoldenTorizoEgg_Break_FacingRight:
 
 
 ;;; $B1C0: Enemy projectile - Golden Torizo egg ;;;
-EnemyProjectile_GoldenTorizoEgg:
-    dw InitAI_EnemyProjectile_GoldenTorizoEgg                            ;86B1C0; Initialisation AI
-    dw PreInstruction_EnemyProjectile_GoldenTorizoEgg_Bouncing           ;86B1C2; Initial pre-instruction
-    dw InstList_EnemyProjectile_GoldenTorizoEgg_BouncingLeft             ;86B1C4; Initial instruction list
-    db $07,$07                                                           ;86B1C6; X,Y radius
-    dw $6064,$0000                                                       ;86B1C8; Properties, Hit instruction list
-    dw InstList_EnemyProjectile_TorizoChozoOrbs_BreakOnWall              ;86B1CC; Shot instruction list
+EnemyProjectile_GoldenTorizoEgg:                                         ;86B1C0;
+    %EnemyProjectile(\
+    %initAI(InitAI_EnemyProjectile_GoldenTorizoEgg),
+    %preInst(PreInstruction_EnemyProjectile_GoldenTorizoEgg_Bouncing),
+    %instList(InstList_EnemyProjectile_GoldenTorizoEgg_BouncingLeft),
+    %radius(7, 7),
+    %properties($6064),
+    %hitList(0),
+    %shotList(InstList_EnemyProjectile_TorizoChozoOrbs_BreakOnWall))
 
 
 ;;; $B1CE: Initialisation AI - enemy projectile $B31A (Golden Torizo super missile) ;;;
@@ -8150,13 +8238,15 @@ InstList_EnemyProjectile_Shot_GoldenTorizoSuperMissile:
 
 
 ;;; $B31A: Enemy projectile - Golden Torizo super missile ;;;
-EnemyProjectile_GoldenTorizoSuperMissile:
-    dw InitAI_EnemyProjectile_GoldenTorizoSuperMissile                   ;86B31A; Initialisation AI
-    dw PreInstruction_EnemyProjectile_GoldenTorizoSuperMissile_Held      ;86B31C; Initial pre-instruction
-    dw InstList_EnemyProj_GoldenTorizoSuperMissile_Rightwards_0          ;86B31E; Initial instruction list
-    db $04,$04                                                           ;86B320; X,Y radius
-    dw $A0C8,$0000                                                       ;86B322; Properties, Hit instruction list
-    dw InstList_EnemyProjectile_Shot_GoldenTorizoSuperMissile            ;86B326; Shot instruction list
+EnemyProjectile_GoldenTorizoSuperMissile:                                ;86B31A;
+    %EnemyProjectile(\
+    %initAI(InitAI_EnemyProjectile_GoldenTorizoSuperMissile),
+    %preInst(PreInstruction_EnemyProjectile_GoldenTorizoSuperMissile_Held),
+    %instList(InstList_EnemyProj_GoldenTorizoSuperMissile_Rightwards_0),
+    %radius(4, 4),
+    %properties($A0C8),
+    %hitList(0),
+    %shotList(InstList_EnemyProjectile_Shot_GoldenTorizoSuperMissile))
 
 
 ;;; $B328: Initialisation AI - enemy projectile $B428 (Golden Torizo eye beam) ;;;
@@ -8316,13 +8406,15 @@ InstList_EnemyProjectile_GoldenTorizoEyeBeam_Normal:
 
 
 ;;; $B428: Enemy projectile - Golden Torizo eye beam ;;;
-EnemyProjectile_GoldenTorizoEyeBeam:
-    dw InitAI_EnemyProjectile_GoldenTorizoEyeBeam                        ;86B428; Initialisation AI
-    dw PreInstruction_EnemyProjectile_GoldenTorizoEyeBeam                ;86B42A; Initial pre-instruction
-    dw InstList_EnemyProjectile_GoldenTorizoEyeBeam_Normal               ;86B42C; Initial instruction list
-    db $03,$03                                                           ;86B42E; X,Y radius
-    dw $700A,$0000                                                       ;86B430; Properties, Hit instruction list
-    dw InstList_EnemyProjectile_Delete                                   ;86B434; Shot instruction list
+EnemyProjectile_GoldenTorizoEyeBeam:                                     ;86B428;
+    %EnemyProjectile(\
+    %initAI(InitAI_EnemyProjectile_GoldenTorizoEyeBeam),
+    %preInst(PreInstruction_EnemyProjectile_GoldenTorizoEyeBeam),
+    %instList(InstList_EnemyProjectile_GoldenTorizoEyeBeam_Normal),
+    %radius(3, 3),
+    %properties($700A),
+    %hitList(0),
+    %shotList(InstList_EnemyProjectile_Delete))
 
 
 if !FEATURE_KEEP_UNREFERENCED
@@ -8417,13 +8509,15 @@ RTS_86B4B0:
 
 
 ;;; $B4B1: Enemy projectile - old Tourian escape shaft fake wall explosion ;;;
-EnemyProjectile_OldTourianEscapeShaftFakeWallExplosion:
-    dw InitAI_EnemyProj_OldTourianEscapeShaftFakeWallExplosion           ;86B4B1; Initialisation AI
-    dw RTS_86B4B0                                                        ;86B4B3; Initial pre-instruction
-    dw InstList_EnemyProj_OldTourianEscapeShaftFakeWallExplosion_0       ;86B4B5; Initial instruction list
-    db $00,$00                                                           ;86B4B7; X,Y radius
-    dw $3000,$0000                                                       ;86B4B9; Properties, Hit instruction list
-    dw InstList_EnemyProjectile_Delete                                   ;86B4BD; Shot instruction list
+EnemyProjectile_OldTourianEscapeShaftFakeWallExplosion:                  ;86B4B1;
+    %EnemyProjectile(\
+    %initAI(InitAI_EnemyProj_OldTourianEscapeShaftFakeWallExplosion),
+    %preInst(RTS_86B4B0),
+    %instList(InstList_EnemyProj_OldTourianEscapeShaftFakeWallExplosion_0),
+    %radius(0, 0),
+    %properties($3000),
+    %hitList(0),
+    %shotList(InstList_EnemyProjectile_Delete))
 
 
 ;;; $B4BF: Instruction list - dragon fireball - rising - leftwards ;;;
@@ -8585,13 +8679,15 @@ Delete_EnemyProjectile_IfVerticallyOffScreen:
 
 
 ;;; $B5CB: Enemy projectile - dragon fireball ;;;
-EnemyProjectile_DragonFireball:
-    dw InitAI_EnemyProjectile_DragonFireball                             ;86B5CB; Initialisation AI
-    dw PreInstruction_EnemyProjectile_DragonFireball                     ;86B5CD; Initial pre-instruction
-    dw InstList_EnemyProjectile_DragonFireball_Rising_Left               ;86B5CF; Initial instruction list
-    db $02,$02                                                           ;86B5D1; X,Y radius
-    dw $000A,$0000                                                       ;86B5D3; Properties, Hit instruction list
-    dw InstList_EnemyProjectile_Delete                                   ;86B5D7; Shot instruction list
+EnemyProjectile_DragonFireball:                                          ;86B5CB;
+    %EnemyProjectile(\
+    %initAI(InitAI_EnemyProjectile_DragonFireball),
+    %preInst(PreInstruction_EnemyProjectile_DragonFireball),
+    %instList(InstList_EnemyProjectile_DragonFireball_Rising_Left),
+    %radius(2, 2),
+    %properties($000A),
+    %hitList(0),
+    %shotList(InstList_EnemyProjectile_Delete))
 
 
 ;;; $B5D9: Instruction list - eye door projectile - normal ;;;
@@ -8805,23 +8901,25 @@ PreInstruction_EnemyProjectile_EyeDoorSweat:
 
 
 ;;; $B743: Enemy projectiles - eye door ;;;
-EnemyProjectile_EyeDoorProjectile:
-    dw InitAI_EnemyProjectile_EyeDoorProjectile                          ;86B743; Initialisation AI
-    dw RTS_8684FB                                                        ;86B745; Initial pre-instruction
-    dw InstList_EnemyProjectile_EyeDoorProjectile_Normal_0               ;86B747; Initial instruction list
-    db $08,$08                                                           ;86B749; X,Y radius
-    dw $8004                                                             ;86B74B; Properties
-    dw $0000                                                             ;86B74D; Hit instruction list
-    dw InstList_EnemyProjectile_Shot_EyeDoorProjectile                   ;86B74F; Shot instruction list
+EnemyProjectile_EyeDoorProjectile:                                       ;86B743;
+    %EnemyProjectile(\
+    %initAI(InitAI_EnemyProjectile_EyeDoorProjectile),
+    %preInst(RTS_8684FB),
+    %instList(InstList_EnemyProjectile_EyeDoorProjectile_Normal_0),
+    %radius(8, 8),
+    %properties($8004),
+    %hitList(0),
+    %shotList(InstList_EnemyProjectile_Shot_EyeDoorProjectile))
 
-EnemyProjectile_EyeDoorSweat:
-    dw InitAI_EnemyProjectile_EyeDoorSweat                               ;86B751; Initialisation AI
-    dw PreInstruction_EnemyProjectile_EyeDoorSweat                       ;86B753; Initial pre-instruction
-    dw InstList_EnemyProjectile_EyeDoorSweat_Falling                     ;86B755; Initial instruction list
-    db $00,$00                                                           ;86B757; X,Y radius
-    dw $0004                                                             ;86B759; Properties
-    dw $0000                                                             ;86B75B; Hit instruction list
-    dw InstList_EnemyProjectile_Delete                                   ;86B75D; Shot instruction list
+EnemyProjectile_EyeDoorSweat:                                            ;86B751;
+    %EnemyProjectile(\
+    %initAI(InitAI_EnemyProjectile_EyeDoorSweat),
+    %preInst(PreInstruction_EnemyProjectile_EyeDoorSweat),
+    %instList(InstList_EnemyProjectile_EyeDoorSweat_Falling),
+    %radius(0, 0),
+    %properties($0004),
+    %hitList(0),
+    %shotList(InstList_EnemyProjectile_Delete))
 
 
 if !FEATURE_KEEP_UNREFERENCED
@@ -9284,77 +9382,85 @@ PreInst_EnemyProj_TourianStatue_Ridley_Phantoon_BaseDecor:
 
 
 ;;; $BA5C: Enemy projectiles - Tourian statue ;;;
-EnemyProjectile_TourianStatueWaterSplash:
-    dw InitAI_EnemyProj_TourianStatueUnlockingParticleWaterSplash        ;86BA5C; Initialisation AI
-    dw PreInst_EnemyProj_TourianStatueUnlockingParticleWaterSplash       ;86BA5E; Initial pre-instruction
-    dw InstList_EnemyProj_TourianStatueUnlockingParticleWaterSplash      ;86BA60; Initial instruction list
-    db $00,$00                                                           ;86BA62; X,Y radius
-    dw $3000                                                             ;86BA64; Properties
-    dw $0000                                                             ;86BA66; Hit instruction list
-    dw InstList_EnemyProjectile_Delete                                   ;86BA68; Shot instruction list
+EnemyProjectile_TourianStatueWaterSplash:                                ;86BA5C;
+    %EnemyProjectile(\
+    %initAI(InitAI_EnemyProj_TourianStatueUnlockingParticleWaterSplash),
+    %preInst(PreInst_EnemyProj_TourianStatueUnlockingParticleWaterSplash),
+    %instList(InstList_EnemyProj_TourianStatueUnlockingParticleWaterSplash),
+    %radius(0, 0),
+    %properties($3000),
+    %hitList(0),
+    %shotList(InstList_EnemyProjectile_Delete))
 
-EnemyProjectile_TourianStatueEyeGlow:
-    dw InitAI_EnemyProjectile_TourianStatueEyeGlow                       ;86BA6A; Initialisation AI
-    dw RTS_8684FB                                                        ;86BA6C; Initial pre-instruction
-    dw InstList_EnemyProj_TourianStatueEyeGlow                           ;86BA6E; Initial instruction list
-    db $00,$00                                                           ;86BA70; X,Y radius
-    dw $3000                                                             ;86BA72; Properties
-    dw $0000                                                             ;86BA74; Hit instruction list
-    dw InstList_EnemyProjectile_Delete                                   ;86BA76; Shot instruction list
+EnemyProjectile_TourianStatueEyeGlow:                                    ;86BA6A;
+    %EnemyProjectile(\
+    %initAI(InitAI_EnemyProjectile_TourianStatueEyeGlow),
+    %preInst(RTS_8684FB),
+    %instList(InstList_EnemyProj_TourianStatueEyeGlow),
+    %radius(0, 0),
+    %properties($3000),
+    %hitList(0),
+    %shotList(InstList_EnemyProjectile_Delete))
 
-EnemyProjectile_TourianStatueUnlockingParticle:
-    dw InitAI_EnemyProjectile_TourianStatueUnlockingParticle             ;86BA78; Initialisation AI
-    dw PreInst_EnemyProjectile_TourianStatueUnlockingParticle            ;86BA7A; Initial pre-instruction
-    dw InstList_EnemyProjectile_TourianStatueUnlockingParticle           ;86BA7C; Initial instruction list
-    db $00,$00                                                           ;86BA7E; X,Y radius
-    dw $3000                                                             ;86BA80; Properties
-    dw $0000                                                             ;86BA82; Hit instruction list
-    dw InstList_EnemyProjectile_Delete                                   ;86BA84; Shot instruction list
+EnemyProjectile_TourianStatueUnlockingParticle:                          ;86BA78;
+    %EnemyProjectile(\
+    %initAI(InitAI_EnemyProjectile_TourianStatueUnlockingParticle),
+    %preInst(PreInst_EnemyProjectile_TourianStatueUnlockingParticle),
+    %instList(InstList_EnemyProjectile_TourianStatueUnlockingParticle),
+    %radius(0, 0),
+    %properties($3000),
+    %hitList(0),
+    %shotList(InstList_EnemyProjectile_Delete))
 
-EnemyProjectile_TourianStatueUnlockingParticleTail:
-    dw InitAI_EnemyProjectile_TourianStatueUnlockingParticleTail         ;86BA86; Initialisation AI
-    dw RTS_8684FB                                                        ;86BA88; Initial pre-instruction
-    dw InstList_EnemyProj_SpawnTourianStatueUnlockingParticleTail        ;86BA8A; Initial instruction list
-    db $00,$00                                                           ;86BA8C; X,Y radius
-    dw $3000                                                             ;86BA8E; Properties
-    dw $0000                                                             ;86BA90; Hit instruction list
-    dw InstList_EnemyProjectile_Delete                                   ;86BA92; Shot instruction list
+EnemyProjectile_TourianStatueUnlockingParticleTail:                      ;86BA86;
+    %EnemyProjectile(\
+    %initAI(InitAI_EnemyProjectile_TourianStatueUnlockingParticleTail),
+    %preInst(RTS_8684FB),
+    %instList(InstList_EnemyProj_SpawnTourianStatueUnlockingParticleTail),
+    %radius(0, 0),
+    %properties($3000),
+    %hitList(0),
+    %shotList(InstList_EnemyProjectile_Delete))
 
-EnemyProjectile_TourianStatueSoul:
-    dw InitAI_EnemyProjectile_TourianStatuesSoul                         ;86BA94; Initialisation AI
-    dw PreInstruction_EnemyProjectile_TourianStatuesSoul                 ;86BA96; Initial pre-instruction
-    dw InstList_EnemyProjectile_TourianStatuesSoul                       ;86BA98; Initial instruction list
-    db $00,$00                                                           ;86BA9A; X,Y radius
-    dw $3000                                                             ;86BA9C; Properties
-    dw $0000                                                             ;86BA9E; Hit instruction list
-    dw InstList_EnemyProjectile_Delete                                   ;86BAA0; Shot instruction list
+EnemyProjectile_TourianStatueSoul:                                       ;86BA94;
+    %EnemyProjectile(\
+    %initAI(InitAI_EnemyProjectile_TourianStatuesSoul),
+    %preInst(PreInstruction_EnemyProjectile_TourianStatuesSoul),
+    %instList(InstList_EnemyProjectile_TourianStatuesSoul),
+    %radius(0, 0),
+    %properties($3000),
+    %hitList(0),
+    %shotList(InstList_EnemyProjectile_Delete))
 
-EnemyProjectile_TourianStatueRidley:
-    dw InitAI_EnemyProjectile_TourianStatue_Ridley                       ;86BAA2; Initialisation AI
-    dw PreInst_EnemyProj_TourianStatue_Ridley_Phantoon_BaseDecor         ;86BAA4; Initial pre-instruction
-    dw InstList_EnemyProjectile_TourianStatueRidley                      ;86BAA6; Initial instruction list
-    db $00,$00                                                           ;86BAA8; X,Y radius
-    dw $2000                                                             ;86BAAA; Properties
-    dw $0000                                                             ;86BAAC; Hit instruction list
-    dw InstList_EnemyProjectile_Delete                                   ;86BAAE; Shot instruction list
+EnemyProjectile_TourianStatueRidley:                                     ;86BAA2;
+    %EnemyProjectile(\
+    %initAI(InitAI_EnemyProjectile_TourianStatue_Ridley),
+    %preInst(PreInst_EnemyProj_TourianStatue_Ridley_Phantoon_BaseDecor),
+    %instList(InstList_EnemyProjectile_TourianStatueRidley),
+    %radius(0, 0),
+    %properties($2000),
+    %hitList(0),
+    %shotList(InstList_EnemyProjectile_Delete))
 
-EnemyProjectile_TourianStatuePhantoon:
-    dw InitAI_EnemyProjectile_TourianStatue_Phantoon                     ;86BAB0; Initialisation AI
-    dw PreInst_EnemyProj_TourianStatue_Ridley_Phantoon_BaseDecor         ;86BAB2; Initial pre-instruction
-    dw InstList_EnemyProjectile_TourianStatuePhantoon                    ;86BAB4; Initial instruction list
-    db $00,$00                                                           ;86BAB6; X,Y radius
-    dw $2000                                                             ;86BAB8; Properties
-    dw $0000                                                             ;86BABA; Hit instruction list
-    dw InstList_EnemyProjectile_Delete                                   ;86BABC; Shot instruction list
+EnemyProjectile_TourianStatuePhantoon:                                   ;86BAB0;
+    %EnemyProjectile(\
+    %initAI(InitAI_EnemyProjectile_TourianStatue_Phantoon),
+    %preInst(PreInst_EnemyProj_TourianStatue_Ridley_Phantoon_BaseDecor),
+    %instList(InstList_EnemyProjectile_TourianStatuePhantoon),
+    %radius(0, 0),
+    %properties($2000),
+    %hitList(0),
+    %shotList(InstList_EnemyProjectile_Delete))
 
-EnemyProjectile_TourianStatueBaseDecoration:
-    dw InitAI_EnemyProjectile_TourianStatueBaseDecoration                ;86BABE; Initialisation AI
-    dw PreInst_EnemyProj_TourianStatue_Ridley_Phantoon_BaseDecor         ;86BAC0; Initial pre-instruction
-    dw InstList_EnemyProjectile_TourianStatueBaseDecoration_0            ;86BAC2; Initial instruction list
-    db $00,$00                                                           ;86BAC4; X,Y radius
-    dw $2000                                                             ;86BAC6; Properties
-    dw $0000                                                             ;86BAC8; Hit instruction list
-    dw InstList_EnemyProjectile_Delete                                   ;86BACA; Shot instruction list
+EnemyProjectile_TourianStatueBaseDecoration:                             ;86BABE;
+    %EnemyProjectile(\
+    %initAI(InitAI_EnemyProjectile_TourianStatueBaseDecoration),
+    %preInst(PreInst_EnemyProj_TourianStatue_Ridley_Phantoon_BaseDecor),
+    %instList(InstList_EnemyProjectile_TourianStatueBaseDecoration_0),
+    %radius(0, 0),
+    %properties($2000),
+    %hitList(0),
+    %shotList(InstList_EnemyProjectile_Delete))
 
 
 if !FEATURE_KEEP_UNREFERENCED
@@ -9440,13 +9546,15 @@ RTS_86BB4F:
 
 if !FEATURE_KEEP_UNREFERENCED
 ;;; $BB50: Unused. Enemy projectile $BB50 ;;;
-UNUSED_EnemyProjectile_86BB50:
-    dw UNUSED_InitAI_EnemyProjectile_86BB30                              ;86BB50; Initialisation AI
-    dw RTS_86BB4F                                                        ;86BB52; Initial pre-instruction
-    dw UNUSED_InstList_EnemyProjectile_Parameter0_86BACC                 ;86BB54; Initial instruction list
-    db $00,$00                                                           ;86BB56; X,Y radius
-    dw $0000,$7000                                                       ;86BB58; Properties, Hit instruction list
-    dw InstList_EnemyProjectile_Delete                                   ;86BB5C; Shot instruction list
+UNUSED_EnemyProjectile_86BB50:                                           ;86BB50;
+    %EnemyProjectile(\
+    %initAI(UNUSED_InitAI_EnemyProjectile_86BB30),
+    %preInst(RTS_86BB4F),
+    %instList(UNUSED_InstList_EnemyProjectile_Parameter0_86BACC),
+    %radius(0, 0),
+    %properties($0000),
+    %hitList($7000),
+    %shotList(InstList_EnemyProjectile_Delete))
 endif ; !FEATURE_KEEP_UNREFERENCED
 
 
@@ -9501,13 +9609,15 @@ RTS_86BBC6:
 
 
 ;;; $BBC7: Enemy projectile - fire arc body ;;;
-EnemyProjectile_Puromi:
-    dw InitAI_EnemyProjectile_PuromiBody                                 ;86BBC7; Initialisation AI
-    dw RTS_86BBC6                                                        ;86BBC9; Initial pre-instruction
-    dw InstList_EnemyProjectile_PuromiBody                               ;86BBCB; Initial instruction list
-    db $08,$08                                                           ;86BBCD; X,Y radius
-    dw $C040,$0000                                                       ;86BBCF; Properties, Hit instruction list
-    dw InstList_EnemyProjectile_Delete                                   ;86BBD3; Shot instruction list
+EnemyProjectile_Puromi:                                                  ;86BBC7;
+    %EnemyProjectile(\
+    %initAI(InitAI_EnemyProjectile_PuromiBody),
+    %preInst(RTS_86BBC6),
+    %instList(InstList_EnemyProjectile_PuromiBody),
+    %radius(8, 8),
+    %properties($C040),
+    %hitList(0),
+    %shotList(InstList_EnemyProjectile_Delete))
 
 
 ;;; $BBD5: Instruction list - enemy projectile $BD5A (polyp rock) ;;;
@@ -9757,13 +9867,15 @@ CheckIf_EnemyProjectile_IsOffScreen:
 
 
 ;;; $BD5A: Enemy projectile - polyp rock ;;;
-EnemyProjectile_LavaquakeRocks:
-    dw InitAI_EnemyProjectile_NorfairLavaquakeRocks                      ;86BD5A; Initialisation AI
-    dw PreInstruction_EnemyProjectile_NorfairLavaquakeRocks              ;86BD5C; Initial pre-instruction
-    dw InstList_EnemyProjectile_NorfairLavaquakeRocks                    ;86BD5E; Initial instruction list
-    db $02,$02                                                           ;86BD60; X,Y radius
-    dw $0010,$0000                                                       ;86BD62; Properties, Hit instruction list
-    dw InstList_EnemyProjectile_Delete                                   ;86BD66; Shot instruction list
+EnemyProjectile_LavaquakeRocks:                                          ;86BD5A;
+    %EnemyProjectile(\
+    %initAI(InitAI_EnemyProjectile_NorfairLavaquakeRocks),
+    %preInst(PreInstruction_EnemyProjectile_NorfairLavaquakeRocks),
+    %instList(InstList_EnemyProjectile_NorfairLavaquakeRocks),
+    %radius(2, 2),
+    %properties($0010),
+    %hitList(0),
+    %shotList(InstList_EnemyProjectile_Delete))
 
 
 ;;; $BD68: Instruction list - enemy projectile $BE25 (Shaktool's attack - front circle) ;;;
@@ -9885,32 +9997,35 @@ PreInst_EnemyProjectile_ShaktoolsAttack_MiddleBack_Moving:
 
 
 ;;; $BE25: Enemy projectiles - Shaktool's attack ;;;
-EnemyProjectile_ShaktoolFrontCircle:
-    dw InitAI_EnemyProjectile_ShaktoolsAttack_Front                      ;86BE25; Initialisation AI
-    dw PreInstruction_EnemyProjectile_ShaktoolsAttack_Front              ;86BE27; Initial pre-instruction
-    dw InstList_EnemyProjectile_ShaktoolsAttack_FrontCircle_0            ;86BE29; Initial instruction list
-    db $04,$04                                                           ;86BE2B; X,Y radius
-    dw $000A                                                             ;86BE2D; Properties
-    dw $0000                                                             ;86BE2F; Hit instruction list
-    dw InstList_EnemyProjectile_Delete                                   ;86BE31; Shot instruction list
+EnemyProjectile_ShaktoolFrontCircle:                                     ;86BE25;
+    %EnemyProjectile(\
+    %initAI(InitAI_EnemyProjectile_ShaktoolsAttack_Front),
+    %preInst(PreInstruction_EnemyProjectile_ShaktoolsAttack_Front),
+    %instList(InstList_EnemyProjectile_ShaktoolsAttack_FrontCircle_0),
+    %radius(4, 4),
+    %properties($000A),
+    %hitList(0),
+    %shotList(InstList_EnemyProjectile_Delete))
 
-EnemyProjectile_ShaktoolMiddleCircle:
-    dw InitAI_EnemyProjectile_ShaktoolsAttack_Middle_Back                ;86BE33; Initialisation AI
-    dw RTS_8684FB                                                        ;86BE35; Initial pre-instruction
-    dw InstList_EnemyProjectile_ShaktoolsAttack_MiddleCircle_0           ;86BE37; Initial instruction list
-    db $04,$04                                                           ;86BE39; X,Y radius
-    dw $2000                                                             ;86BE3B; Properties
-    dw $0000                                                             ;86BE3D; Hit instruction list
-    dw InstList_EnemyProjectile_Delete                                   ;86BE3F; Shot instruction list
+EnemyProjectile_ShaktoolMiddleCircle:                                    ;86BE33;
+    %EnemyProjectile(\
+    %initAI(InitAI_EnemyProjectile_ShaktoolsAttack_Middle_Back),
+    %preInst(RTS_8684FB),
+    %instList(InstList_EnemyProjectile_ShaktoolsAttack_MiddleCircle_0),
+    %radius(4, 4),
+    %properties($2000),
+    %hitList(0),
+    %shotList(InstList_EnemyProjectile_Delete))
 
-EnemyProjectile_ShaktoolBackCircle:
-    dw InitAI_EnemyProjectile_ShaktoolsAttack_Middle_Back                ;86BE41; Initialisation AI
-    dw RTS_8684FB                                                        ;86BE43; Initial pre-instruction
-    dw InstList_EnemyProjectile_ShaktoolsAttack_BackCircle_0             ;86BE45; Initial instruction list
-    db $04,$04                                                           ;86BE47; X,Y radius
-    dw $2000                                                             ;86BE49; Properties
-    dw $0000                                                             ;86BE4B; Hit instruction list
-    dw InstList_EnemyProjectile_Delete                                   ;86BE4D; Shot instruction list
+EnemyProjectile_ShaktoolBackCircle:                                      ;86BE41;
+    %EnemyProjectile(\
+    %initAI(InitAI_EnemyProjectile_ShaktoolsAttack_Middle_Back),
+    %preInst(RTS_8684FB),
+    %instList(InstList_EnemyProjectile_ShaktoolsAttack_BackCircle_0),
+    %radius(4, 4),
+    %properties($2000),
+    %hitList(0),
+    %shotList(InstList_EnemyProjectile_Delete))
 
 
 ;;; $BE4F: Initialisation AI - enemy projectile $C17E (Mother Brain's room turrets) ;;;
@@ -10360,22 +10475,25 @@ Instruction_EnemyProjectile_MotherBrainsTurretBullets_GotoY:
 
 
 ;;; $C17E: Enemy projectiles - Mother Brain's room turrets ;;;
-EnemyProjectile_MotherBrainTurret:
-    dw InitAI_EnemyProjectile_MotherBrainsTurrets                        ;86C17E; Initialisation AI
-    dw PreInstruction_EnemyProjectile_MotherBrainsTurrets                ;86C180; Initial pre-instruction
-    dw InstList_EnemyProjectile_MotherBrainsTurret_Down                  ;86C182; Initial instruction list
-    db $00,$00                                                           ;86C184; X,Y radius
-    dw $6000,$0000                                                       ;86C186; Properties, Hit instruction list
-    dw InstList_EnemyProjectile_Delete                                   ;86C18A; Shot instruction list
+EnemyProjectile_MotherBrainTurret:                                       ;86C17E;
+    %EnemyProjectile(\
+    %initAI(InitAI_EnemyProjectile_MotherBrainsTurrets),
+    %preInst(PreInstruction_EnemyProjectile_MotherBrainsTurrets),
+    %instList(InstList_EnemyProjectile_MotherBrainsTurret_Down),
+    %radius(0, 0),
+    %properties($6000),
+    %hitList(0),
+    %shotList(InstList_EnemyProjectile_Delete))
 
-EnemyProjectile_MotherBrainTurretBullets:
-    dw InitAI_EnemyProjectile_MotherBrainsTurretBullets                  ;86C18C; Initialisation AI
-    dw PreInstruction_EnemyProjectile_MotherBrainsTurretBullets          ;86C18E; Initial pre-instruction
-    dw InstList_EnemyProj_MotherBrainsTurretBullets_GotoDirection        ;86C190; Initial instruction list
-    db $03,$03                                                           ;86C192; X,Y radius
-    dw $4014                                                             ;86C194; Properties
-    dw InstList_EnemyProjectile_Shot_MotherBrainTurretBullets            ;86C196; Hit instruction list
-    dw InstList_EnemyProjectile_Shot_MotherBrainTurretBullets            ;86C198; Shot instruction list
+EnemyProjectile_MotherBrainTurretBullets:                                ;86C18C;
+    %EnemyProjectile(\
+    %initAI(InitAI_EnemyProjectile_MotherBrainsTurretBullets),
+    %preInst(PreInstruction_EnemyProjectile_MotherBrainsTurretBullets),
+    %instList(InstList_EnemyProj_MotherBrainsTurretBullets_GotoDirection),
+    %radius(3, 3),
+    %properties($4014),
+    %hitList(InstList_EnemyProjectile_Shot_MotherBrainTurretBullets),
+    %shotList(InstList_EnemyProjectile_Shot_MotherBrainTurretBullets))
 
 
 ;;; $C19A: Shot/touch instruction list - enemy projectile $C18C (Mother Brain's room turret bullets) ;;;
@@ -11772,122 +11890,135 @@ InstList_EnemyProjectile_TimeBombSetJapanText:
 
 
 ;;; $CB13: Enemy projectiles - Mother Brain ;;;
-EnemyProjectile_MotherBrainDeathExplosion:
-    dw InitAI_EnemyProjectile_MotherBrainsDeathExplosion                 ;86CB13; Initialisation AI
-    dw PreInstruction_EnemyProjectile_MotherBrainsDeathExplosion         ;86CB15; Initial pre-instruction
-    dw $0000                                                             ;86CB17; Initial instruction list
-    db $00,$00                                                           ;86CB19; X,Y radius
-    dw $2000                                                             ;86CB1B; Properties
-    dw $0000                                                             ;86CB1D; Hit instruction list
-    dw InstList_EnemyProjectile_Delete                                   ;86CB1F; Shot instruction list
+EnemyProjectile_MotherBrainDeathExplosion:                               ;86CB13;
+    %EnemyProjectile(\
+    %initAI(InitAI_EnemyProjectile_MotherBrainsDeathExplosion),
+    %preInst(PreInstruction_EnemyProjectile_MotherBrainsDeathExplosion),
+    %instList(0),
+    %radius(0, 0),
+    %properties($2000),
+    %hitList(0),
+    %shotList(InstList_EnemyProjectile_Delete))
 
-EnemyProjectile_MotherBrainExplodedEscapeDoorParticles:
-    dw InitAI_EnemyProjectile_MotherBrainExplodedEscapeDoorParticle      ;86CB21; Initialisation AI
-    dw PreInst_EnemyProj_MotherBrainExplodedEscapeDoorParticles          ;86CB23; Initial pre-instruction
-    dw InstList_EnemyProj_MotherBrainExplodedEscapeDoorParticle          ;86CB25; Initial instruction list
-    db $00,$00                                                           ;86CB27; X,Y radius
-    dw $3000                                                             ;86CB29; Properties
-    dw $0000                                                             ;86CB2B; Hit instruction list
-    dw InstList_EnemyProjectile_Delete                                   ;86CB2D; Shot instruction list
+EnemyProjectile_MotherBrainExplodedEscapeDoorParticles:                  ;86CB21;
+    %EnemyProjectile(\
+    %initAI(InitAI_EnemyProjectile_MotherBrainExplodedEscapeDoorParticle),
+    %preInst(PreInst_EnemyProj_MotherBrainExplodedEscapeDoorParticles),
+    %instList(InstList_EnemyProj_MotherBrainExplodedEscapeDoorParticle),
+    %radius(0, 0),
+    %properties($3000),
+    %hitList(0),
+    %shotList(InstList_EnemyProjectile_Delete))
 
-EnemyProjectile_MotherBrainPurpleBreath_Big:
-    dw InitAI_EnemyProjectile_MotherBrainPurpleBreath_Big                ;86CB2F; Initialisation AI
-    dw RTS_86CAA3                                                        ;86CB31; Initial pre-instruction
-    dw InstList_EnemyProjectile_MotherBrainPurpleBreath_Big              ;86CB33; Initial instruction list
-    db $00,$00                                                           ;86CB35; X,Y radius
-    dw $3000                                                             ;86CB37; Properties
-    dw $0000                                                             ;86CB39; Hit instruction list
-    dw InstList_EnemyProjectile_Delete                                   ;86CB3B; Shot instruction list
+EnemyProjectile_MotherBrainPurpleBreath_Big:                             ;86CB2F;
+    %EnemyProjectile(\
+    %initAI(InitAI_EnemyProjectile_MotherBrainPurpleBreath_Big),
+    %preInst(RTS_86CAA3),
+    %instList(InstList_EnemyProjectile_MotherBrainPurpleBreath_Big),
+    %radius(0, 0),
+    %properties($3000),
+    %hitList(0),
+    %shotList(InstList_EnemyProjectile_Delete))
 
-EnemyProjectile_MotherBrainPurpleBreath_Small:
-    dw InitAI_EnemyProjectile_MotherBrainPurpleBreath_Small              ;86CB3D; Initialisation AI
-    dw RTS_86CAA3                                                        ;86CB3F; Initial pre-instruction
-    dw InstList_EnemyProjectile_MotherBrainPurpleBreath_Small            ;86CB41; Initial instruction list
-    db $00,$00                                                           ;86CB43; X,Y radius
-    dw $3000                                                             ;86CB45; Properties
-    dw $0000                                                             ;86CB47; Hit instruction list
-    dw InstList_EnemyProjectile_Delete                                   ;86CB49; Shot instruction list
+EnemyProjectile_MotherBrainPurpleBreath_Small:                           ;86CB3D;
+    %EnemyProjectile(\
+    %initAI(InitAI_EnemyProjectile_MotherBrainPurpleBreath_Small),
+    %preInst(RTS_86CAA3),
+    %instList(InstList_EnemyProjectile_MotherBrainPurpleBreath_Small),
+    %radius(0, 0),
+    %properties($3000),
+    %hitList(0),
+    %shotList(InstList_EnemyProjectile_Delete))
 
-EnemyProjectile_MotherBrainOnionRings:
-    dw InitAI_EnemyProjectile_MotherBrainsOnionRings                     ;86CB4B; Initialisation AI
-    dw PreInstruction_EnemyProjectile_MotherBrainsOnionRings             ;86CB4D; Initial pre-instruction
-    dw InstList_EnemyProjectile_MotherBrainsOnionRings                   ;86CB4F; Initial instruction list
-    db $06,$06                                                           ;86CB51; X,Y radius
-    dw $3050                                                             ;86CB53; Properties
-    dw InstList_EnemyProjectile_Hit_MotherBrainsOnionRings               ;86CB55; Hit instruction list
-    dw InstList_EnemyProjectile_Delete                                   ;86CB57; Shot instruction list
+EnemyProjectile_MotherBrainOnionRings:                                   ;86CB4B;
+    %EnemyProjectile(\
+    %initAI(InitAI_EnemyProjectile_MotherBrainsOnionRings),
+    %preInst(PreInstruction_EnemyProjectile_MotherBrainsOnionRings),
+    %instList(InstList_EnemyProjectile_MotherBrainsOnionRings),
+    %radius(6, 6),
+    %properties($3050),
+    %hitList(InstList_EnemyProjectile_Hit_MotherBrainsOnionRings),
+    %shotList(InstList_EnemyProjectile_Delete))
 
-EnemyProjectile_MotherBrainBomb:
-    dw InitAI_EnemyProjectile_MotherBrainsBomb                           ;86CB59; Initialisation AI
-    dw PreInstruction_EnemyProjectile_MotherBrainsBomb                   ;86CB5B; Initial pre-instruction
-    dw InstList_EnemyProjectile_MotherBrainBomb                          ;86CB5D; Initial instruction list
-    db $06,$06                                                           ;86CB5F; X,Y radius
-    dw $40A0                                                             ;86CB61; Properties
-    dw $0000                                                             ;86CB63; Hit instruction list
-    dw InstList_EnemyProjectile_Delete                                   ;86CB65; Shot instruction list
+EnemyProjectile_MotherBrainBomb:                                         ;86CB59;
+    %EnemyProjectile(\
+    %initAI(InitAI_EnemyProjectile_MotherBrainsBomb),
+    %preInst(PreInstruction_EnemyProjectile_MotherBrainsBomb),
+    %instList(InstList_EnemyProjectile_MotherBrainBomb),
+    %radius(6, 6),
+    %properties($40A0),
+    %hitList(0),
+    %shotList(InstList_EnemyProjectile_Delete))
 
-EnemyProjectile_MotherBrainRedBeam_Charging:
-    dw InitAI_EnemyProjectile_MotherBrainRedBeam_Charging                ;86CB67; Initialisation AI
-    dw RTS_86C76D                                                        ;86CB69; Initial pre-instruction
-    dw InstList_EnemyProjectile_MotherBrainRedBeam                       ;86CB6B; Initial instruction list
-    db $06,$06                                                           ;86CB6D; X,Y radius
-    dw $1190                                                             ;86CB6F; Properties
-    dw $0000                                                             ;86CB71; Hit instruction list
-    dw InstList_EnemyProjectile_Delete                                   ;86CB73; Shot instruction list
+EnemyProjectile_MotherBrainRedBeam_Charging:                             ;86CB67;
+    %EnemyProjectile(\
+    %initAI(InitAI_EnemyProjectile_MotherBrainRedBeam_Charging),
+    %preInst(RTS_86C76D),
+    %instList(InstList_EnemyProjectile_MotherBrainRedBeam),
+    %radius(6, 6),
+    %properties($1190),
+    %hitList(0),
+    %shotList(InstList_EnemyProjectile_Delete))
 
-EnemyProjectile_MotherBrainRedBeam_Fired:
-    dw InitAI_EnemyProjectile_MotherBrainRedBeam_Fired                   ;86CB75; Initialisation AI
-    dw RTS_86C76D                                                        ;86CB77; Initial pre-instruction
-    dw InstList_EnemyProjectile_MotherBrainRedBeam                       ;86CB79; Initial instruction list
-    db $06,$06                                                           ;86CB7B; X,Y radius
-    dw $1190                                                             ;86CB7D; Properties
-    dw $0000                                                             ;86CB7F; Hit instruction list
-    dw InstList_EnemyProjectile_Delete                                   ;86CB81; Shot instruction list
+EnemyProjectile_MotherBrainRedBeam_Fired:                                ;86CB75;
+    %EnemyProjectile(\
+    %initAI(InitAI_EnemyProjectile_MotherBrainRedBeam_Fired),
+    %preInst(RTS_86C76D),
+    %instList(InstList_EnemyProjectile_MotherBrainRedBeam),
+    %radius(6, 6),
+    %properties($1190),
+    %hitList(0),
+    %shotList(InstList_EnemyProjectile_Delete))
 
-EnemyProjectile_MotherBrainRainbowBeam_Charging:
-    dw InitAI_EnemyProjectile_MotherBrainRainbowBeam_Charging            ;86CB83; Initialisation AI
-    dw PreInst_EnemyProjectile_MotherBrainRainbowBeam_Charging           ;86CB85; Initial pre-instruction
-    dw InstList_EnemyProjectile_MotherBrainRainbowBeam_Charging          ;86CB87; Initial instruction list
-    db $00,$00                                                           ;86CB89; X,Y radius
-    dw $7000                                                             ;86CB8B; Properties
-    dw $0000                                                             ;86CB8D; Hit instruction list
-    dw InstList_EnemyProjectile_Delete                                   ;86CB8F; Shot instruction list
+EnemyProjectile_MotherBrainRainbowBeam_Charging:                         ;86CB83;
+    %EnemyProjectile(\
+    %initAI(InitAI_EnemyProjectile_MotherBrainRainbowBeam_Charging),
+    %preInst(PreInst_EnemyProjectile_MotherBrainRainbowBeam_Charging),
+    %instList(InstList_EnemyProjectile_MotherBrainRainbowBeam_Charging),
+    %radius(0, 0),
+    %properties($7000),
+    %hitList(0),
+    %shotList(InstList_EnemyProjectile_Delete))
 
-EnemyProjectile_MotherBrainDrool:
-    dw InitAI_EnemyProjectile_MotherBrainsDrool                          ;86CB91; Initialisation AI
-    dw PreInstruction_EnemyProjectile_MotherBrainsDrool                  ;86CB93; Initial pre-instruction
-    dw InstList_EnemyProjectile_MotherBrainsDrool                        ;86CB95; Initial instruction list
-    db $00,$00                                                           ;86CB97; X,Y radius
-    dw $7000                                                             ;86CB99; Properties
-    dw $0000                                                             ;86CB9B; Hit instruction list
-    dw InstList_EnemyProjectile_Delete                                   ;86CB9D; Shot instruction list
+EnemyProjectile_MotherBrainDrool:                                        ;86CB91;
+    %EnemyProjectile(\
+    %initAI(InitAI_EnemyProjectile_MotherBrainsDrool),
+    %preInst(PreInstruction_EnemyProjectile_MotherBrainsDrool),
+    %instList(InstList_EnemyProjectile_MotherBrainsDrool),
+    %radius(0, 0),
+    %properties($7000),
+    %hitList(0),
+    %shotList(InstList_EnemyProjectile_Delete))
 
-EnemyProjectile_MotherBrainDyingDrool:
-    dw InitAI_EnemyProjectile_MotherBrainsDrool                          ;86CB9F; Initialisation AI
-    dw PreInstruction_EnemyProjectile_MotherBrainsDrool                  ;86CBA1; Initial pre-instruction
-    dw InstList_EnemyProjectile_MotherBrainsDrool                        ;86CBA3; Initial instruction list
-    db $00,$00                                                           ;86CBA5; X,Y radius
-    dw $7000                                                             ;86CBA7; Properties
-    dw $0000                                                             ;86CBA9; Hit instruction list
-    dw InstList_EnemyProjectile_Delete                                   ;86CBAB; Shot instruction list
+EnemyProjectile_MotherBrainDyingDrool:                                   ;86CB9F;
+    %EnemyProjectile(\
+    %initAI(InitAI_EnemyProjectile_MotherBrainsDrool),
+    %preInst(PreInstruction_EnemyProjectile_MotherBrainsDrool),
+    %instList(InstList_EnemyProjectile_MotherBrainsDrool),
+    %radius(0, 0),
+    %properties($7000),
+    %hitList(0),
+    %shotList(InstList_EnemyProjectile_Delete))
 
-EnemyProjectile_MotherBrainRainbowBeam_Explosion:
-    dw InitAI_EnemyProjectile_MotherBrainsRainbowBeamExplosion           ;86CBAD; Initialisation AI
-    dw PreInstruction_EnemyProj_MotherBrainsRainbowBeamExplosion         ;86CBAF; Initial pre-instruction
-    dw InstList_EnemyProj_MiscDust_4_MotherBrainRainbowBeamExplosion     ;86CBB1; Initial instruction list
-    db $01,$01                                                           ;86CBB3; X,Y radius
-    dw $7000                                                             ;86CBB5; Properties
-    dw $0000                                                             ;86CBB7; Hit instruction list
-    dw InstList_EnemyProjectile_Delete                                   ;86CBB9; Shot instruction list
+EnemyProjectile_MotherBrainRainbowBeam_Explosion:                        ;86CBAD;
+    %EnemyProjectile(\
+    %initAI(InitAI_EnemyProjectile_MotherBrainsRainbowBeamExplosion),
+    %preInst(PreInstruction_EnemyProj_MotherBrainsRainbowBeamExplosion),
+    %instList(InstList_EnemyProj_MiscDust_4_MotherBrainRainbowBeamExplosion),
+    %radius(1, 1),
+    %properties($7000),
+    %hitList(0),
+    %shotList(InstList_EnemyProjectile_Delete))
 
-EnemyProjectile_TimeBombSetJapanText:
-    dw InitAI_EnemyProjectile_TimeBombSetJapanText                       ;86CBBB; Initialisation AI
-    dw PreInstruction_EnemyProjectile_TimeBombSetJapanText               ;86CBBD; Initial pre-instruction
-    dw InstList_EnemyProjectile_TimeBombSetJapanText                     ;86CBBF; Initial instruction list
-    db $00,$00                                                           ;86CBC1; X,Y radius
-    dw $1000                                                             ;86CBC3; Properties
-    dw $0000                                                             ;86CBC5; Hit instruction list
-    dw InstList_EnemyProjectile_Delete                                   ;86CBC7; Shot instruction list
+EnemyProjectile_TimeBombSetJapanText:                                    ;86CBBB;
+    %EnemyProjectile(\
+    %initAI(InitAI_EnemyProjectile_TimeBombSetJapanText),
+    %preInst(PreInstruction_EnemyProjectile_TimeBombSetJapanText),
+    %instList(InstList_EnemyProjectile_TimeBombSetJapanText),
+    %radius(0, 0),
+    %properties($1000),
+    %hitList(0),
+    %shotList(InstList_EnemyProjectile_Delete))
 
 
 ;;; $CBC9: Initialisation AI - enemy projectile $CC5B/$CC69/$CC77/$CC85 (Mother Brain tube falling) ;;;
@@ -11988,41 +12119,45 @@ InstList_EnemyProj_MotherBrainsTubeFalling_TopMiddleRight:
 
 
 ;;; $CC5B: Enemy projectiles - Mother Brain's top tube falling ;;;
-EnemyProjectile_MotherBrainTubeFalling_TopRight:
-    dw InitAI_EnemyProjectile_MotherBrainsTubeFalling                    ;86CC5B; Initialisation AI
-    dw PreInstruction_EnemyProjectile_MotherBrainsTubeFalling            ;86CC5D; Initial pre-instruction
-    dw InstList_EnemyProjectile_MotherBrainsTubeFalling_TopRight         ;86CC5F; Initial instruction list
-    db $08,$10                                                           ;86CC61; X,Y radius
-    dw $5000                                                             ;86CC63; Properties
-    dw $0000                                                             ;86CC65; Hit instruction list
-    dw InstList_EnemyProjectile_Delete                                   ;86CC67; Shot instruction list
+EnemyProjectile_MotherBrainTubeFalling_TopRight:                         ;86CC5B;
+    %EnemyProjectile(\
+    %initAI(InitAI_EnemyProjectile_MotherBrainsTubeFalling),
+    %preInst(PreInstruction_EnemyProjectile_MotherBrainsTubeFalling),
+    %instList(InstList_EnemyProjectile_MotherBrainsTubeFalling_TopRight),
+    %radius(8, $10),
+    %properties($5000),
+    %hitList(0),
+    %shotList(InstList_EnemyProjectile_Delete))
 
-EnemyProjectile_MotherBrainTubeFalling_TopLeft:
-    dw InitAI_EnemyProjectile_MotherBrainsTubeFalling                    ;86CC69; Initialisation AI
-    dw PreInstruction_EnemyProjectile_MotherBrainsTubeFalling            ;86CC6B; Initial pre-instruction
-    dw InstList_EnemyProjectile_MotherBrainsTubeFalling_TopLeft          ;86CC6D; Initial instruction list
-    db $08,$10                                                           ;86CC6F; X,Y radius
-    dw $5000                                                             ;86CC71; Properties
-    dw $0000                                                             ;86CC73; Hit instruction list
-    dw InstList_EnemyProjectile_Delete                                   ;86CC75; Shot instruction list
+EnemyProjectile_MotherBrainTubeFalling_TopLeft:                          ;86CC69;
+    %EnemyProjectile(\
+    %initAI(InitAI_EnemyProjectile_MotherBrainsTubeFalling),
+    %preInst(PreInstruction_EnemyProjectile_MotherBrainsTubeFalling),
+    %instList(InstList_EnemyProjectile_MotherBrainsTubeFalling_TopLeft),
+    %radius(8, $10),
+    %properties($5000),
+    %hitList(0),
+    %shotList(InstList_EnemyProjectile_Delete))
 
-EnemyProjectile_MotherBrainTubeFalling_TopMiddleLeft:
-    dw InitAI_EnemyProjectile_MotherBrainsTubeFalling                    ;86CC77; Initialisation AI
-    dw PreInstruction_EnemyProjectile_MotherBrainsTubeFalling            ;86CC79; Initial pre-instruction
-    dw InstList_EnemyProj_MotherBrainsTubeFalling_TopMiddleLeft          ;86CC7B; Initial instruction list
-    db $08,$18                                                           ;86CC7D; X,Y radius
-    dw $5000                                                             ;86CC7F; Properties
-    dw $0000                                                             ;86CC81; Hit instruction list
-    dw InstList_EnemyProjectile_Delete                                   ;86CC83; Shot instruction list
+EnemyProjectile_MotherBrainTubeFalling_TopMiddleLeft:                    ;86CC77;
+    %EnemyProjectile(\
+    %initAI(InitAI_EnemyProjectile_MotherBrainsTubeFalling),
+    %preInst(PreInstruction_EnemyProjectile_MotherBrainsTubeFalling),
+    %instList(InstList_EnemyProj_MotherBrainsTubeFalling_TopMiddleLeft),
+    %radius(8, $18),
+    %properties($5000),
+    %hitList(0),
+    %shotList(InstList_EnemyProjectile_Delete))
 
-EnemyProjectile_MotherBrainTubeFalling_TopMiddleRight:
-    dw InitAI_EnemyProjectile_MotherBrainsTubeFalling                    ;86CC85; Initialisation AI
-    dw PreInstruction_EnemyProjectile_MotherBrainsTubeFalling            ;86CC87; Initial pre-instruction
-    dw InstList_EnemyProj_MotherBrainsTubeFalling_TopMiddleRight         ;86CC89; Initial instruction list
-    db $08,$18                                                           ;86CC8B; X,Y radius
-    dw $5000                                                             ;86CC8D; Properties
-    dw $0000                                                             ;86CC8F; Hit instruction list
-    dw InstList_EnemyProjectile_Delete                                   ;86CC91; Shot instruction list
+EnemyProjectile_MotherBrainTubeFalling_TopMiddleRight:                   ;86CC85;
+    %EnemyProjectile(\
+    %initAI(InitAI_EnemyProjectile_MotherBrainsTubeFalling),
+    %preInst(PreInstruction_EnemyProjectile_MotherBrainsTubeFalling),
+    %instList(InstList_EnemyProj_MotherBrainsTubeFalling_TopMiddleRight),
+    %radius(8, $18),
+    %properties($5000),
+    %hitList(0),
+    %shotList(InstList_EnemyProjectile_Delete))
 
 
 ;;; $CC93: Instruction list - Mother Brain's glass shattering 0 ;;;
@@ -12317,43 +12452,47 @@ PreInstruction_EnemyProj_MotherBrainGlassShattering_Shard:
 
 
 ;;; $CEFC: Enemy projectiles - Mother Brain's glass shattering ;;;
-EnemyProjectile_MotherBrainGlassShattering_Shard:
-    dw InitAI_EnemyProjectile_MotherBrainsGlassShattering_Shard          ;86CEFC; Initialisation AI
-    dw PreInstruction_EnemyProj_MotherBrainGlassShattering_Shard         ;86CEFE; Initial pre-instruction
-    dw InstList_EnemyProjectile_MotherBrainsGlassShattering_0            ;86CF00; Initial instruction list
-    db $00,$00                                                           ;86CF02; X,Y radius
-    dw $3000                                                             ;86CF04; Properties
-    dw $0000                                                             ;86CF06; Hit instruction list
-    dw InstList_EnemyProjectile_Delete                                   ;86CF08; Shot instruction list
+EnemyProjectile_MotherBrainGlassShattering_Shard:                        ;86CEFC;
+    %EnemyProjectile(\
+    %initAI(InitAI_EnemyProjectile_MotherBrainsGlassShattering_Shard),
+    %preInst(PreInstruction_EnemyProj_MotherBrainGlassShattering_Shard),
+    %instList(InstList_EnemyProjectile_MotherBrainsGlassShattering_0),
+    %radius(0, 0),
+    %properties($3000),
+    %hitList(0),
+    %shotList(InstList_EnemyProjectile_Delete))
 
-EnemyProjectile_MotherBrainGlassShattering_Sparkle:
-    dw InitAI_EnemyProjectile_MotherBrainGlassShattering_Sparkle         ;86CF0A; Initialisation AI
-    dw RTS_8684FB                                                        ;86CF0C; Initial pre-instruction
-    dw InstList_EnemyProjectile_MotherBrainsGlassShattering_Sparkle      ;86CF0E; Initial instruction list
-    db $00,$00                                                           ;86CF10; X,Y radius
-    dw $3000                                                             ;86CF12; Properties
-    dw $0000                                                             ;86CF14; Hit instruction list
-    dw InstList_EnemyProjectile_Delete                                   ;86CF16; Shot instruction list
+EnemyProjectile_MotherBrainGlassShattering_Sparkle:                      ;86CF0A;
+    %EnemyProjectile(\
+    %initAI(InitAI_EnemyProjectile_MotherBrainGlassShattering_Sparkle),
+    %preInst(RTS_8684FB),
+    %instList(InstList_EnemyProjectile_MotherBrainsGlassShattering_Sparkle),
+    %radius(0, 0),
+    %properties($3000),
+    %hitList(0),
+    %shotList(InstList_EnemyProjectile_Delete))
 
 
 ;;; $CF18: Enemy projectiles - ki hunter acid spit ;;;
-EnemyProjectile_KiHunterAcidSpit_Left:
-    dw InitAI_EnemyProjectile_KiHunterAcidSpit_Left                      ;86CF18; Initialisation AI
-    dw RTS_86CFF7                                                        ;86CF1A; Initial pre-instruction
-    dw InstList_EnemyProjectile_KiHunterAcidSpit_Left                    ;86CF1C; Initial instruction list
-    db $02,$08                                                           ;86CF1E; X,Y radius
-    dw $0014                                                             ;86CF20; Properties
-    dw $0000                                                             ;86CF22; Hit instruction list
-    dw InstList_EnemyProjectile_Delete                                   ;86CF24; Shot instruction list
+EnemyProjectile_KiHunterAcidSpit_Left:                                   ;86CF18;
+    %EnemyProjectile(\
+    %initAI(InitAI_EnemyProjectile_KiHunterAcidSpit_Left),
+    %preInst(RTS_86CFF7),
+    %instList(InstList_EnemyProjectile_KiHunterAcidSpit_Left),
+    %radius(2, 8),
+    %properties($0014),
+    %hitList(0),
+    %shotList(InstList_EnemyProjectile_Delete))
 
-EnemyProjectile_KiHunterAcidSpit_Right:
-    dw InitAI_EnemyProjectile_KiHunterAcidSpit_Right                     ;86CF26; Initialisation AI
-    dw RTS_86CFF7                                                        ;86CF28; Initial pre-instruction
-    dw InstList_EnemyProjectile_KiHunterAcidSpit_Right                   ;86CF2A; Initial instruction list
-    db $02,$08                                                           ;86CF2C; X,Y radius
-    dw $0014                                                             ;86CF2E; Properties
-    dw $0000                                                             ;86CF30; Hit instruction list
-    dw InstList_EnemyProjectile_Delete                                   ;86CF32; Shot instruction list
+EnemyProjectile_KiHunterAcidSpit_Right:                                  ;86CF26;
+    %EnemyProjectile(\
+    %initAI(InitAI_EnemyProjectile_KiHunterAcidSpit_Right),
+    %preInst(RTS_86CFF7),
+    %instList(InstList_EnemyProjectile_KiHunterAcidSpit_Right),
+    %radius(2, 8),
+    %properties($0014),
+    %hitList(0),
+    %shotList(InstList_EnemyProjectile_Delete))
 
 
 ;;; $CF34: Instruction list - enemy projectile $CF18 (ki hunter acid spit - left) ;;;
@@ -12509,13 +12648,15 @@ PreInstruction_EnemyProj_KiHunterAcidSpit_Moving:
 
 
 ;;; $D02E: Enemy projectile - kago bug ;;;
-EnemyProjectile_KagoBug:
-    dw InitAI_EnemyProjectile_KagoBug                                    ;86D02E; Initialisation AI
-    dw RTS_86D0EB                                                        ;86D030; Initial pre-instruction
-    dw InstList_EnemyProjectile_KraidRocks_KagoBug                       ;86D032; Initial instruction list
-    db $04,$04                                                           ;86D034; X,Y radius
-    dw $0014,$0000                                                       ;86D036; Properties, Hit instruction list
-    dw InstList_EnemyProjectile_Shot_KagoBug                             ;86D03A; Shot instruction list
+EnemyProjectile_KagoBug:                                                 ;86D02E;
+    %EnemyProjectile(\
+    %initAI(InitAI_EnemyProjectile_KagoBug),
+    %preInst(RTS_86D0EB),
+    %instList(InstList_EnemyProjectile_KraidRocks_KagoBug),
+    %radius(4, 4),
+    %properties($0014),
+    %hitList(0),
+    %shotList(InstList_EnemyProjectile_Shot_KagoBug))
 
 
 ;;; $D03C: Instruction list - kago bug - hit floor ;;;
@@ -12929,55 +13070,67 @@ PreInstruction_EnemyProjectile_PowampSpike:
 
 
 ;;; $D298: Enemy projectile - powamp spike ;;;
-EnemyProjectile_Powamp:
-    dw InitAI_EnemyProjectile_PowampSpike                                ;86D298; Initialisation AI
-    dw PreInstruction_EnemyProjectile_PowampSpike                        ;86D29A; Initial pre-instruction
-    dw InstList_EnemyProjectile_PowampSpike                              ;86D29C; Initial instruction list
-    db $04,$04                                                           ;86D29E; X,Y radius
-    dw $0014,$0000                                                       ;86D2A0; Properties, Hit instruction list
-    dw InstList_EnemyProjectile_PowampSpike_Delete                       ;86D2A4; Shot instruction list
+EnemyProjectile_Powamp:                                                  ;86D298;
+    %EnemyProjectile(\
+    %initAI(InitAI_EnemyProjectile_PowampSpike),
+    %preInst(PreInstruction_EnemyProjectile_PowampSpike),
+    %instList(InstList_EnemyProjectile_PowampSpike),
+    %radius(4, 4),
+    %properties($0014),
+    %hitList(0),
+    %shotList(InstList_EnemyProjectile_PowampSpike_Delete))
 
 
 ;;; $D2A6: Enemy projectiles - work robot laser ;;;
-EnemyProjectile_RobotLaser_UpLeft:
-    dw InitAI_EnemyProjectile_WreckedShipRobotLaser_UpLeft_Right         ;86D2A6; Initialisation AI
-    dw PreInstruction_EnemyProjectile_WreckedShipRobotLaser              ;86D2A8; Initial pre-instruction
-    dw InstList_EnemyProjectile_WreckedShipRobotLaser_0                  ;86D2AA; Initial instruction list
-    db $0C,$0C                                                           ;86D2AC; X,Y radius
-    dw $0004,$0000                                                       ;86D2AE; Properties, Hit instruction list
-    dw InstList_EnemyProjectile_Delete                                   ;86D2B2; Shot instruction list
+EnemyProjectile_RobotLaser_UpLeft:                                       ;86D2A6;
+    %EnemyProjectile(\
+    %initAI(InitAI_EnemyProjectile_WreckedShipRobotLaser_UpLeft_Right),
+    %preInst(PreInstruction_EnemyProjectile_WreckedShipRobotLaser),
+    %instList(InstList_EnemyProjectile_WreckedShipRobotLaser_0),
+    %radius($0C, $0C),
+    %properties($0004),
+    %hitList(0),
+    %shotList(InstList_EnemyProjectile_Delete))
 
-EnemyProjectile_RobotLaser_Horizontal:
-    dw InitAI_EnemyProjectile_WreckedShipRobotLaser_Horizontal           ;86D2B4; Initialisation AI
-    dw PreInstruction_EnemyProjectile_WreckedShipRobotLaser              ;86D2B6; Initial pre-instruction
-    dw InstList_EnemyProjectile_WreckedShipRobotLaser_0                  ;86D2B8; Initial instruction list
-    db $0F,$02                                                           ;86D2BA; X,Y radius
-    dw $0014,$0000                                                       ;86D2BC; Properties, Hit instruction list
-    dw InstList_EnemyProjectile_Delete                                   ;86D2C0; Shot instruction list
+EnemyProjectile_RobotLaser_Horizontal:                                   ;86D2B4;
+    %EnemyProjectile(\
+    %initAI(InitAI_EnemyProjectile_WreckedShipRobotLaser_Horizontal),
+    %preInst(PreInstruction_EnemyProjectile_WreckedShipRobotLaser),
+    %instList(InstList_EnemyProjectile_WreckedShipRobotLaser_0),
+    %radius($0F, 2),
+    %properties($0014),
+    %hitList(0),
+    %shotList(InstList_EnemyProjectile_Delete))
 
-EnemyProjectile_RobotLaser_DownLeft:
-    dw InitAI_EnemyProjectile_WreckedShipRobotLaser_DownLeft_Right       ;86D2C2; Initialisation AI
-    dw PreInstruction_EnemyProjectile_WreckedShipRobotLaser              ;86D2C4; Initial pre-instruction
-    dw InstList_EnemyProjectile_WreckedShipRobotLaser_0                  ;86D2C6; Initial instruction list
-    db $0C,$0C                                                           ;86D2C8; X,Y radius
-    dw $0004,$0000                                                       ;86D2CA; Properties, Hit instruction list
-    dw InstList_EnemyProjectile_Delete                                   ;86D2CE; Shot instruction list
+EnemyProjectile_RobotLaser_DownLeft:                                     ;86D2C2;
+    %EnemyProjectile(\
+    %initAI(InitAI_EnemyProjectile_WreckedShipRobotLaser_DownLeft_Right),
+    %preInst(PreInstruction_EnemyProjectile_WreckedShipRobotLaser),
+    %instList(InstList_EnemyProjectile_WreckedShipRobotLaser_0),
+    %radius($0C, $0C),
+    %properties($0004),
+    %hitList(0),
+    %shotList(InstList_EnemyProjectile_Delete))
 
-EnemyProjectile_RobotLaser_UpRight:
-    dw InitAI_EnemyProjectile_WreckedShipRobotLaser_UpLeft_Right         ;86D2D0; Initialisation AI
-    dw PreInstruction_EnemyProjectile_WreckedShipRobotLaser              ;86D2D2; Initial pre-instruction
-    dw InstList_EnemyProjectile_WreckedShipRobotLaser_0                  ;86D2D4; Initial instruction list
-    db $0C,$0C                                                           ;86D2D6; X,Y radius
-    dw $0004,$0000                                                       ;86D2D8; Properties, Hit instruction list
-    dw InstList_EnemyProjectile_Delete                                   ;86D2DC; Shot instruction list
+EnemyProjectile_RobotLaser_UpRight:                                      ;86D2D0;
+    %EnemyProjectile(\
+    %initAI(InitAI_EnemyProjectile_WreckedShipRobotLaser_UpLeft_Right),
+    %preInst(PreInstruction_EnemyProjectile_WreckedShipRobotLaser),
+    %instList(InstList_EnemyProjectile_WreckedShipRobotLaser_0),
+    %radius($0C, $0C),
+    %properties($0004),
+    %hitList(0),
+    %shotList(InstList_EnemyProjectile_Delete))
 
-EnemyProjectile_RobotLaser_DownRight:
-    dw InitAI_EnemyProjectile_WreckedShipRobotLaser_DownLeft_Right       ;86D2DE; Initialisation AI
-    dw PreInstruction_EnemyProjectile_WreckedShipRobotLaser              ;86D2E0; Initial pre-instruction
-    dw InstList_EnemyProjectile_WreckedShipRobotLaser_0                  ;86D2E2; Initial instruction list
-    db $0C,$0C                                                           ;86D2E4; X,Y radius
-    dw $0004,$0000                                                       ;86D2E6; Properties, Hit instruction list
-    dw InstList_EnemyProjectile_Delete                                   ;86D2EA; Shot instruction list
+EnemyProjectile_RobotLaser_DownRight:                                    ;86D2DE;
+    %EnemyProjectile(\
+    %initAI(InitAI_EnemyProjectile_WreckedShipRobotLaser_DownLeft_Right),
+    %preInst(PreInstruction_EnemyProjectile_WreckedShipRobotLaser),
+    %instList(InstList_EnemyProjectile_WreckedShipRobotLaser_0),
+    %radius($0C, $0C),
+    %properties($0004),
+    %hitList(0),
+    %shotList(InstList_EnemyProjectile_Delete))
 
 
 ;;; $D2EC: Instruction list - enemy projectile $D2A6/$D2B4/$D2C2/$D2D0/$D2DE (work robot laser) ;;;
@@ -13860,29 +14013,35 @@ PreInstruction_EnemyProj_NoobTubeReleasedAirBubbles_Flying:
 
 
 ;;; $D904: Enemy projectiles - n00b tube ;;;
-EnemyProjectile_NoobTubeCrack:
-    dw Instruction_EnemyProjectile_NoobTubeCrack                         ;86D904; Initialisation AI
-    dw RTS_8684FB                                                        ;86D906; Initial pre-instruction
-    dw InstList_EnemyProjectile_NoobTubeCrack_0                          ;86D908; Initial instruction list
-    db $00,$00                                                           ;86D90A; X,Y radius
-    dw $3000,$0000                                                       ;86D90C; Properties, Hit instruction list
-    dw InstList_EnemyProjectile_Delete                                   ;86D910; Shot instruction list
+EnemyProjectile_NoobTubeCrack:                                           ;86D904;
+    %EnemyProjectile(\
+    %initAI(Instruction_EnemyProjectile_NoobTubeCrack),
+    %preInst(RTS_8684FB),
+    %instList(InstList_EnemyProjectile_NoobTubeCrack_0),
+    %radius(0, 0),
+    %properties($3000),
+    %hitList(0),
+    %shotList(InstList_EnemyProjectile_Delete))
 
-EnemyProjectile_NoobTubeShard:
-    dw InitAI_EnemyProjectile_NoobTubeShard                              ;86D912; Initialisation AI
-    dw PreInstruction_EnemyProjectile_NoobTubeShard_Flying               ;86D914; Initial pre-instruction
-    dw InstList_EnemyProjectile_NoobTubeShard_Parameter0_0               ;86D916; Initial instruction list
-    db $00,$00                                                           ;86D918; X,Y radius
-    dw $3000,$0000                                                       ;86D91A; Properties, Hit instruction list
-    dw InstList_EnemyProjectile_Delete                                   ;86D91E; Shot instruction list
+EnemyProjectile_NoobTubeShard:                                           ;86D912;
+    %EnemyProjectile(\
+    %initAI(InitAI_EnemyProjectile_NoobTubeShard),
+    %preInst(PreInstruction_EnemyProjectile_NoobTubeShard_Flying),
+    %instList(InstList_EnemyProjectile_NoobTubeShard_Parameter0_0),
+    %radius(0, 0),
+    %properties($3000),
+    %hitList(0),
+    %shotList(InstList_EnemyProjectile_Delete))
 
-EnemyProjectile_NoobTubeAirBubbles:
-    dw InitAI_EnemyProjectile_NoobTubeReleasedAirBubbles                 ;86D920; Initialisation AI
-    dw RTS_8684FB                                                        ;86D922; Initial pre-instruction
-    dw InstList_EnemyProjectile_NoobTubeReleasedAirBubbles               ;86D924; Initial instruction list
-    db $00,$00                                                           ;86D926; X,Y radius
-    dw $3000,$0000                                                       ;86D928; Properties, Hit instruction list
-    dw InstList_EnemyProjectile_Delete                                   ;86D92C; Shot instruction list
+EnemyProjectile_NoobTubeAirBubbles:                                      ;86D920;
+    %EnemyProjectile(\
+    %initAI(InitAI_EnemyProjectile_NoobTubeReleasedAirBubbles),
+    %preInst(RTS_8684FB),
+    %instList(InstList_EnemyProjectile_NoobTubeReleasedAirBubbles),
+    %radius(0, 0),
+    %properties($3000),
+    %hitList(0),
+    %shotList(InstList_EnemyProjectile_Delete))
 
 
 ;;; $D92E: Instruction list - cacatac spike - left - facing up ;;;
@@ -14255,13 +14414,15 @@ CheckIf_EnemyProjectile_IsOffScreen_duplicate:
 
 
 ;;; $DAFE: Enemy projectile - cacatac spike ;;;
-EnemyProjectile_Cacatac:
-    dw InitAI_EnemyProjectile_CacatacSpike                               ;86DAFE; Initialisation AI
-    dw PreInstruction_EnemyProjectile_CacatacSpike                       ;86DB00; Initial pre-instruction
-    dw InstList_EnemyProjectile_CacatacSpike_Left_FacingUp               ;86DB02; Initial instruction list
-    db $02,$02                                                           ;86DB04; X,Y radius
-    dw $0005,$0000                                                       ;86DB06; Properties, Hit instruction list
-    dw InstList_EnemyProjectile_Delete                                   ;86DB0A; Shot instruction list
+EnemyProjectile_Cacatac:                                                 ;86DAFE;
+    %EnemyProjectile(\
+    %initAI(InitAI_EnemyProjectile_CacatacSpike),
+    %preInst(PreInstruction_EnemyProjectile_CacatacSpike),
+    %instList(InstList_EnemyProjectile_CacatacSpike_Left_FacingUp),
+    %radius(2, 2),
+    %properties($0005),
+    %hitList(0),
+    %shotList(InstList_EnemyProjectile_Delete))
 
 
 ;;; $DB0C: Instruction list - mini-Crocomire projectile ;;;
@@ -14414,13 +14575,15 @@ CheckIf_EnemyProjectile_IsOffScreen_duplicate_again:
 
 
 ;;; $DBF2: Enemy projectile - mini-Crocomire projectile ;;;
-UNUSED_EnemyProjectile_Stoke_86DBF2:
-    dw UNUSED_InitAI_EnemyProjectile_StokeProjectile_86DB18              ;86DBF2; Initialisation AI
-    dw UNUSED_PreInstruction_EnemyProjectile_StokeProjectile_86DB5B      ;86DBF4; Initial pre-instruction
-    dw UNUSED_InstList_EnemyProjectile_StokeProjectile_86DB0B            ;86DBF6; Initial instruction list
-    db $02,$02                                                           ;86DBF8; X,Y radius
-    dw $0005,$0000                                                       ;86DBFA; Properties, Hit instruction list
-    dw InstList_EnemyProjectile_Delete                                   ;86DBFE; Shot instruction list
+UNUSED_EnemyProjectile_Stoke_86DBF2:                                     ;86DBF2;
+    %EnemyProjectile(\
+    %initAI(UNUSED_InitAI_EnemyProjectile_StokeProjectile_86DB18),
+    %preInst(UNUSED_PreInstruction_EnemyProjectile_StokeProjectile_86DB5B),
+    %instList(UNUSED_InstList_EnemyProjectile_StokeProjectile_86DB0B),
+    %radius(2, 2),
+    %properties($0005),
+    %hitList(0),
+    %shotList(InstList_EnemyProjectile_Delete))
 
 
 ;;; $DC00: (Shot) instruction list - enemy projectile $DE88 (spore spawner) ;;;
@@ -14686,29 +14849,35 @@ SporeMovementData:                                                       ;86DD6C
 
 
 ;;; $DE6C: Enemy projectiles - Spore Spawn ;;;
-EnemyProjectile_SporeSpawnStalk:
-    dw InitAI_EnemyProjectile_SporeSpawnsStalk                           ;86DE6C; Initialisation AI
-    dw RTS_86DD44                                                        ;86DE6E; Initial pre-instruction
-    dw InstList_EnemyProjectile_SporeSpawnsStalk                         ;86DE70; Initial instruction list
-    db $08,$08                                                           ;86DE72; X,Y radius
-    dw $2000,$0000                                                       ;86DE74; Properties, Hit instruction list
-    dw InstList_EnemyProjectile_SporeSpawnsStalk                         ;86DE78; Shot instruction list
+EnemyProjectile_SporeSpawnStalk:                                         ;86DE6C;
+    %EnemyProjectile(\
+    %initAI(InitAI_EnemyProjectile_SporeSpawnsStalk),
+    %preInst(RTS_86DD44),
+    %instList(InstList_EnemyProjectile_SporeSpawnsStalk),
+    %radius(8, 8),
+    %properties($2000),
+    %hitList(0),
+    %shotList(InstList_EnemyProjectile_SporeSpawnsStalk))
 
-EnemyProjectile_SporeSpawnSpores:
-    dw InitAI_EnemyProjectile_Spores                                     ;86DE7A; Initialisation AI
-    dw PreInstruction_EnemyProjectile_Spores                             ;86DE7C; Initial pre-instruction
-    dw InstList_EnemyProjectile_Spores                                   ;86DE7E; Initial instruction list
-    db $02,$02                                                           ;86DE80; X,Y radius
-    dw $8004,$0000                                                       ;86DE82; Properties, Hit instruction list
-    dw InstList_EnemyProjectile_Shot_Spores                              ;86DE86; Shot instruction list
+EnemyProjectile_SporeSpawnSpores:                                        ;86DE7A;
+    %EnemyProjectile(\
+    %initAI(InitAI_EnemyProjectile_Spores),
+    %preInst(PreInstruction_EnemyProjectile_Spores),
+    %instList(InstList_EnemyProjectile_Spores),
+    %radius(2, 2),
+    %properties($8004),
+    %hitList(0),
+    %shotList(InstList_EnemyProjectile_Shot_Spores))
 
-EnemyProjectile_SporeSpawnSporeSpawner:
-    dw InitAI_EnemyProjectile_SporeSpawner                               ;86DE88; Initialisation AI
-    dw PreInstruction_EnemyProjectile_SporeSpawner                       ;86DE8A; Initial pre-instruction
-    dw InstList_EnemyProjectile_Shot_SporeSpawner                        ;86DE8C; Initial instruction list
-    db $02,$02                                                           ;86DE8E; X,Y radius
-    dw $2000,$0000                                                       ;86DE90; Properties, Hit instruction list
-    dw InstList_EnemyProjectile_Shot_SporeSpawner                        ;86DE94; Shot instruction list
+EnemyProjectile_SporeSpawnSporeSpawner:                                  ;86DE88;
+    %EnemyProjectile(\
+    %initAI(InitAI_EnemyProjectile_SporeSpawner),
+    %preInst(PreInstruction_EnemyProjectile_SporeSpawner),
+    %instList(InstList_EnemyProjectile_Shot_SporeSpawner),
+    %radius(2, 2),
+    %properties($2000),
+    %hitList(0),
+    %shotList(InstList_EnemyProjectile_Shot_SporeSpawner))
 
 
 ;;; $DE96: Instruction list - namihe/fune fireball - left ;;;
@@ -14886,21 +15055,25 @@ endif ; !FEATURE_KEEP_UNREFERENCED
 
 
 ;;; $DFBC: Enemy projectiles - namihe/fune fireball ;;;
-EnemyProjectile_NamiheFireball:
-    dw InitAI_EnemyProjectile_NamiFuneFireball                           ;86DFBC; Initialisation AI
-    dw PreInstruction_EnemyProjectile_NamiFuneFireball                   ;86DFBE; Initial pre-instruction
-    dw InstList_EnemyProjectile_NamiFuneFireball_Left                    ;86DFC0; Initial instruction list
-    db $04,$08                                                           ;86DFC2; X,Y radius
-    dw $00C8,$0000                                                       ;86DFC4; Properties, Hit instruction list
-    dw InstList_EnemyProjectile_Delete                                   ;86DFC8; Shot instruction list
+EnemyProjectile_NamiheFireball:                                          ;86DFBC;
+    %EnemyProjectile(\
+    %initAI(InitAI_EnemyProjectile_NamiFuneFireball),
+    %preInst(PreInstruction_EnemyProjectile_NamiFuneFireball),
+    %instList(InstList_EnemyProjectile_NamiFuneFireball_Left),
+    %radius(4, 8),
+    %properties($00C8),
+    %hitList(0),
+    %shotList(InstList_EnemyProjectile_Delete))
 
-EnemyProjectile_FuneFireball:
-    dw InitAI_EnemyProjectile_NamiFuneFireball                           ;86DFCA; Initialisation AI
-    dw PreInstruction_EnemyProjectile_NamiFuneFireball                   ;86DFCC; Initial pre-instruction
-    dw InstList_EnemyProjectile_NamiFuneFireball_Left                    ;86DFCE; Initial instruction list
-    db $04,$08                                                           ;86DFD0; X,Y radius
-    dw $003C,$0000                                                       ;86DFD2; Properties, Hit instruction list
-    dw InstList_EnemyProjectile_Delete                                   ;86DFD6; Shot instruction list
+EnemyProjectile_FuneFireball:                                            ;86DFCA;
+    %EnemyProjectile(\
+    %initAI(InitAI_EnemyProjectile_NamiFuneFireball),
+    %preInst(PreInstruction_EnemyProjectile_NamiFuneFireball),
+    %instList(InstList_EnemyProjectile_NamiFuneFireball_Left),
+    %radius(4, 8),
+    %properties($003C),
+    %hitList(0),
+    %shotList(InstList_EnemyProjectile_Delete))
 
 
 ;;; $DFD8: Instruction list - lava thrown by magdollite - left ;;;
@@ -15087,13 +15260,15 @@ CheckIf_EnemyProjectile_IsOffScreen_duplicate_again3:
 
 
 ;;; $E0E0: Enemy projectile - lava thrown by magdollite ;;;
-EnemyProjectile_Magdollite:
-    dw InitAI_EnemyProjectile_MagdolliteFlame                            ;86E0E0; Initialisation AI
-    dw PreInstruction_EnemyProjectile_MagdolliteFlame                    ;86E0E2; Initial pre-instruction
-    dw InstList_EnemyProjectile_MagdolliteFlame_Left                     ;86E0E4; Initial instruction list
-    db $02,$02                                                           ;86E0E6; X,Y radius
-    dw $8028,$0000                                                       ;86E0E8; Properties, Hit instruction list
-    dw InstList_EnemyProjectile_Shot_MagdolliteFlame                     ;86E0EC; Shot instruction list
+EnemyProjectile_Magdollite:                                              ;86E0E0;
+    %EnemyProjectile(\
+    %initAI(InitAI_EnemyProjectile_MagdolliteFlame),
+    %preInst(PreInstruction_EnemyProjectile_MagdolliteFlame),
+    %instList(InstList_EnemyProjectile_MagdolliteFlame_Left),
+    %radius(2, 2),
+    %properties($8028),
+    %hitList(0),
+    %shotList(InstList_EnemyProjectile_Shot_MagdolliteFlame))
 
 
 ;;; $E0EE: Instruction list - dust cloud / explosion - index = 0 (unused. Beam charge) ;;;
@@ -15618,30 +15793,36 @@ RTS_86E508:
 ; Enemy projectile $E525 is broken due to its bogus pre-instruction pointer and is otherwise just a low priority version of $E509
 ; Only difference between $E509 and $E517 is the former deletes itself once off-screen and takes position parameters in $12/$14,
 ; and the latter places itself at the current PLM block and takes a random X/Y offset parameter
-EnemyProjectile_MiscDust:
-    dw InitAI_EnemyProj_MiscDust                                         ;86E509; Initialisation AI
-    dw PreInstruction_EnemyProjectile_MiscDust                           ;86E50B; Initial pre-instruction
-    dw UNUSED_InstList_EnemyProj_MiscDust_0_BeamCharge_86E0EE            ;86E50D; Initial instruction list
-    db $00,$00                                                           ;86E50F; X,Y radius
-    dw $1000,$0000                                                       ;86E511; Properties, Hit instruction list
-    dw InstList_EnemyProjectile_Delete                                   ;86E515; Shot instruction list
+EnemyProjectile_MiscDust:                                                ;86E509;
+    %EnemyProjectile(\
+    %initAI(InitAI_EnemyProj_MiscDust),
+    %preInst(PreInstruction_EnemyProjectile_MiscDust),
+    %instList(UNUSED_InstList_EnemyProj_MiscDust_0_BeamCharge_86E0EE),
+    %radius(0, 0),
+    %properties($1000),
+    %hitList(0),
+    %shotList(InstList_EnemyProjectile_Delete))
 
-EnemyProjectile_MiscDustPLM:
-    dw InitAI_EnemyProj_MiscDustPLM                                      ;86E517; Initialisation AI
-    dw RTS_86E508                                                        ;86E519; Initial pre-instruction
-    dw InstList_EnemyProj_MiscDust_3_SmallExplosion                      ;86E51B; Initial instruction list
-    db $00,$00                                                           ;86E51D; X,Y radius
-    dw $0000,$0000                                                       ;86E51F; Properties, Hit instruction list
-    dw InstList_EnemyProjectile_Delete                                   ;86E523; Shot instruction list
+EnemyProjectile_MiscDustPLM:                                             ;86E517;
+    %EnemyProjectile(\
+    %initAI(InitAI_EnemyProj_MiscDustPLM),
+    %preInst(RTS_86E508),
+    %instList(InstList_EnemyProj_MiscDust_3_SmallExplosion),
+    %radius(0, 0),
+    %properties($0000),
+    %hitList(0),
+    %shotList(InstList_EnemyProjectile_Delete))
 
 if !FEATURE_KEEP_UNREFERENCED
-UNUSED_EnemyProjectile_DustCloudExplosion_86E525:
-    dw InitAI_EnemyProj_MiscDust                                         ;86E525; Initialisation AI
-    dw InstList_EnemyProjectile_GunshipLiftoffDustClouds_Index0_0        ;86E527; >_< this is not a pre-instruction, its an instruction list
-    dw InstList_EnemyProj_MiscDust_3_SmallExplosion                      ;86E529; Initial instruction list
-    db $00,$00                                                           ;86E52B; X,Y radius
-    dw $0000,$0000                                                       ;86E52D; Properties, Hit instruction list
-    dw InstList_EnemyProjectile_Delete                                   ;86E531; Shot instruction list
+UNUSED_EnemyProjectile_DustCloudExplosion_86E525:                        ;86E525;
+    %EnemyProjectile(\
+    %initAI(InitAI_EnemyProj_MiscDust),
+    %preInst(InstList_EnemyProjectile_GunshipLiftoffDustClouds_Index0_0), ; >_< this is not a pre-instruction, its an instruction list
+    %instList(InstList_EnemyProj_MiscDust_3_SmallExplosion),
+    %radius(0, 0),
+    %properties($0000),
+    %hitList(0),
+    %shotList(InstList_EnemyProjectile_Delete))
 endif ; !FEATURE_KEEP_UNREFERENCED
 
 
@@ -15826,37 +16007,45 @@ PreInstruction_EnemyProjectile_ShotGate_InitialClosed:
 
 
 ;;; $E64B: Enemy projectiles - shot gates ;;;
-EnemyProjectile_SpawnedDownwardsShotGate:
-    dw InitAI_EnemyProjectile_ShotGate_Spawned                           ;86E64B; Initialisation AI
-    dw RTS_86E604                                                        ;86E64D; Initial pre-instruction
-    dw InstList_EnemyProjectile_ShotGate_SpawnedDownwards                ;86E64F; Initial instruction list
-    db $00,$00                                                           ;86E651; X,Y radius
-    dw $2000,$0000                                                       ;86E653; Properties, Hit instruction list
-    dw InstList_EnemyProjectile_Delete                                   ;86E657; Shot instruction list
+EnemyProjectile_SpawnedDownwardsShotGate:                                ;86E64B;
+    %EnemyProjectile(\
+    %initAI(InitAI_EnemyProjectile_ShotGate_Spawned),
+    %preInst(RTS_86E604),
+    %instList(InstList_EnemyProjectile_ShotGate_SpawnedDownwards),
+    %radius(0, 0),
+    %properties($2000),
+    %hitList(0),
+    %shotList(InstList_EnemyProjectile_Delete))
 
-EnemyProjectile_DownwardsShotGateInitiallyClosed:
-    dw InitAI_EnemyProjectile_ShotGate_InitialClosedDownwards            ;86E659; Initialisation AI
-    dw RTS_86E604                                                        ;86E65B; Initial pre-instruction
-    dw InstList_EnemyProjectile_ShotGate_InitialClosedDownwards          ;86E65D; Initial instruction list
-    db $00,$00                                                           ;86E65F; X,Y radius
-    dw $2000,$0000                                                       ;86E661; Properties, Hit instruction list
-    dw InstList_EnemyProjectile_Delete                                   ;86E665; Shot instruction list
+EnemyProjectile_DownwardsShotGateInitiallyClosed:                        ;86E659;
+    %EnemyProjectile(\
+    %initAI(InitAI_EnemyProjectile_ShotGate_InitialClosedDownwards),
+    %preInst(RTS_86E604),
+    %instList(InstList_EnemyProjectile_ShotGate_InitialClosedDownwards),
+    %radius(0, 0),
+    %properties($2000),
+    %hitList(0),
+    %shotList(InstList_EnemyProjectile_Delete))
 
-EnemyProjectile_SpawnedUpwardsShotGate:
-    dw InitAI_EnemyProjectile_ShotGate_Spawned                           ;86E667; Initialisation AI
-    dw RTS_86E604                                                        ;86E669; Initial pre-instruction
-    dw InstList_EnemyProjectile_ShotGate_SpawnedUpwards                  ;86E66B; Initial instruction list
-    db $00,$00                                                           ;86E66D; X,Y radius
-    dw $2000,$0000                                                       ;86E66F; Properties, Hit instruction list
-    dw InstList_EnemyProjectile_Delete                                   ;86E673; Shot instruction list
+EnemyProjectile_SpawnedUpwardsShotGate:                                  ;86E667;
+    %EnemyProjectile(\
+    %initAI(InitAI_EnemyProjectile_ShotGate_Spawned),
+    %preInst(RTS_86E604),
+    %instList(InstList_EnemyProjectile_ShotGate_SpawnedUpwards),
+    %radius(0, 0),
+    %properties($2000),
+    %hitList(0),
+    %shotList(InstList_EnemyProjectile_Delete))
 
-EnemyProjectile_UpwardsShotGateInitiallyClosed:
-    dw InitAI_EnemyProjectile_ShotGate_InitialClosedUpwards              ;86E675; Initialisation AI
-    dw RTS_86E604                                                        ;86E677; Initial pre-instruction
-    dw InstList_EnemyProjectile_ShotGate_InitialClosedUpwards            ;86E679; Initial instruction list
-    db $00,$00                                                           ;86E67B; X,Y radius
-    dw $2000,$0000                                                       ;86E67D; Properties, Hit instruction list
-    dw InstList_EnemyProjectile_Delete                                   ;86E681; Shot instruction list
+EnemyProjectile_UpwardsShotGateInitiallyClosed:                          ;86E675;
+    %EnemyProjectile(\
+    %initAI(InitAI_EnemyProjectile_ShotGate_InitialClosedUpwards),
+    %preInst(RTS_86E604),
+    %instList(InstList_EnemyProjectile_ShotGate_InitialClosedUpwards),
+    %radius(0, 0),
+    %properties($2000),
+    %hitList(0),
+    %shotList(InstList_EnemyProjectile_Delete))
 
 
 ;;; $E683: Instruction list - enemy projectile $E6D2 (save station electricity) ;;;
@@ -15908,13 +16097,15 @@ RTS_86E6D1:
 
 
 ;;; $E6D2: Enemy projectile - save station electricity ;;;
-EnemyProjectile_SaveStationElectricity:
-    dw InitAI_EnemyProjectile_SaveStationElectrictiy                     ;86E6D2; Initialisation AI
-    dw RTS_86E6D1                                                        ;86E6D4; Initial pre-instruction
-    dw InstList_EnemyProjectile_SaveStationElectricity_0                 ;86E6D6; Initial instruction list
-    db $00,$00                                                           ;86E6D8; X,Y radius
-    dw $3000,$0000                                                       ;86E6DA; Properties, Hit instruction list
-    dw InstList_EnemyProjectile_Delete                                   ;86E6DE; Shot instruction list
+EnemyProjectile_SaveStationElectricity:                                  ;86E6D2;
+    %EnemyProjectile(\
+    %initAI(InitAI_EnemyProjectile_SaveStationElectrictiy),
+    %preInst(RTS_86E6D1),
+    %instList(InstList_EnemyProjectile_SaveStationElectricity_0),
+    %radius(0, 0),
+    %properties($3000),
+    %hitList(0),
+    %shotList(InstList_EnemyProjectile_Delete))
 
 
 ;;; $E6E0: Check if enemy projectile is off screen ;;;
@@ -16661,13 +16852,15 @@ Function_EnemyProj_BotwoonsBody_QueueSmallExplosionSoundFX:
 
 
 ;;; $EBA0: Enemy projectile - Botwoon's body ;;;
-EnemyProjectile_BotwoonsBody:
-    dw InitAI_EnemyProjectile_BotwoonsBody                               ;86EBA0; Initialisation AI
-    dw PreInstruction_EnemyProjectile_BotwoonsBody                       ;86EBA2; Initial pre-instruction
-    dw InstList_EnemyProjectile_BotwoonsBodyTail_Hidden                  ;86EBA4; Initial instruction list
-    db $02,$02                                                           ;86EBA6; X,Y radius
-    dw $E080,$0000                                                       ;86EBA8; Properties, Hit instruction list
-    dw InstList_EnemyProjectile_Delete                                   ;86EBAC; Shot instruction list
+EnemyProjectile_BotwoonsBody:                                            ;86EBA0;
+    %EnemyProjectile(\
+    %initAI(InitAI_EnemyProjectile_BotwoonsBody),
+    %preInst(PreInstruction_EnemyProjectile_BotwoonsBody),
+    %instList(InstList_EnemyProjectile_BotwoonsBodyTail_Hidden),
+    %radius(2, 2),
+    %properties($E080),
+    %hitList(0),
+    %shotList(InstList_EnemyProjectile_Delete))
 
 
 ;;; $EBAE: Instruction list - enemy projectile $EC48 (Botwoon's spit) ;;;
@@ -16771,13 +16964,15 @@ CheckIf_EnemyProjectile_IsOffScreen_duplicate_again5:
 
 
 ;;; $EC48: Enemy projectile - Botwoon's spit ;;;
-EnemyProjectile_BotwoonsSpit:
-    dw InitAI_EnemyProjectile_BotwoonsSpit                               ;86EC48; Initialisation AI
-    dw PreInstruction_EnemyProjectile_BotwoonsSpit                       ;86EC4A; Initial pre-instruction
-    dw InstList_EnemyProjectile_BotwoonsSpit                             ;86EC4C; Initial instruction list
-    db $02,$02                                                           ;86EC4E; X,Y radius
-    dw $1060,$0000                                                       ;86EC50; Properties, Hit instruction list
-    dw InstList_EnemyProjectile_Delete                                   ;86EC54; Shot instruction list
+EnemyProjectile_BotwoonsSpit:                                            ;86EC48;
+    %EnemyProjectile(\
+    %initAI(InitAI_EnemyProjectile_BotwoonsSpit),
+    %preInst(PreInstruction_EnemyProjectile_BotwoonsSpit),
+    %instList(InstList_EnemyProjectile_BotwoonsSpit),
+    %radius(2, 2),
+    %properties($1060),
+    %hitList(0),
+    %shotList(InstList_EnemyProjectile_Delete))
 
 
 ;;; $EC56: Instruction list - yapping maw's body - facing down ;;;
@@ -16827,13 +17022,15 @@ RTS_86EC94:
 
 
 ;;; $EC95: Enemy projectile - yapping maw's body ;;;
-EnemyProjectile_YappingMawsBody:
-    dw InitAI_EnemyProjectile_YappingMawsBody                            ;86EC95; Initialisation AI
-    dw RTS_86EC94                                                        ;86EC97; Initial pre-instruction
-    dw InstList_EnemyProjectile_YappingMawsBody_FacingDown               ;86EC99; Initial instruction list
-    db $02,$02                                                           ;86EC9B; X,Y radius
-    dw $2005,$0000                                                       ;86EC9D; Properties, Hit instruction list
-    dw InstList_EnemyProjectile_Delete                                   ;86ECA1; Shot instruction list
+EnemyProjectile_YappingMawsBody:                                         ;86EC95;
+    %EnemyProjectile(\
+    %initAI(InitAI_EnemyProjectile_YappingMawsBody),
+    %preInst(RTS_86EC94),
+    %instList(InstList_EnemyProjectile_YappingMawsBody_FacingDown),
+    %radius(2, 2),
+    %properties($2005),
+    %hitList(0),
+    %shotList(InstList_EnemyProjectile_Delete))
 
 
 ;;; $ECA3: Instruction list - handle respawning enemy ;;;
@@ -17801,23 +17998,25 @@ Respawn_Enemy:
 
 
 ;;; $F337: Enemy projectiles - enemy death explosion / pickup ;;;
-EnemyProjectile_EnemyDeathPickup:
-    dw InitAI_EnemyProjectile_Pickup                                     ;86F337; Initialisation AI
-    dw PreInstruction_EnemyProjectile_Pickup                             ;86F339; Initial pre-instruction
-    dw InstList_EnemyProjectile_Pickup_SmallEnergy                       ;86F33B; Initial instruction list
-    db $10,$10                                                           ;86F33D; X,Y radius
-    dw $3000                                                             ;86F33F; Properties
-    dw InstList_EnemyProjectile_Delete                                   ;86F341; Hit instruction list
-    dw InstList_EnemyProjectile_Delete                                   ;86F343; Shot instruction list
+EnemyProjectile_EnemyDeathPickup:                                        ;86F337;
+    %EnemyProjectile(\
+    %initAI(InitAI_EnemyProjectile_Pickup),
+    %preInst(PreInstruction_EnemyProjectile_Pickup),
+    %instList(InstList_EnemyProjectile_Pickup_SmallEnergy),
+    %radius($10, $10),
+    %properties($3000),
+    %hitList(InstList_EnemyProjectile_Delete),
+    %shotList(InstList_EnemyProjectile_Delete))
 
-EnemyProjectile_EnemyDeathExplosion:
-    dw InitAI_EnemyProjectile_EnemyDeathExplosion                        ;86F345; Initialisation AI
-    dw RTS_86EFDF                                                        ;86F347; Initial pre-instruction
-    dw InstList_EnemyProjectile_Pickup_SmallEnergy                       ;86F349; Initial instruction list
-    db $10,$10                                                           ;86F34B; X,Y radius
-    dw $7000                                                             ;86F34D; Properties
-    dw InstList_EnemyProjectile_Delete                                   ;86F34F; Hit instruction list
-    dw InstList_EnemyProjectile_Delete                                   ;86F351; Shot instruction list
+EnemyProjectile_EnemyDeathExplosion:                                     ;86F345;
+    %EnemyProjectile(\
+    %initAI(InitAI_EnemyProjectile_EnemyDeathExplosion),
+    %preInst(RTS_86EFDF),
+    %instList(InstList_EnemyProjectile_Pickup_SmallEnergy),
+    %radius($10, $10),
+    %properties($7000),
+    %hitList(InstList_EnemyProjectile_Delete),
+    %shotList(InstList_EnemyProjectile_Delete))
 
 
 ;;; $F353: Instruction list - falling spark - falling ;;;
@@ -17965,13 +18164,15 @@ PreInstruction_EnemyProjectile_FallingSpark:
 
 
 ;;; $F498: Enemy projectile - falling spark ;;;
-EnemyProjectile_FallingSpark:
-    dw InitAI_EnemyProjectile_FallingSpark                               ;86F498; Initialisation AI
-    dw PreInstruction_EnemyProjectile_FallingSpark                       ;86F49A; Initial pre-instruction
-    dw InstList_EnemyProjectile_FallingSpark_Falling                     ;86F49C; Initial instruction list
-    db $04,$04                                                           ;86F49E; X,Y radius
-    dw $0005,$0000                                                       ;86F4A0; Properties, Hit instruction list
-    dw InstList_EnemyProjectile_Delete                                   ;86F4A4; Shot instruction list
+EnemyProjectile_FallingSpark:                                            ;86F498;
+    %EnemyProjectile(\
+    %initAI(InitAI_EnemyProjectile_FallingSpark),
+    %preInst(PreInstruction_EnemyProjectile_FallingSpark),
+    %instList(InstList_EnemyProjectile_FallingSpark_Falling),
+    %radius(4, 4),
+    %properties($0005),
+    %hitList(0),
+    %shotList(InstList_EnemyProjectile_Delete))
 
 
 Freespace_Bank86_F4A6:                                                   ;86F4A6;

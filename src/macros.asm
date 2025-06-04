@@ -535,3 +535,47 @@ endmacro
 macro paletteBlend(arg)
     db <arg>
 endmacro
+
+macro EnemyProjectile(initialAI, preInst, instList, radius, properties, hitList, shotList)
+  .initialAI
+    <initialAI>
+  .preInstruction
+    <preInst>
+  .instructionList
+    <instList>
+  .radius
+    <radius>
+  .properties
+    <properties>
+  .hitInstructionList
+    <hitList>
+  .shotInstructionList
+    <shotList>
+endmacro
+
+macro preInst(arg)
+    dw <arg>
+endmacro
+
+macro instList(arg)
+    dw <arg>
+endmacro
+
+macro radius(X, Y)
+  ..X
+    db <X>
+  ..Y
+    db <Y>
+endmacro
+
+macro properties(arg)
+    dw <arg>
+endmacro
+
+macro hitList(arg)
+    dw <arg>
+endmacro
+
+macro shotList(arg)
+    dw <arg>
+endmacro

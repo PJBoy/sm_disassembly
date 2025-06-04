@@ -58,3 +58,13 @@
     %paletteFX(),
     %animTiles(),
     %paletteBlend())
+
+
+    %EnemyProjectile(\
+    %initialAI(),
+    %preInst(),
+    %instList(),
+    %radius(, ),
+    %properties($),
+    %hitList(),
+    %shotList()
