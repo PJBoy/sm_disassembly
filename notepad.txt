@@ -67,4 +67,14 @@
     %radius(, ),
     %properties($),
     %hitList(),
-    %shotList()
+    %shotList())
+
+
+    %EnemyPopulations(\
+    %enemyID(),
+    %XPosition($),
+    %YPosition($),
+    %initParam(0),
+    %properties($),
+    %extraProperties($0000),
+    %speedParams($, $))

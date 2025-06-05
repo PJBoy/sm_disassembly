@@ -579,3 +579,37 @@ endmacro
 macro shotList(arg)
     dw <arg>
 endmacro
+
+macro EnemyPopulations(ID, XPosition, YPosition, initParam, properties, extraProperties, speedParams)
+    <ID>
+    <XPosition>
+    <YPosition>
+    <initParam>
+    <properties>
+    <extraProperties>
+    <speedParams>
+endmacro
+
+macro enemyID(arg)
+    dw <arg>
+endmacro
+
+macro XPosition(arg)
+    dw <arg>
+endmacro
+
+macro YPosition(arg)
+    dw <arg>
+endmacro
+
+macro initParam(arg)
+    dw <arg>
+endmacro
+
+macro extraProperties(arg)
+    dw <arg>
+endmacro
+
+macro speedParams(speed1, speed2)
+    dw <speed1>, <speed2>
+endmacro
