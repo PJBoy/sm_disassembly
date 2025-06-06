@@ -3799,7 +3799,7 @@ Function_Kraid_KraidGetsBig_FadeInRoomBackground:
     LDA.W #$0080                                                         ;A7AE64;
     STA.W Enemy[7].var5                                                  ;A7AE67;
     LDA.W #$0001                                                         ;A7AE6A;
-    STA.W $0FEC                                                          ;A7AE6D;
+    STA.W Enemy[1].var2                                                  ;A7AE6D;
     LDA.W #InstList_Kraid_Roar_1                                         ;A7AE70;
     STA.W Kraid.instListPointer                                          ;A7AE73;
     LDA.W #$0120                                                         ;A7AE76;
@@ -3941,7 +3941,7 @@ ProcessKraidInstList:
     INX                                                                  ;A7AF66;
     INX                                                                  ;A7AF67;
     SEP #$20                                                             ;A7AF68;
-    LDA.B #$A7                                                           ;A7AF6A;
+    LDA.B #Tilemap_KraidHead_0>>16                                       ;A7AF6A;
     STA.B VRAMWrite.size,X                                               ;A7AF6C;
     REP #$20                                                             ;A7AF6E;
     INX                                                                  ;A7AF70;
@@ -6573,7 +6573,7 @@ UNUSED_ProcessKraidInstruction_WithNoASMInstructions_A7C457:
     INX                                                                  ;A7C48B;
     INX                                                                  ;A7C48C;
     SEP #$20                                                             ;A7C48D;
-    LDA.B #$A7                                                           ;A7C48F;
+    LDA.B #Tilemap_KraidHead_0>>16                                       ;A7C48F;
     STA.B VRAMWrite.size,X                                               ;A7C491;
     REP #$20                                                             ;A7C493;
     INX                                                                  ;A7C495;
@@ -12112,14 +12112,14 @@ LoadDachoraPalette:
 
   .pointers:
 ; pointers to $7E
-    dw $C100                                                             ;A7F55F;
-    dw $C120                                                             ;A7F561;
-    dw $C140                                                             ;A7F563;
-    dw $C160                                                             ;A7F565;
-    dw $C180                                                             ;A7F567;
-    dw $C1A0                                                             ;A7F569;
-    dw $C1C0                                                             ;A7F56B;
-    dw $C1E0                                                             ;A7F56D;
+    dw Palettes_SpriteP0                                                 ;A7F55F;
+    dw Palettes_SpriteP1                                                 ;A7F561;
+    dw Palettes_SpriteP2                                                 ;A7F563;
+    dw Palettes_SpriteP3                                                 ;A7F565;
+    dw Palettes_SpriteP4C0                                               ;A7F567;
+    dw Palettes_SpriteP5                                                 ;A7F569;
+    dw Palettes_SpriteP6                                                 ;A7F56B;
+    dw Palettes_SpriteP7                                                 ;A7F56D;
 
 
 ;;; $F56F: Unused. RTL ;;;
@@ -12388,7 +12388,7 @@ AccelerateRunningDachora:
   .checkMaxSpeed:
     CMP.W #$0008                                                         ;A7F77A;
     BNE .return                                                          ;A7F77D;
-    LDA.B $12                                                            ;A7F77F;
+    LDA.B DP_Temp12                                                      ;A7F77F;
     CMP.W #$0000                                                         ;A7F781;
     BEQ .maxSpeed                                                        ;A7F784;
 
