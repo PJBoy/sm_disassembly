@@ -1229,35 +1229,55 @@ Function_MotherBrainBody_ClearBottomMiddleTubes:
 ; |     _ Number of enemy deaths needed to clear current room
 ; |    |
 ; FFFF nn
-EnemyPopulations_MotherBrainFallingTubes_BottomLeft:
-    dw EnemyHeaders_MotherBrainTubes                                     ;A98AE5;
-    dw $0060,$00B3                                                       ;A98AE7;
-    dw InstList_MotherBrainTubes_0                                       ;A98AEB;
-    dw $A000,$0000,$0000,$0000                                           ;A98AED;
+EnemyPopulations_MotherBrainFallingTubes_BottomLeft:                     ;A98AE5;
+    %EnemyPopulations(\
+    %enemyID(EnemyHeaders_MotherBrainTubes),
+    %XPosition($0060),
+    %YPosition($00B3),
+    %initParam(InstList_MotherBrainTubes_0),
+    %properties($A000),
+    %extraProperties($0000),
+    %speedParams(0, 0))
 
-EnemyPopulations_MotherBrainFallingTubes_BottomRight:
-    dw EnemyHeaders_MotherBrainTubes                                     ;A98AF5;
-    dw $00A0,$00B3                                                       ;A98AF7;
-    dw InstList_MotherBrainTubes_1                                       ;A98AFB;
-    dw $A000,$0000,$0002,$0000                                           ;A98AFD;
+EnemyPopulations_MotherBrainFallingTubes_BottomRight:                    ;A98AF5;
+    %EnemyPopulations(\
+    %enemyID(EnemyHeaders_MotherBrainTubes),
+    %XPosition($00A0),
+    %YPosition($00B3),
+    %initParam(InstList_MotherBrainTubes_1),
+    %properties($A000),
+    %extraProperties($0000),
+    %speedParams(2, 0))
 
-EnemyPopulations_MotherBrainFallingTubes_BottomMiddleLeft:
-    dw EnemyHeaders_MotherBrainTubes                                     ;A98B05;
-    dw $0068,$00BB                                                       ;A98B07;
-    dw InstList_MotherBrainTubes_2                                       ;A98B0B;
-    dw $A000,$0000,$0004,$0000                                           ;A98B0D;
+EnemyPopulations_MotherBrainFallingTubes_BottomMiddleLeft:               ;A98B05;
+    %EnemyPopulations(\
+    %enemyID(EnemyHeaders_MotherBrainTubes),
+    %XPosition($0068),
+    %YPosition($00BB),
+    %initParam(InstList_MotherBrainTubes_2),
+    %properties($A000),
+    %extraProperties($0000),
+    %speedParams(4, 0))
 
-EnemyPopulations_MotherBrainFallingTubes_BottomMiddleRight:
-    dw EnemyHeaders_MotherBrainTubes                                     ;A98B15;
-    dw $0098,$00BB                                                       ;A98B17;
-    dw InstList_MotherBrainTubes_3                                       ;A98B1B;
-    dw $A000,$0000,$0006,$0000                                           ;A98B1D;
+EnemyPopulations_MotherBrainFallingTubes_BottomMiddleRight:              ;A98B15;
+    %EnemyPopulations(\
+    %enemyID(EnemyHeaders_MotherBrainTubes),
+    %XPosition($0098),
+    %YPosition($00BB),
+    %initParam(InstList_MotherBrainTubes_3),
+    %properties($A000),
+    %extraProperties($0000),
+    %speedParams(6, 0))
 
-EnemyPopulations_MotherBrainFallingTubes_MainTube:
-    dw EnemyHeaders_MotherBrainTubes                                     ;A98B25;
-    dw $0080,$00A7                                                       ;A98B27;
-    dw InstList_MotherBrainTubes_4                                       ;A98B2B;
-    dw $A800,$0000,$0008,$0020                                           ;A98B2D;
+EnemyPopulations_MotherBrainFallingTubes_MainTube:                       ;A98B25;
+    %EnemyPopulations(\
+    %enemyID(EnemyHeaders_MotherBrainTubes),
+    %XPosition($0080),
+    %YPosition($00A7),
+    %initParam(InstList_MotherBrainTubes_4),
+    %properties($A800),
+    %extraProperties($0000),
+    %speedParams(8, $20))
 
 
 ;;; $8B35: Initialisation AI - enemy $ECFF (Mother Brain tubes falling) ;;;
@@ -5340,7 +5360,7 @@ GenerateExplosionsAroundMotherBrainBody:
   .XOffset:
     dw $0024                                                             ;A9B099;
   .YOffset:
-    dw $FFDB                                                             ;A9B09B;
+    dw       $FFDB                                                       ;A9B09B;
     dw              $FFED,$FFF1, $FFFC,$000D, $001D,$0019
     dw $0011,$FFC9, $001E,$FFEA, $FFFD,$FFFB, $0000,$0028
     dw $0034,$FFDE, $FFFD,$FFF1, $000C,$0013, $0019,$002C
@@ -6203,12 +6223,10 @@ TryMotherBrainAttack_Phase2_TryAttack:
     STA.W MotherBrainBody.function                                       ;A9B6C5;
     JMP.W Function_MotherBrainBody_FiringBomb_DecideOnWalking            ;A9B6C8;
 
-
   .laser:
     LDA.W #Function_MBBody_Phase2_FiringLaser_PositionHeadQuickly        ;A9B6CB;
     STA.W MotherBrainBody.function                                       ;A9B6CE;
     JMP.W Function_MBBody_Phase2_FiringLaser_PositionHeadQuickly         ;A9B6D1;
-
 
   .instListPointers:
 ; Mother Brain brain instruction list pointers
@@ -7117,7 +7135,7 @@ HandleMotherBrainBodyRainbowBeamPalette:
 ;;; $BD1D: Write Mother Brain palette ;;;
 WriteMotherBrainPalette:
     PHB                                                                  ;A9BD1D;
-    PEA.W $AD00                                                          ;A9BD1E;
+    PEA.W MotherBrainHealthBasedPalettes_BrainBody>>8&$FF00              ;A9BD1E;
     PLB                                                                  ;A9BD21;
     PLB                                                                  ;A9BD22;
     PHY                                                                  ;A9BD23;
@@ -9481,7 +9499,7 @@ HandleBabyMetroidCutsceneDeathExplosions:
 ;       |      ____ Y offset
 ;       |     |
   .XOffsets:
-    dw $FFE8                                                             ;A9CDFC;
+    dw       $FFE8                                                       ;A9CDFC;
   .YOffsets:
     dw $FFE8                                                             ;A9CDFE;
     dw $FFEC,$0014
@@ -14117,7 +14135,7 @@ InitAI_BabyMetroid:
     LDX.W #$0FFE                                                         ;A9EF40;
 
   .loop:
-    STA.W $2000,X                                                        ;A9EF43;
+    STA.W CorpseRottingGFX_Torizo,X                                      ;A9EF43;
     DEX                                                                  ;A9EF46;
     DEX                                                                  ;A9EF47;
     BPL .loop                                                            ;A9EF48;
@@ -15398,7 +15416,7 @@ EnemyShot_BabyMetroid:
     LDA.W CollisionIndex                                                 ;A9F874;
     ASL                                                                  ;A9F877;
     TAX                                                                  ;A9F878;
-    LDA.W $0C2C,X                                                        ;A9F879;
+    LDA.W SamusProjectile_Damages,X                                      ;A9F879;
     ASL                                                                  ;A9F87C;
     ASL                                                                  ;A9F87D;
     ASL                                                                  ;A9F87E;

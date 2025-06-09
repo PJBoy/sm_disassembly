@@ -11728,7 +11728,7 @@ EnemyGraphicsDrawnHook_FaceBlock_PeriodicallyCyclePalettes:
 
   .loopColors:
     LDA.W FaceBlockGlowColors,Y                                          ;A8E893;
-    STA.L $7EC112,X                                                      ;A8E896;
+    STA.L Palettes_SpriteP0+$12,X                                        ;A8E896;
     INY                                                                  ;A8E89A;
     INY                                                                  ;A8E89B;
     INX                                                                  ;A8E89C;
@@ -13218,7 +13218,7 @@ Function_KihunterWings_Falling:
     LDX.W EnemyIndex                                                     ;A8F7CF;
     LDA.L KihunterWings.fallingFunction,X                                ;A8F7D2;
     STA.B DP_Temp12                                                      ;A8F7D6;
-    JMP.W ($0012)                                                        ;A8F7D8;
+    JMP.W (DP_Temp12)                                                        ;A8F7D8;
 
 
 ;;; $F7DB: Ki-hunter wings falling function - drifting left ;;;
