@@ -3186,11 +3186,11 @@ DebugHandler_10_EnemyDebugger_EnemyAllocationViewer:
 
   .loop:
     LDX.W Temp_EnemySetEntryPointer                                      ;B49779;
-    LDA.L $B40000,X                                                      ;B4977C;
+    LDA.L EnemyNames_name,X                                              ;B4977C;
     CMP.W #$FFFF                                                         ;B49780;
     BEQ .terminated                                                      ;B49783;
     TAX                                                                  ;B49785;
-    LDA.L $A00000,X                                                      ;B49786;
+    LDA.L EnemyHeaders_tileDataSize,X                                    ;B49786;
     XBA                                                                  ;B4978A;
     AND.W #$00FF                                                         ;B4978B;
     LSR                                                                  ;B4978E;
@@ -3250,7 +3250,7 @@ DebugHandler:
 ;;     A: Non-zero to skip processing frame
     PHB                                                                  ;B49809;
     SEP #$20                                                             ;B4980A;
-    LDA.B #$B4                                                           ;B4980C;
+    LDA.B #DebugHandler>>16                                              ;B4980C;
     PHA                                                                  ;B4980E;
     PLB                                                                  ;B4980F;
     REP #$30                                                             ;B49810;
@@ -6327,7 +6327,7 @@ Create_Sprite_Object:
     STA.L SpriteObjects_InstListPointers,X                               ;B4BC6C;
     PHX                                                                  ;B4BC70;
     TAX                                                                  ;B4BC71;
-    LDA.L $B40000,X                                                      ;B4BC72; ?
+    LDA.L SpriteObjectInstLists,X                                        ;B4BC72;
     PLX                                                                  ;B4BC76;
     STA.L SpriteObjects_Instructions,X                                   ;B4BC77;
     STX.B DP_Temp12                                                      ;B4BC7B;
@@ -6346,7 +6346,7 @@ HandleSpriteObjects:
     PHY                                                                  ;B4BC83;
     PHP                                                                  ;B4BC84;
     PHB                                                                  ;B4BC85;
-    PEA.W $B400                                                          ;B4BC86;
+    PEA.W HandleSpriteObjects>>8&$FF00                                   ;B4BC86;
     PLB                                                                  ;B4BC89;
     PLB                                                                  ;B4BC8A;
     REP #$30                                                             ;B4BC8B;
@@ -6375,7 +6375,7 @@ HandleSpriteObjects:
     INC                                                                  ;B4BCC1;
     STA.L SpriteObjects_InstListPointers,X                               ;B4BCC2;
     TAX                                                                  ;B4BCC6;
-    LDA.L $B40000,X                                                      ;B4BCC7;
+    LDA.L SpriteObjectInstLists,X                                        ;B4BCC7;
     CMP.W #$8000                                                         ;B4BCCB;
     BPL .ASMInstruction                                                  ;B4BCCE;
     LDX.W SpriteObjectIndex                                              ;B4BCD0;
@@ -6429,11 +6429,11 @@ Instruction_SpriteObject_GotoParameter:
     LDX.W SpriteObjectIndex                                              ;B4BD12;
     LDA.L SpriteObjects_InstListPointers,X                               ;B4BD15;
     TAX                                                                  ;B4BD19;
-    LDA.L $B40002,X                                                      ;B4BD1A; ?
+    LDA.L SpriteObjectInstLists+2,X                                      ;B4BD1A;
     LDX.W SpriteObjectIndex                                              ;B4BD1E;
     STA.L SpriteObjects_InstListPointers,X                               ;B4BD21;
     TAX                                                                  ;B4BD25;
-    LDA.L $B40000,X                                                      ;B4BD26; ?
+    LDA.L SpriteObjectInstLists,X                                        ;B4BD26;
     LDX.W SpriteObjectIndex                                              ;B4BD2A;
     STA.L SpriteObjects_Instructions,X                                   ;B4BD2D;
     RTS                                                                  ;B4BD31;
@@ -6445,7 +6445,7 @@ DrawSpriteObjects:
     PHY                                                                  ;B4BD33;
     PHP                                                                  ;B4BD34;
     PHB                                                                  ;B4BD35;
-    PEA.W $B400                                                          ;B4BD36;
+    PEA.W SpriteObjectInstLists>>8                                       ;B4BD36;
     PLB                                                                  ;B4BD39;
     PLB                                                                  ;B4BD3A;
     REP #$30                                                             ;B4BD3B;
@@ -6479,7 +6479,7 @@ DrawSpriteObjects:
     PHX                                                                  ;B4BD7E;
     LDA.L SpriteObjects_InstListPointers,X                               ;B4BD7F;
     TAX                                                                  ;B4BD83;
-    LDA.L $B40002,X                                                      ;B4BD84;
+    LDA.L SpriteObjectInstLists+2,X                                      ;B4BD84;
     TAY                                                                  ;B4BD88;
     JSL.L AddSpritemapToOAM_WithBaseTileNumber_8AB8                      ;B4BD89;
     PLX                                                                  ;B4BD8D;
@@ -9932,558 +9932,1355 @@ EnemyName_RobotNoPower:
 ; |    |
 ; FFFF nn
 DebugEnemyPopulationData_NoName:
-    dw $FFFF                                                             ;B4E2F3;
-    db $00                                                               ;B4E2F5;
+    dw $FFFF : db $00                                                    ;B4E2F3;
 
-DebugEnemyPopulationData_Atomic:
-    dw EnemyHeaders_Atomic                                               ;B4E2F6;
-    dw $0100,$0100,$0000,$2000,$0000,$0001,$0001                         ;B4E2F8;
-    dw $FFFF : db $01                                                    ;B4E306;
-
-DebugEnemyPopulationData_Bang:
-    dw EnemyHeaders_Bang                                                 ;B4E309;
-    dw $0100,$0100,$0000,$2800,$0000,$BB2B,$0000                         ;B4E30B;
-    dw EnemyHeaders_Bang                                                 ;B4E319;
-    dw $0100,$0100,$0000,$2800,$0000,$BB66,$0101                         ;B4E31B;
-    dw EnemyHeaders_Bang                                                 ;B4E329;
-    dw $0100,$0100,$0000,$2800,$0000,$BB4A,$0000                         ;B4E32B;
+DebugEnemyPopulationData_Atomic:                                         ;B4E2F6;
+    %EnemyPopulations(\
+    %enemyID(EnemyHeaders_Atomic),
+    %XPosition($0100),
+    %YPosition($0100),
+    %initParam(0),
+    %properties($2000),
+    %extraProperties($0000),
+    %speedParams(1, 1))
     dw $FFFF : db $01
 
-DebugEnemyPopulationData_PirateGreyWall:
-    dw EnemyHeaders_PirateGreyWall                                       ;B4E33C;
-    dw $002D,$01B8,$0000,$2000,$0004,$0000,$00A0                         ;B4E33E;
+DebugEnemyPopulationData_Bang:                                           ;B4E309;
+    %EnemyPopulations(\
+    %enemyID(EnemyHeaders_Bang),
+    %XPosition($0100),
+    %YPosition($0100),
+    %initParam(0),
+    %properties($2800),
+    %extraProperties($0000),
+    %speedParams(BangAI_Electricity, 0))
+
+    %EnemyPopulations(\
+    %enemyID(EnemyHeaders_Bang),
+    %XPosition($0100),
+    %YPosition($0100),
+    %initParam(0),
+    %properties($2800),
+    %extraProperties($0000),
+    %speedParams(BangAI_Core, $0101))
+
+    %EnemyPopulations(\
+    %enemyID(EnemyHeaders_Bang),
+    %XPosition($0100),
+    %YPosition($0100),
+    %initParam(0),
+    %properties($2800),
+    %extraProperties($0000),
+    %speedParams(BangAI_Shell, 0))
     dw $FFFF : db $01
 
-DebugEnemyPopulationData_PirateGreyNinja:
-    dw EnemyHeaders_PirateGreyNinja                                      ;B4E34F;
-    dw $0270,$00A0,$0000,$2800,$0004,$0001,$0030                         ;B4E351;
+DebugEnemyPopulationData_PirateGreyWall:                                 ;B4E33C;
+    %EnemyPopulations(\
+    %enemyID(EnemyHeaders_PirateGreyWall),
+    %XPosition($002D),
+    %YPosition($01B8),
+    %initParam(0),
+    %properties($2000),
+    %extraProperties($0004),
+    %speedParams(0, $00A0))
     dw $FFFF : db $01
 
-DebugEnemyPopulationData_PirateGreyWalking:
-    dw EnemyHeaders_PirateGreyWalking                                    ;B4E362;
-    dw $00D9,$00A0,$0000,$2000,$0004,$0000,$0050                         ;B4E364;
+DebugEnemyPopulationData_PirateGreyNinja:                                ;B4E34F;
+    %EnemyPopulations(\
+    %enemyID(EnemyHeaders_PirateGreyNinja),
+    %XPosition($0270),
+    %YPosition($00A0),
+    %initParam(0),
+    %properties($2800),
+    %extraProperties($0004),
+    %speedParams(1, $0030))
     dw $FFFF : db $01
 
-DebugEnemyPopulationData_Botwoon:
-    dw EnemyHeaders_Botwoon                                              ;B4E375;
-    dw $0100,$0100,$0000,$2800,$0000,$0000,$0000                         ;B4E377;
+DebugEnemyPopulationData_PirateGreyWalking:                              ;B4E362;
+    %EnemyPopulations(\
+    %enemyID(EnemyHeaders_PirateGreyWalking),
+    %XPosition($00D9),
+    %YPosition($00A0),
+    %initParam(0),
+    %properties($2000),
+    %extraProperties($0004),
+    %speedParams(0, $0050))
     dw $FFFF : db $01
 
-DebugEnemyPopulationData_Boyon:
-    dw EnemyHeaders_Boyon                                                ;B4E388;
-    dw $00E8,$00A8,$0000,$2000,$0000,$0103,$0020                         ;B4E38A;
+DebugEnemyPopulationData_Botwoon:                                        ;B4E375;
+    %EnemyPopulations(\
+    %enemyID(EnemyHeaders_Botwoon),
+    %XPosition($0100),
+    %YPosition($0100),
+    %initParam(0),
+    %properties($2800),
+    %extraProperties($0000),
+    %speedParams($0000, $0000))
+    dw $FFFF : db $01
+
+DebugEnemyPopulationData_Boyon:                                          ;B4E388;
+    %EnemyPopulations(\
+    %enemyID(EnemyHeaders_Boyon),
+    %XPosition($00E8),
+    %YPosition($00A8),
+    %initParam(0),
+    %properties($2000),
+    %extraProperties($0000),
+    %speedParams($0103, $0020))
     dw $FFFF : db $00
 
-DebugEnemyPopulationData_DessgeegaLarge:
-    dw EnemyHeaders_DessgeegaLarge                                       ;B4E39B;
-    dw $0100,$0100,$0000,$2000,$0000,$8000,$0000                         ;B4E39D;
+DebugEnemyPopulationData_DessgeegaLarge:                                 ;B4E39B;
+    %EnemyPopulations(\
+    %enemyID(EnemyHeaders_DessgeegaLarge),
+    %XPosition($0100),
+    %YPosition($0100),
+    %initParam(0),
+    %properties($2000),
+    %extraProperties($0000),
+    %speedParams($8000, $0000))
     dw $FFFF : db $01
 
-DebugEnemyPopulationData_Shaktool:
-    dw EnemyHeaders_Shaktool                                             ;B4E3AE;
-    dw $0110,$035C,$0000,$2000,$0000,$8000,$0000                         ;B4E3B0;
-    dw EnemyHeaders_Shaktool                                             ;B4E3BE;
-    dw $0110,$035C,$0000,$2000,$0000,$8000,$0002                         ;B4E3C0;
-    dw EnemyHeaders_Shaktool                                             ;B4E3CE;
-    dw $0110,$035C,$0000,$2000,$0000,$8000,$0004                         ;B4E3D0;
-    dw EnemyHeaders_Shaktool                                             ;B4E3DE;
-    dw $0110,$035C,$0000,$2000,$0000,$8000,$0006                         ;B4E3E0;
-    dw EnemyHeaders_Shaktool                                             ;B4E3EE;
-    dw $0110,$035C,$0000,$2000,$0000,$8000,$0008                         ;B4E3F0;
-    dw EnemyHeaders_Shaktool                                             ;B4E3FE;
-    dw $0110,$035C,$0000,$2000,$0000,$8000,$000A                         ;B4E400;
-    dw EnemyHeaders_Shaktool                                             ;B4E40E;
-    dw $0110,$035C,$0000,$2000,$0000,$8000,$000C                         ;B4E410;
+DebugEnemyPopulationData_Shaktool:                                       ;B4E3AE;
+    %EnemyPopulations(\
+    %enemyID(EnemyHeaders_Shaktool),
+    %XPosition($0110),
+    %YPosition($035C),
+    %initParam(0),
+    %properties($2000),
+    %extraProperties($0000),
+    %speedParams($8000, $0000))
+
+    %EnemyPopulations(\
+    %enemyID(EnemyHeaders_Shaktool),
+    %XPosition($0110),
+    %YPosition($035C),
+    %initParam(0),
+    %properties($2000),
+    %extraProperties($0000),
+    %speedParams($8000, $0002))
+
+    %EnemyPopulations(\
+    %enemyID(EnemyHeaders_Shaktool),
+    %XPosition($0110),
+    %YPosition($035C),
+    %initParam(0),
+    %properties($2000),
+    %extraProperties($0000),
+    %speedParams($8000, $0004))
+
+    %EnemyPopulations(\
+    %enemyID(EnemyHeaders_Shaktool),
+    %XPosition($0110),
+    %YPosition($035C),
+    %initParam(0),
+    %properties($2000),
+    %extraProperties($0000),
+    %speedParams($8000, $0006))
+
+    %EnemyPopulations(\
+    %enemyID(EnemyHeaders_Shaktool),
+    %XPosition($0110),
+    %YPosition($035C),
+    %initParam(0),
+    %properties($2000),
+    %extraProperties($0000),
+    %speedParams($8000, $0008))
+
+    %EnemyPopulations(\
+    %enemyID(EnemyHeaders_Shaktool),
+    %XPosition($0110),
+    %YPosition($035C),
+    %initParam(0),
+    %properties($2000),
+    %extraProperties($0000),
+    %speedParams($8000, $000A))
+
+    %EnemyPopulations(\
+    %enemyID(EnemyHeaders_Shaktool),
+    %XPosition($0110),
+    %YPosition($035C),
+    %initParam(0),
+    %properties($2000),
+    %extraProperties($0000),
+    %speedParams($8000, $000C))
     dw $FFFF : db $01
 
-DebugEnemyPopulationData_Dragon:
-    dw EnemyHeaders_Dragon                                               ;B4E421;
-    dw $0100,$0100,$0000,$2000,$0000,$0000,$0000                         ;B4E423;
-    dw EnemyHeaders_Dragon                                               ;B4E431;
-    dw $0100,$0100,$0002,$2400,$0000,$0001,$0000                         ;B4E433;
+DebugEnemyPopulationData_Dragon:                                         ;B4E421;
+    %EnemyPopulations(\
+    %enemyID(EnemyHeaders_Dragon),
+    %XPosition($0100),
+    %YPosition($0100),
+    %initParam(0),
+    %properties($2000),
+    %extraProperties($0000),
+    %speedParams($0000, $0000))
+
+    %EnemyPopulations(\
+    %enemyID(EnemyHeaders_Dragon),
+    %XPosition($0100),
+    %YPosition($0100),
+    %initParam(2),
+    %properties($2400),
+    %extraProperties($0000),
+    %speedParams($0001, $0000))
     dw $FFFF : db $01
 
 DebugEnemyPopulationData_Evir:
-    dw EnemyHeaders_Evir                                                 ;B4E444;
-    dw $0100,$0100,$0000,$2000,$0000,$0000,$1010                         ;B4E446;
-    dw EnemyHeaders_Evir                                                 ;B4E454;
-    dw $0100,$0100,$0000,$2400,$0000,$0001,$0000                         ;B4E456;
-    dw EnemyHeaders_EvirProjectile                                       ;B4E464;
-    dw $0100,$0100,$0000,$2800,$0000,$0002,$0000                         ;B4E466;
+    %EnemyPopulations(\
+    %enemyID(EnemyHeaders_Evir),
+    %XPosition($0100),
+    %YPosition($0100),
+    %initParam(0),
+    %properties($2000),
+    %extraProperties($0000),
+    %speedParams($0000, $1010))
+
+    %EnemyPopulations(\
+    %enemyID(EnemyHeaders_Evir),
+    %XPosition($0100),
+    %YPosition($0100),
+    %initParam(0),
+    %properties($2400),
+    %extraProperties($0000),
+    %speedParams($0001, $0000))
+
+    %EnemyPopulations(\
+    %enemyID(EnemyHeaders_EvirProjectile),
+    %XPosition($0100),
+    %YPosition($0100),
+    %initParam(0),
+    %properties($2800),
+    %extraProperties($0000),
+    %speedParams($0002, $0000))
     dw $FFFF : db $01
 
-DebugEnemyPopulationData_Eye:
-    dw EnemyHeaders_Eye                                                  ;B4E477;
-    dw $0228,$0048,$0000,$2C00,$0000,$0000,$8001                         ;B4E479;
-    dw EnemyHeaders_Eye                                                  ;B4E487;
-    dw $0228,$0048,$0000,$2C00,$0000,$0000,$0000                         ;B4E489;
+DebugEnemyPopulationData_Eye:                                            ;B4E477;
+    %EnemyPopulations(\
+    %enemyID(EnemyHeaders_Eye),
+    %XPosition($0228),
+    %YPosition($0048),
+    %initParam(0),
+    %properties($2C00),
+    %extraProperties($0000),
+    %speedParams($0000, $8001))
+
+    %EnemyPopulations(\
+    %enemyID(EnemyHeaders_Eye),
+    %XPosition($0228),
+    %YPosition($0048),
+    %initParam(0),
+    %properties($2C00),
+    %extraProperties($0000),
+    %speedParams($0000, $0000))
     dw $FFFF : db $00
 
-DebugEnemyPopulationData_Namihe:
-    dw EnemyHeaders_Namihe                                               ;B4E49A;
-    dw $00F0,$04E0,$0000,$A000,$0000,$0111,$0F05                         ;B4E49C;
+DebugEnemyPopulationData_Namihe:                                         ;B4E49A;
+    %EnemyPopulations(\
+    %enemyID(EnemyHeaders_Namihe),
+    %XPosition($00F0),
+    %YPosition($04E0),
+    %initParam(0),
+    %properties($A000),
+    %extraProperties($0000),
+    %speedParams($0111, $0F05))
     dw $FFFF : db $01
 
-DebugEnemyPopulationData_Skultera:
-    dw EnemyHeaders_Skultera                                             ;B4E4AD;
-    dw $0090,$00A0,$0000,$2000,$0000,$0102,$0420                         ;B4E4AF;
+DebugEnemyPopulationData_Skultera:                                       ;B4E4AD;
+    %EnemyPopulations(\
+    %enemyID(EnemyHeaders_Skultera),
+    %XPosition($0090),
+    %YPosition($00A0),
+    %initParam(0),
+    %properties($2000),
+    %extraProperties($0000),
+    %speedParams($0102, $0420))
     dw $FFFF : db $01
 
-DebugEnemyPopulationData_Coven:
-    dw EnemyHeaders_Coven                                                ;B4E4C0;
-    dw $0100,$0100,$0000,$6800,$0000,$0000,$0000                         ;B4E4C2;
+DebugEnemyPopulationData_Coven:                                          ;B4E4C0;
+    %EnemyPopulations(\
+    %enemyID(EnemyHeaders_Coven),
+    %XPosition($0100),
+    %YPosition($0100),
+    %initParam(0),
+    %properties($6800),
+    %extraProperties($0000),
+    %speedParams($0000, $0000))
     dw $FFFF : db $01
 
-DebugEnemyPopulationData_Gamet:
-    dw EnemyHeaders_Gamet                                                ;B4E4D3;
-    dw $0100,$00E0,$0000,$6800,$0000,$0000,$4030                         ;B4E4D5;
-    dw EnemyHeaders_Gamet                                                ;B4E4E3;
-    dw $0100,$00E0,$0000,$6800,$0000,$0000,$4000                         ;B4E4E5;
-    dw EnemyHeaders_Gamet                                                ;B4E4F3;
-    dw $0100,$00E0,$0000,$6800,$0000,$0000,$4000                         ;B4E4F5;
-    dw EnemyHeaders_Gamet                                                ;B4E503;
-    dw $0100,$00E0,$0000,$6800,$0000,$0000,$4000                         ;B4E505;
-    dw EnemyHeaders_Gamet                                                ;B4E513;
-    dw $0100,$00E0,$0000,$6800,$0000,$0000,$4000                         ;B4E515;
+DebugEnemyPopulationData_Gamet:                                          ;B4E4D3;
+    %EnemyPopulations(\
+    %enemyID(EnemyHeaders_Gamet),
+    %XPosition($0100),
+    %YPosition($00E0),
+    %initParam(0),
+    %properties($6800),
+    %extraProperties($0000),
+    %speedParams($0000, $4030))
+
+    %EnemyPopulations(\
+    %enemyID(EnemyHeaders_Gamet),
+    %XPosition($0100),
+    %YPosition($00E0),
+    %initParam(0),
+    %properties($6800),
+    %extraProperties($0000),
+    %speedParams($0000, $4000))
+
+    %EnemyPopulations(\
+    %enemyID(EnemyHeaders_Gamet),
+    %XPosition($0100),
+    %YPosition($00E0),
+    %initParam(0),
+    %properties($6800),
+    %extraProperties($0000),
+    %speedParams($0000, $4000))
+
+    %EnemyPopulations(\
+    %enemyID(EnemyHeaders_Gamet),
+    %XPosition($0100),
+    %YPosition($00E0),
+    %initParam(0),
+    %properties($6800),
+    %extraProperties($0000),
+    %speedParams($0000, $4000))
+
+    %EnemyPopulations(\
+    %enemyID(EnemyHeaders_Gamet),
+    %XPosition($0100),
+    %YPosition($00E0),
+    %initParam(0),
+    %properties($6800),
+    %extraProperties($0000),
+    %speedParams($0000, $4000))
     dw $FFFF : db $01
 
-DebugEnemyPopulationData_Geega:
-    dw EnemyHeaders_Geega                                                ;B4E526;
-    dw $0100,$0100,$0000,$6100,$0000,$0001,$0010                         ;B4E528;
+DebugEnemyPopulationData_Geega:                                          ;B4E526;
+    %EnemyPopulations(\
+    %enemyID(EnemyHeaders_Geega),
+    %XPosition($0100),
+    %YPosition($0100),
+    %initParam(0),
+    %properties($6100),
+    %extraProperties($0000),
+    %speedParams($0001, $0010))
     dw $FFFF : db $01
 
-DebugEnemyPopulationData_Geruta:
-    dw EnemyHeaders_Geruta                                               ;B4E539;
-    dw $0048,$0080,$0000,$2000,$0000,$0000,$0000                         ;B4E53B;
-    dw EnemyHeaders_Geruta                                               ;B4E549;
-    dw $0048,$0080,$0005,$2400,$0000,$8000,$0000                         ;B4E54B;
+DebugEnemyPopulationData_Geruta:                                         ;B4E539;
+    %EnemyPopulations(\
+    %enemyID(EnemyHeaders_Geruta),
+    %XPosition($0048),
+    %YPosition($0080),
+    %initParam(0),
+    %properties($2000),
+    %extraProperties($0000),
+    %speedParams($0000, $0000))
+
+    %EnemyPopulations(\
+    %enemyID(EnemyHeaders_Geruta),
+    %XPosition($0048),
+    %YPosition($0080),
+    %initParam(5),
+    %properties($2400),
+    %extraProperties($0000),
+    %speedParams($8000, $0000))
     dw $FFFF : db $01
 
 UNUSED_DebugEnemyPopulationData_GRAVY_B4E55C:
-    dw $FFFF                                                             ;B4E55C;
-    db $00                                                               ;B4E55E;
+    dw $FFFF : db $00                                                    ;B4E55C;
 
-DebugEnemyPopulationData_KihunterGreen:
-    dw EnemyHeaders_KihunterGreen                                        ;B4E55F;
-    dw $0100,$0100,$0000,$2800,$0000,$0001,$0000                         ;B4E561;
-    dw EnemyHeaders_KihunterGreenWings                                   ;B4E56F;
-    dw $0100,$0100,$0000,$2C00,$0000,$0020,$0000                         ;B4E571;
+DebugEnemyPopulationData_KihunterGreen:                                  ;B4E55F;
+    %EnemyPopulations(\
+    %enemyID(EnemyHeaders_KihunterGreen),
+    %XPosition($0100),
+    %YPosition($0100),
+    %initParam(0),
+    %properties($2800),
+    %extraProperties($0000),
+    %speedParams($0001, $0000))
+
+    %EnemyPopulations(\
+    %enemyID(EnemyHeaders_KihunterGreenWings),
+    %XPosition($0100),
+    %YPosition($0100),
+    %initParam(0),
+    %properties($2C00),
+    %extraProperties($0000),
+    %speedParams($0020, $0000))
     dw $FFFF : db $01
 
-DebugEnemyPopulationData_YappingMaw:
-    dw EnemyHeaders_YappingMaw                                           ;B4E582;
-    dw $0100,$0100,$0000,$2000,$0000,$0010,$0001                         ;B4E584;
+DebugEnemyPopulationData_YappingMaw:                                     ;B4E582;
+    %EnemyPopulations(\
+    %enemyID(EnemyHeaders_YappingMaw),
+    %XPosition($0100),
+    %YPosition($0100),
+    %initParam(0),
+    %properties($2000),
+    %extraProperties($0000),
+    %speedParams($0010, $0001))
     dw $FFFF : db $00
 
-DebugEnemyPopulationData_Hibashi:
-    dw EnemyHeaders_Hibashi                                              ;B4E595;
-    dw $0100,$0100,$0000,$2500,$0000,$0025,$0000                         ;B4E597;
-    dw EnemyHeaders_Hibashi                                              ;B4E5A5;
-    dw $0100,$0100,$0000,$2100,$0000,$0000,$0001                         ;B4E5A7;
+DebugEnemyPopulationData_Hibashi:                                        ;B4E595;
+    %EnemyPopulations(\
+    %enemyID(EnemyHeaders_Hibashi),
+    %XPosition($0100),
+    %YPosition($0100),
+    %initParam(0),
+    %properties($2500),
+    %extraProperties($0000),
+    %speedParams($0025, $0000))
+
+    %EnemyPopulations(\
+    %enemyID(EnemyHeaders_Hibashi),
+    %XPosition($0100),
+    %YPosition($0100),
+    %initParam(0),
+    %properties($2100),
+    %extraProperties($0000),
+    %speedParams($0000, $0001))
     dw $FFFF : db $00
 
-DebugEnemyPopulationData_Choot:
-    dw EnemyHeaders_Choot                                                ;B4E5B8;
-    dw $0100,$0100,$0000,$2000,$0000,$0204,$0030                         ;B4E5BA;
+DebugEnemyPopulationData_Choot:                                          ;B4E5B8;
+    %EnemyPopulations(\
+    %enemyID(EnemyHeaders_Choot),
+    %XPosition($0100),
+    %YPosition($0100),
+    %initParam(0),
+    %properties($2000),
+    %extraProperties($0000),
+    %speedParams($0204, $0030))
     dw $FFFF : db $01
 
-DebugEnemyPopulationData_Holtz:
-    dw EnemyHeaders_Holtz                                                ;B4E5CB;
-    dw $0100,$0100,$0000,$2000,$0000,$0000,$0000                         ;B4E5CD;
-    dw EnemyHeaders_Holtz                                                ;B4E5DB;
-    dw $0100,$0100,$0006,$2400,$0000,$8000,$0000                         ;B4E5DD;
+DebugEnemyPopulationData_Holtz:                                          ;B4E5CB;
+    %EnemyPopulations(\
+    %enemyID(EnemyHeaders_Holtz),
+    %XPosition($0100),
+    %YPosition($0100),
+    %initParam(0),
+    %properties($2000),
+    %extraProperties($0000),
+    %speedParams($0000, $0000))
+
+    %EnemyPopulations(\
+    %enemyID(EnemyHeaders_Holtz),
+    %XPosition($0100),
+    %YPosition($0100),
+    %initParam(6),
+    %properties($2400),
+    %extraProperties($0000),
+    %speedParams($8000, $0000))
     dw $FFFF : db $01
 
-DebugEnemyPopulationData_Fireflea:
-    dw EnemyHeaders_Fireflea                                             ;B4E5EE;
-    dw $0600,$0060,$0000,$2000,$0000,$0001,$0108                         ;B4E5F0;
+DebugEnemyPopulationData_Fireflea:                                       ;B4E5EE;
+    %EnemyPopulations(\
+    %enemyID(EnemyHeaders_Fireflea),
+    %XPosition($0600),
+    %YPosition($0060),
+    %initParam(0),
+    %properties($2000),
+    %extraProperties($0000),
+    %speedParams($0001, $0108))
     dw $FFFF : db $01
 
-DebugEnemyPopulationData_HZoomer:
-    dw EnemyHeaders_HZoomer                                              ;B4E601;
-    dw $0360,$0098,$0003,$2001,$0000,$0002,$0000                         ;B4E603;
+DebugEnemyPopulationData_HZoomer:                                        ;B4E601;
+    %EnemyPopulations(\
+    %enemyID(EnemyHeaders_HZoomer),
+    %XPosition($0360),
+    %YPosition($0098),
+    %initParam(3),
+    %properties($2001),
+    %extraProperties($0000),
+    %speedParams($0002, $0000))
     dw $FFFF : db $01
 
-DebugEnemyPopulationData_Kago:
-    dw EnemyHeaders_Kago                                                 ;B4E614;
-    dw $0168,$0090,$0000,$A000,$0000,$0020,$0000                         ;B4E616;
+DebugEnemyPopulationData_Kago:                                           ;B4E614;
+    %EnemyPopulations(\
+    %enemyID(EnemyHeaders_Kago),
+    %XPosition($0168),
+    %YPosition($0090),
+    %initParam(0),
+    %properties($A000),
+    %extraProperties($0000),
+    %speedParams($0020, $0000))
     dw $FFFF : db $01
 
-DebugEnemyPopulationData_MamaTurtle:
-    dw EnemyHeaders_MamaTurtle                                           ;B4E627;
-    dw $0100,$0100,$0000,$A800,$0000,$0000,$0000                         ;B4E629;
-    dw EnemyHeaders_BabyTurtle                                           ;B4E637;
-    dw $00D8,$0100,$0000,$A800,$0000,$FFFF,$0000                         ;B4E639;
-    dw EnemyHeaders_BabyTurtle                                           ;B4E647;
-    dw $0100,$0100,$0000,$A800,$0000,$FFFF,$0000                         ;B4E649;
-    dw EnemyHeaders_BabyTurtle                                           ;B4E657;
-    dw $0110,$0100,$0000,$A800,$0000,$0001,$0000                         ;B4E659;
-    dw EnemyHeaders_BabyTurtle                                           ;B4E667;
-    dw $0140,$0100,$0000,$A800,$0000,$0001,$0000                         ;B4E669;
+DebugEnemyPopulationData_MamaTurtle:                                     ;B4E627;
+    %EnemyPopulations(\
+    %enemyID(EnemyHeaders_MamaTurtle),
+    %XPosition($0100),
+    %YPosition($0100),
+    %initParam(0),
+    %properties($A800),
+    %extraProperties($0000),
+    %speedParams($0000, $0000))
+
+    %EnemyPopulations(\
+    %enemyID(EnemyHeaders_BabyTurtle),
+    %XPosition($00D8),
+    %YPosition($0100),
+    %initParam(0),
+    %properties($A800),
+    %extraProperties($0000),
+    %speedParams($FFFF, $0000))
+
+    %EnemyPopulations(\
+    %enemyID(EnemyHeaders_BabyTurtle),
+    %XPosition($0100),
+    %YPosition($0100),
+    %initParam(0),
+    %properties($A800),
+    %extraProperties($0000),
+    %speedParams($FFFF, $0000))
+
+    %EnemyPopulations(\
+    %enemyID(EnemyHeaders_BabyTurtle),
+    %XPosition($0110),
+    %YPosition($0100),
+    %initParam(0),
+    %properties($A800),
+    %extraProperties($0000),
+    %speedParams($0001, $0000))
+
+    %EnemyPopulations(\
+    %enemyID(EnemyHeaders_BabyTurtle),
+    %XPosition($0140),
+    %YPosition($0100),
+    %initParam(0),
+    %properties($A800),
+    %extraProperties($0000),
+    %speedParams($0001, $0000))
     dw $FFFF : db $01
 
-DebugEnemyPopulationData_Tripper_Kamer2:
-    dw EnemyHeaders_Tripper                                              ;B4E67A;
-    dw $0868,$00C8,$0000,$A000,$0000,$0000,$2020                         ;B4E67C;
+DebugEnemyPopulationData_Tripper_Kamer2:                                 ;B4E67A;
+    %EnemyPopulations(\
+    %enemyID(EnemyHeaders_Tripper),
+    %XPosition($0868),
+    %YPosition($00C8),
+    %initParam(0),
+    %properties($A000),
+    %extraProperties($0000),
+    %speedParams($0000, $2020))
     dw $FFFF : db $01
 
-DebugEnemyPopulationData_Sciser:
-    dw EnemyHeaders_Sciser                                               ;B4E68D;
-    dw $01C0,$0098,$0003,$2000,$0000,$0001,$0000                         ;B4E68F;
+DebugEnemyPopulationData_Sciser:                                         ;B4E68D;
+    %EnemyPopulations(\
+    %enemyID(EnemyHeaders_Sciser),
+    %XPosition($01C0),
+    %YPosition($0098),
+    %initParam(3),
+    %properties($2000),
+    %extraProperties($0000),
+    %speedParams($0001, $0000))
     dw $FFFF : db $01
 
-DebugEnemyPopulationData_FaceBlock:
-    dw EnemyHeaders_FaceBlock                                            ;B4E6A0;
-    dw $0100,$0100,$0000,$A000,$0000,$0025,$0000                         ;B4E6A2;
+DebugEnemyPopulationData_FaceBlock:                                      ;B4E6A0;
+    %EnemyPopulations(\
+    %enemyID(EnemyHeaders_FaceBlock),
+    %XPosition($0100),
+    %YPosition($0100),
+    %initParam(0),
+    %properties($A000),
+    %extraProperties($0000),
+    %speedParams($0025, $0000))
     dw $FFFF : db $00
 
-DebugEnemyPopulationData_KzanTop:
-    dw EnemyHeaders_KzanTop                                              ;B4E6B3;
-    dw $0480,$0400,$0000,$A000,$0000,$0030,$A070                         ;B4E6B5;
-    dw EnemyHeaders_KzanBottom                                           ;B4E6C3;
-    dw $0480,$0408,$0000,$0100,$0000,$0000,$0000                         ;B4E6C5;
+DebugEnemyPopulationData_KzanTop:                                        ;B4E6B3;
+    %EnemyPopulations(\
+    %enemyID(EnemyHeaders_KzanTop),
+    %XPosition($0480),
+    %YPosition($0400),
+    %initParam(0),
+    %properties($A000),
+    %extraProperties($0000),
+    %speedParams($0030, $A070))
+
+    %EnemyPopulations(\
+    %enemyID(EnemyHeaders_KzanBottom),
+    %XPosition($0480),
+    %YPosition($0408),
+    %initParam(0),
+    %properties($0100),
+    %extraProperties($0000),
+    %speedParams($0000, $0000))
     dw $FFFF : db $00
 
-DebugEnemyPopulationData_Magdollite:
-    dw EnemyHeaders_Magdollite                                           ;B4E6D6;
-    dw $0248,$00B0,$0000,$2800,$0000,$0000,$3A60                         ;B4E6D8;
-    dw EnemyHeaders_Magdollite                                           ;B4E6E6;
-    dw $0248,$00B0,$0000,$2C00,$0000,$0001,$0000                         ;B4E6E8;
-    dw EnemyHeaders_Magdollite                                           ;B4E6F6;
-    dw $0248,$00B0,$0000,$2C00,$0000,$0002,$0000                         ;B4E6F8;
+DebugEnemyPopulationData_Magdollite:                                     ;B4E6D6;
+    %EnemyPopulations(\
+    %enemyID(EnemyHeaders_Magdollite),
+    %XPosition($0248),
+    %YPosition($00B0),
+    %initParam(0),
+    %properties($2800),
+    %extraProperties($0000),
+    %speedParams($0000, $3A60))
+
+    %EnemyPopulations(\
+    %enemyID(EnemyHeaders_Magdollite),
+    %XPosition($0248),
+    %YPosition($00B0),
+    %initParam(0),
+    %properties($2C00),
+    %extraProperties($0000),
+    %speedParams($0001, $0000))
+
+    %EnemyPopulations(\
+    %enemyID(EnemyHeaders_Magdollite),
+    %XPosition($0248),
+    %YPosition($00B0),
+    %initParam(0),
+    %properties($2C00),
+    %extraProperties($0000),
+    %speedParams($0002, $0000))
     dw $FFFF : db $01
 
-DebugEnemyPopulationData_Mella:
-    dw EnemyHeaders_Mella                                                ;B4E709;
-    dw $0100,$0100,$0000,$2000,$0000,$0000,$0000                         ;B4E70B;
+DebugEnemyPopulationData_Mella:                                          ;B4E709;
+    %EnemyPopulations(\
+    %enemyID(EnemyHeaders_Mella),
+    %XPosition($0100),
+    %YPosition($0100),
+    %initParam(0),
+    %properties($2000),
+    %extraProperties($0000),
+    %speedParams($0000, $0000))
     dw $FFFF : db $00
 
-DebugEnemyPopulationData_Menu:
-    dw EnemyHeaders_Menu                                                 ;B4E71C;
-    dw $0100,$0100,$0000,$2000,$0000,$0000,$0000                         ;B4E71E;
+DebugEnemyPopulationData_Menu:                                           ;B4E71C;
+    %EnemyPopulations(\
+    %enemyID(EnemyHeaders_Menu),
+    %XPosition($0100),
+    %YPosition($0100),
+    %initParam(0),
+    %properties($2000),
+    %extraProperties($0000),
+    %speedParams($0000, $0000))
     dw $FFFF : db $00
 
-DebugEnemyPopulationData_Mellow:
-    dw EnemyHeaders_Mellow                                               ;B4E72F;
-    dw $0100,$0100,$0000,$2000,$0000,$0000,$0000                         ;B4E731;
+DebugEnemyPopulationData_Mellow:                                         ;B4E72F;
+    %EnemyPopulations(\
+    %enemyID(EnemyHeaders_Mellow),
+    %XPosition($0100),
+    %YPosition($0100),
+    %initParam(0),
+    %properties($2000),
+    %extraProperties($0000),
+    %speedParams($0000, $0000))
     dw $FFFF : db $00
 
-DebugEnemyPopulationData_Metaree:
-    dw EnemyHeaders_Metaree                                              ;B4E742;
-    dw $0100,$0100,$0000,$2000,$0000,$0000,$0000                         ;B4E744;
+DebugEnemyPopulationData_Metaree:                                        ;B4E742;
+    %EnemyPopulations(\
+    %enemyID(EnemyHeaders_Metaree),
+    %XPosition($0100),
+    %YPosition($0100),
+    %initParam(0),
+    %properties($2000),
+    %extraProperties($0000),
+    %speedParams($0000, $0000))
     dw $FFFF : db $01
 
-DebugEnemyPopulationData_Mochtroid:
-    dw EnemyHeaders_Mochtroid                                            ;B4E755;
-    dw $0100,$0100,$0000,$2000,$0000,$0000,$0000                         ;B4E757;
+DebugEnemyPopulationData_Mochtroid:                                      ;B4E755;
+    %EnemyPopulations(\
+    %enemyID(EnemyHeaders_Mochtroid),
+    %XPosition($0100),
+    %YPosition($0100),
+    %initParam(0),
+    %properties($2000),
+    %extraProperties($0000),
+    %speedParams($0000, $0000))
     dw $FFFF : db $01
 
-DebugEnemyPopulationData_Metroid:
-    dw EnemyHeaders_Metroid                                              ;B4E768;
-    dw $0100,$0100,$0000,$2000,$0000,$0000,$0005                         ;B4E76A;
+DebugEnemyPopulationData_Metroid:                                        ;B4E768;
+    %EnemyPopulations(\
+    %enemyID(EnemyHeaders_Metroid),
+    %XPosition($0100),
+    %YPosition($0100),
+    %initParam(0),
+    %properties($2000),
+    %extraProperties($0000),
+    %speedParams($0000, $0005))
     dw $FFFF : db $01
 
-DebugEnemyPopulationData_Multiviola:
-    dw EnemyHeaders_Multiviola                                           ;B4E77B;
-    dw $0078,$0058,$0000,$2000,$0000,$0060,$0001                         ;B4E77D;
+DebugEnemyPopulationData_Multiviola:                                     ;B4E77B;
+    %EnemyPopulations(\
+    %enemyID(EnemyHeaders_Multiviola),
+    %XPosition($0078),
+    %YPosition($0058),
+    %initParam(0),
+    %properties($2000),
+    %extraProperties($0000),
+    %speedParams($0060, $0001))
     dw $FFFF : db $00
 
-DebugEnemyPopulationData_MZoomer:
-    dw EnemyHeaders_MZoomer                                              ;B4E78E;
-    dw $0188,$0198,$0003,$2800,$0000,$0001,$0000                         ;B4E790;
+DebugEnemyPopulationData_MZoomer:                                        ;B4E78E;
+    %EnemyPopulations(\
+    %enemyID(EnemyHeaders_MZoomer),
+    %XPosition($0188),
+    %YPosition($0198),
+    %initParam(3),
+    %properties($2800),
+    %extraProperties($0000),
+    %speedParams($0001, $0000))
     dw $FFFF : db $01
 
-DebugEnemyPopulationData_Alcoon:
-    dw EnemyHeaders_Alcoon                                               ;B4E7A1;
-    dw $0100,$0100,$0000,$2800,$0000,$0000,$0000                         ;B4E7A3;
+DebugEnemyPopulationData_Alcoon:                                         ;B4E7A1;
+    %EnemyPopulations(\
+    %enemyID(EnemyHeaders_Alcoon),
+    %XPosition($0100),
+    %YPosition($0100),
+    %initParam(0),
+    %properties($2800),
+    %extraProperties($0000),
+    %speedParams($0000, $0000))
     dw $FFFF : db $01
 
-DebugEnemyPopulationData_Beetom:
-    dw EnemyHeaders_Beetom                                               ;B4E7B4;
-    dw $0100,$0100,$0000,$2000,$0000,$0000,$0000                         ;B4E7B6;
+DebugEnemyPopulationData_Beetom:                                         ;B4E7B4;
+    %EnemyPopulations(\
+    %enemyID(EnemyHeaders_Beetom),
+    %XPosition($0100),
+    %YPosition($0100),
+    %initParam(0),
+    %properties($2000),
+    %extraProperties($0000),
+    %speedParams($0000, $0000))
     dw $FFFF : db $01
 
-DebugEnemyPopulationData_Sova:
-    dw EnemyHeaders_Sova                                                 ;B4E7C7;
-    dw $0880,$02A8,$0003,$2000,$0000,$0001,$0004                         ;B4E7C9;
+DebugEnemyPopulationData_Sova:                                           ;B4E7C7;
+    %EnemyPopulations(\
+    %enemyID(EnemyHeaders_Sova),
+    %XPosition($0880),
+    %YPosition($02A8),
+    %initParam(3),
+    %properties($2000),
+    %extraProperties($0000),
+    %speedParams($0001, $0004))
     dw $FFFF : db $01
 
-DebugEnemyPopulationData_Oum:
-    dw EnemyHeaders_Oum                                                  ;B4E7DA;
-    dw $0100,$0100,$0000,$A000,$0004,$0000,$0000                         ;B4E7DC;
+DebugEnemyPopulationData_Oum:                                            ;B4E7DA;
+    %EnemyPopulations(\
+    %enemyID(EnemyHeaders_Oum),
+    %XPosition($0100),
+    %YPosition($0100),
+    %initParam(0),
+    %properties($A000),
+    %extraProperties($0004),
+    %speedParams($0000, $0000))
     dw $FFFF : db $01
 
-DebugEnemyPopulationData_Zero:
-    dw EnemyHeaders_Zero                                                 ;B4E7ED;
-    dw $00A0,$0040,$0002,$2000,$0000,$0001,$0000                         ;B4E7EF;
+DebugEnemyPopulationData_Zero:                                           ;B4E7ED;
+    %EnemyPopulations(\
+    %enemyID(EnemyHeaders_Zero),
+    %XPosition($00A0),
+    %YPosition($0040),
+    %initParam(2),
+    %properties($2000),
+    %extraProperties($0000),
+    %speedParams($0001, $0000))
     dw $FFFF : db $01
 
-DebugEnemyPopulationData_Bull:
-    dw EnemyHeaders_Bull                                                 ;B4E800;
-    dw $0200,$0060,$0000,$2800,$0000,$0008,$0000                         ;B4E802;
+DebugEnemyPopulationData_Bull:                                           ;B4E800;
+    %EnemyPopulations(\
+    %enemyID(EnemyHeaders_Bull),
+    %XPosition($0200),
+    %YPosition($0060),
+    %initParam(0),
+    %properties($2800),
+    %extraProperties($0000),
+    %speedParams($0008, $0000))
     dw $FFFF : db $01
 
-DebugEnemyPopulationData_Polyp:
-    dw EnemyHeaders_LavaRocks                                            ;B4E813;
-    dw $0100,$0100,$0000,$2500,$0000,$0000,$0000                         ;B4E815;
+DebugEnemyPopulationData_Polyp:                                          ;B4E813;
+    %EnemyPopulations(\
+    %enemyID(EnemyHeaders_LavaRocks),
+    %XPosition($0100),
+    %YPosition($0100),
+    %initParam(0),
+    %properties($2500),
+    %extraProperties($0000),
+    %speedParams($0000, $0000))
     dw $FFFF : db $01
 
-DebugEnemyPopulationData_Puromi:
-    dw EnemyHeaders_Puromi                                               ;B4E826;
-    dw $0100,$0100,$0000,$2000,$0000,$1010,$2001                         ;B4E828;
+DebugEnemyPopulationData_Puromi:                                         ;B4E826;
+    %EnemyPopulations(\
+    %enemyID(EnemyHeaders_Puromi),
+    %XPosition($0100),
+    %YPosition($0100),
+    %initParam(0),
+    %properties($2000),
+    %extraProperties($0000),
+    %speedParams($1010, $2001))
     dw $FFFF : db $00
 
-DebugEnemyPopulationData_Powamp:
-    dw EnemyHeaders_Powamp                                               ;B4E839;
-    dw $0100,$0100,$0000,$2C00,$0000,$0001,$0000                         ;B4E83B;
-    dw EnemyHeaders_Powamp                                               ;B4E849;
-    dw $0100,$0100,$0000,$2800,$0000,$0000,$0000                         ;B4E84B;
+DebugEnemyPopulationData_Powamp:                                         ;B4E839;
+    %EnemyPopulations(\
+    %enemyID(EnemyHeaders_Powamp),
+    %XPosition($0100),
+    %YPosition($0100),
+    %initParam(0),
+    %properties($2C00),
+    %extraProperties($0000),
+    %speedParams($0001, $0000))
+
+    %EnemyPopulations(\
+    %enemyID(EnemyHeaders_Powamp),
+    %XPosition($0100),
+    %YPosition($0100),
+    %initParam(0),
+    %properties($2800),
+    %extraProperties($0000),
+    %speedParams($0000, $0000))
     dw $FFFF : db $01
 
-DebugEnemyPopulationData_Puyo:
-    dw EnemyHeaders_Puyo                                                 ;B4E85C;
-    dw $033D,$00CC,$0000,$2000,$0000,$0003,$000A                         ;B4E85E;
+DebugEnemyPopulationData_Puyo:                                           ;B4E85C;
+    %EnemyPopulations(\
+    %enemyID(EnemyHeaders_Puyo),
+    %XPosition($033D),
+    %YPosition($00CC),
+    %initParam(0),
+    %properties($2000),
+    %extraProperties($0000),
+    %speedParams($0003, $000A))
     dw $FFFF : db $01
 
-DebugEnemyPopulationData_Reflec:
-    dw EnemyHeaders_Reflec                                               ;B4E86F;
-    dw $0168,$0048,$0000,$2000,$0000,$0000,$0000                         ;B4E871;
+DebugEnemyPopulationData_Reflec:                                         ;B4E86F;
+    %EnemyPopulations(\
+    %enemyID(EnemyHeaders_Reflec),
+    %XPosition($0168),
+    %YPosition($0048),
+    %initParam(0),
+    %properties($2000),
+    %extraProperties($0000),
+    %speedParams($0000, $0000))
     dw $FFFF : db $00
 
-DebugEnemyPopulationData_Rinka:
-    dw EnemyHeaders_Rinka                                                ;B4E882;
-    dw $0100,$0100,$0000,$6000,$0000,$0000,$0000                         ;B4E884;
+DebugEnemyPopulationData_Rinka:                                          ;B4E882;
+    %EnemyPopulations(\
+    %enemyID(EnemyHeaders_Rinka),
+    %XPosition($0100),
+    %YPosition($0100),
+    %initParam(0),
+    %properties($6000),
+    %extraProperties($0000),
+    %speedParams($0000, $0000))
     dw $FFFF : db $00
 
-DebugEnemyPopulationData_Rio:
-    dw EnemyHeaders_Rio                                                  ;B4E895;
-    dw $0100,$0100,$0000,$2000,$0000,$0000,$0000                         ;B4E897;
+DebugEnemyPopulationData_Rio:                                            ;B4E895;
+    %EnemyPopulations(\
+    %enemyID(EnemyHeaders_Rio),
+    %XPosition($0100),
+    %YPosition($0100),
+    %initParam(0),
+    %properties($2000),
+    %extraProperties($0000),
+    %speedParams($0000, $0000))
     dw $FFFF : db $01
 
-DebugEnemyPopulationData_Ripper:
-    dw EnemyHeaders_Ripper                                               ;B4E8A8;
-    dw $0068,$01A0,$0000,$2000,$0000,$0010,$0001                         ;B4E8AA;
+DebugEnemyPopulationData_Ripper:                                         ;B4E8A8;
+    %EnemyPopulations(\
+    %enemyID(EnemyHeaders_Ripper),
+    %XPosition($0068),
+    %YPosition($01A0),
+    %initParam(0),
+    %properties($2000),
+    %extraProperties($0000),
+    %speedParams($0010, $0001))
     dw $FFFF : db $01
 
-DebugEnemyPopulationData_GRipper_Ripper2:
-    dw EnemyHeaders_Ripper2                                              ;B4E8BB;
-    dw $0040,$06A0,$0000,$2800,$0000,$0020,$0001                         ;B4E8BD;
+DebugEnemyPopulationData_GRipper_Ripper2:                                ;B4E8BB;
+    %EnemyPopulations(\
+    %enemyID(EnemyHeaders_Ripper2),
+    %XPosition($0040),
+    %YPosition($06A0),
+    %initParam(0),
+    %properties($2800),
+    %extraProperties($0000),
+    %speedParams($0020, $0001))
     dw $FFFF : db $01
 
-DebugEnemyPopulationData_Robot:
-    dw EnemyHeaders_Robot                                                ;B4E8CE;
-    dw $0050,$00B0,$0000,$2800,$0000,$0001,$0000                         ;B4E8D0;
+DebugEnemyPopulationData_Robot:                                          ;B4E8CE;
+    %EnemyPopulations(\
+    %enemyID(EnemyHeaders_Robot),
+    %XPosition($0050),
+    %YPosition($00B0),
+    %initParam(0),
+    %properties($2800),
+    %extraProperties($0000),
+    %speedParams($0001, $0000))
     dw $FFFF : db $01
 
-DebugEnemyPopulationData_Boulder:
-    dw EnemyHeaders_Boulder                                              ;B4E8E1;
-    dw $0400,$01B5,$0060,$2000,$0000,$0101,$20A0                         ;B4E8E3;
+DebugEnemyPopulationData_Boulder:                                        ;B4E8E1;
+    %EnemyPopulations(\
+    %enemyID(EnemyHeaders_Boulder),
+    %XPosition($0400),
+    %YPosition($01B5),
+    %initParam($0060),
+    %properties($2000),
+    %extraProperties($0000),
+    %speedParams($0101, $20A0))
     dw $FFFF : db $00
 
-DebugEnemyPopulationData_Cacatac:
-    dw EnemyHeaders_Cacatac                                              ;B4E8F4;
-    dw $03D0,$00B3,$0000,$2000,$0000,$0100,$0F01                         ;B4E8F6;
+DebugEnemyPopulationData_Cacatac:                                        ;B4E8F4;
+    %EnemyPopulations(\
+    %enemyID(EnemyHeaders_Cacatac),
+    %XPosition($03D0),
+    %YPosition($00B3),
+    %initParam(0),
+    %properties($2000),
+    %extraProperties($0000),
+    %speedParams($0100, $0F01))
     dw $FFFF : db $01
 
-DebugEnemyPopulationData_Sbug_Sbug2:
-    dw EnemyHeaders_Sbug                                                 ;B4E907;
-    dw $01AD,$04E8,$0000,$2400,$0000,$E804,$0020                         ;B4E909;
+DebugEnemyPopulationData_Sbug_Sbug2:                                     ;B4E907;
+    %EnemyPopulations(\
+    %enemyID(EnemyHeaders_Sbug),
+    %XPosition($01AD),
+    %YPosition($04E8),
+    %initParam(0),
+    %properties($2400),
+    %extraProperties($0000),
+    %speedParams($E804, $0020))
     dw $FFFF : db $00
 
-DebugEnemyPopulationData_MiniKraid:
-    dw EnemyHeaders_MiniKraid                                            ;B4E91A;
-    dw $0100,$0100,$0000,$2800,$0000,$0000,$0000                         ;B4E91C;
+DebugEnemyPopulationData_MiniKraid:                                      ;B4E91A;
+    %EnemyPopulations(\
+    %enemyID(EnemyHeaders_MiniKraid),
+    %XPosition($0100),
+    %YPosition($0100),
+    %initParam(0),
+    %properties($2800),
+    %extraProperties($0000),
+    %speedParams($0000, $0000))
     dw $FFFF : db $01
 
-DebugEnemyPopulationData_Dessgeega:
-    dw EnemyHeaders_Dessgeega                                            ;B4E92D;
-    dw $0100,$0100,$0000,$2000,$0000,$0001,$0000                         ;B4E92F;
+DebugEnemyPopulationData_Dessgeega:                                      ;B4E92D;
+    %EnemyPopulations(\
+    %enemyID(EnemyHeaders_Dessgeega),
+    %XPosition($0100),
+    %YPosition($0100),
+    %initParam(0),
+    %properties($2000),
+    %extraProperties($0000),
+    %speedParams($0001, $0000))
     dw $FFFF : db $01
 
-DebugEnemyPopulationData_ShutterGrowing:
-    dw EnemyHeaders_ShutterGrowing                                       ;B4E940;
-    dw $0300,$0088,$0000,$A800,$0000,$004C,$0008                         ;B4E942;
+DebugEnemyPopulationData_ShutterGrowing:                                 ;B4E940;
+    %EnemyPopulations(\
+    %enemyID(EnemyHeaders_ShutterGrowing),
+    %XPosition($0300),
+    %YPosition($0088),
+    %initParam(0),
+    %properties($A800),
+    %extraProperties($0000),
+    %speedParams($004C, $0008))
     dw $FFFF : db $00
 
-DebugEnemyPopulationData_Shutters_Kamer:
-    dw EnemyHeaders_ShutterShootable                                     ;B4E953;
-    dw $0100,$0100,$0020,$A800,$0A0A,$2003,$0000                         ;B4E955;
+DebugEnemyPopulationData_Shutters_Kamer:                                 ;B4E953;
+    %EnemyPopulations(\
+    %enemyID(EnemyHeaders_ShutterShootable),
+    %XPosition($0100),
+    %YPosition($0100),
+    %initParam($0020),
+    %properties($A800),
+    %extraProperties($0A0A),
+    %speedParams($2003, $0000))
     dw $FFFF : db $00
 
-DebugEnemyPopulationData_SidehopperLarge_SidehopperTourian:
-    dw EnemyHeaders_SidehopperLarge                                      ;B4E966;
-    dw $0100,$0100,$0000,$2000,$0000,$0000,$0000                         ;B4E968;
+DebugEnemyPopulationData_SidehopperLarge_SidehopperTourian:              ;B4E966;
+    %EnemyPopulations(\
+    %enemyID(EnemyHeaders_SidehopperLarge),
+    %XPosition($0100),
+    %YPosition($0100),
+    %initParam(0),
+    %properties($2000),
+    %extraProperties($0000),
+    %speedParams($0000, $0000))
     dw $FFFF : db $01
 
-DebugEnemyPopulationData_Skree:
-    dw EnemyHeaders_Skree                                                ;B4E979;
-    dw $0100,$0100,$0000,$2000,$0000,$0000,$0000                         ;B4E97B;
+DebugEnemyPopulationData_Skree:                                          ;B4E979;
+    %EnemyPopulations(\
+    %enemyID(EnemyHeaders_Skree),
+    %XPosition($0100),
+    %YPosition($0100),
+    %initParam(0),
+    %properties($2000),
+    %extraProperties($0000),
+    %speedParams($0000, $0000))
     dw $FFFF : db $01
 
-DebugEnemyPopulationData_Spark:
-    dw EnemyHeaders_Spark                                                ;B4E98C;
-    dw $0100,$0100,$0000,$2000,$0000,$0000,$0000                         ;B4E98E;
+DebugEnemyPopulationData_Spark:                                          ;B4E98C;
+    %EnemyPopulations(\
+    %enemyID(EnemyHeaders_Spark),
+    %XPosition($0100),
+    %YPosition($0100),
+    %initParam(0),
+    %properties($2000),
+    %extraProperties($0000),
+    %speedParams($0000, $0000))
     dw $FFFF : db $00
 
-DebugEnemyPopulationData_Squeept:
-    dw EnemyHeaders_Squeept                                              ;B4E99F;
-    dw $0060,$00D8,$0000,$2000,$0000,$0000,$0000                         ;B4E9A1;
-    dw EnemyHeaders_Squeept                                              ;B4E9AF;
-    dw $0060,$00D8,$0002,$2400,$0000,$8000,$0000                         ;B4E9B1;
+DebugEnemyPopulationData_Squeept:                                        ;B4E99F;
+    %EnemyPopulations(\
+    %enemyID(EnemyHeaders_Squeept),
+    %XPosition($0060),
+    %YPosition($00D8),
+    %initParam(0),
+    %properties($2000),
+    %extraProperties($0000),
+    %speedParams($0000, $0000))
+
+    %EnemyPopulations(\
+    %enemyID(EnemyHeaders_Squeept),
+    %XPosition($0060),
+    %YPosition($00D8),
+    %initParam(2),
+    %properties($2400),
+    %extraProperties($0000),
+    %speedParams($8000, $0000))
     dw $FFFF : db $01
 
-DebugEnemyPopulationData_Sidehopper:
-    dw EnemyHeaders_Sidehopper                                           ;B4E9C2;
-    dw $0100,$0100,$0000,$2000,$0000,$0001,$0000                         ;B4E9C4;
+DebugEnemyPopulationData_Sidehopper:                                     ;B4E9C2;
+    %EnemyPopulations(\
+    %enemyID(EnemyHeaders_Sidehopper),
+    %XPosition($0100),
+    %YPosition($0100),
+    %initParam(0),
+    %properties($2000),
+    %extraProperties($0000),
+    %speedParams($0001, $0000))
     dw $FFFF : db $01
 
-DebugEnemyPopulationData_Stoke:
-    dw EnemyHeaders_Stoke                                                ;B4E9D5;
-    dw $0C30,$01F8,$0000,$2000,$0000,$0000,$0001                         ;B4E9D7;
+DebugEnemyPopulationData_Stoke:                                          ;B4E9D5;
+    %EnemyPopulations(\
+    %enemyID(EnemyHeaders_Stoke),
+    %XPosition($0C30),
+    %YPosition($01F8),
+    %initParam(0),
+    %properties($2000),
+    %extraProperties($0000),
+    %speedParams($0000, $0001))
     dw $FFFF : db $01
 
-DebugEnemyPopulationData_Owtch:
-    dw EnemyHeaders_Owtch                                                ;B4E9E8;
-    dw $0060,$01C8,$0000,$2000,$0000,$0301,$0002                         ;B4E9EA;
+DebugEnemyPopulationData_Owtch:                                          ;B4E9E8;
+    %EnemyPopulations(\
+    %enemyID(EnemyHeaders_Owtch),
+    %XPosition($0060),
+    %YPosition($01C8),
+    %initParam(0),
+    %properties($2000),
+    %extraProperties($0000),
+    %speedParams($0301, $0002))
     dw $FFFF : db $01
 
-DebugEnemyPopulationData_Viola:
-    dw EnemyHeaders_Viola                                                ;B4E9FB;
-    dw $00D8,$008A,$0003,$2001,$0000,$0002,$0006                         ;B4E9FD;
+DebugEnemyPopulationData_Viola:                                          ;B4E9FB;
+    %EnemyPopulations(\
+    %enemyID(EnemyHeaders_Viola),
+    %XPosition($00D8),
+    %YPosition($008A),
+    %initParam(3),
+    %properties($2001),
+    %extraProperties($0000),
+    %speedParams($0002, $0006))
     dw $FFFF : db $01
 
-DebugEnemyPopulationData_Waver:
-    dw EnemyHeaders_Waver                                                ;B4EA0E;
-    dw $00C9,$005C,$0000,$2000,$0000,$0001,$0000                         ;B4EA10;
+DebugEnemyPopulationData_Waver:                                          ;B4EA0E;
+    %EnemyPopulations(\
+    %enemyID(EnemyHeaders_Waver),
+    %XPosition($00C9),
+    %YPosition($005C),
+    %initParam(0),
+    %properties($2000),
+    %extraProperties($0000),
+    %speedParams($0001, $0000))
     dw $FFFF : db $01
 
-DebugEnemyPopulationData_Yard:
-    dw EnemyHeaders_Yard                                                 ;B4EA21;
-    dw $01D0,$0098,$0003,$A004,$0000,$0001,$0000                         ;B4EA23;
+DebugEnemyPopulationData_Yard:                                           ;B4EA21;
+    %EnemyPopulations(\
+    %enemyID(EnemyHeaders_Yard),
+    %XPosition($01D0),
+    %YPosition($0098),
+    %initParam(3),
+    %properties($A004),
+    %extraProperties($0000),
+    %speedParams($0001, $0000))
     dw $FFFF : db $01
 
-DebugEnemyPopulationData_Zeb:
-    dw EnemyHeaders_Zeb                                                  ;B4EA34;
-    dw $0100,$0100,$0000,$6900,$0000,$0000,$0000                         ;B4EA36;
+DebugEnemyPopulationData_Zeb:                                            ;B4EA34;
+    %EnemyPopulations(\
+    %enemyID(EnemyHeaders_Zeb),
+    %XPosition($0100),
+    %YPosition($0100),
+    %initParam(0),
+    %properties($6900),
+    %extraProperties($0000),
+    %speedParams($0000, $0000))
     dw $FFFF : db $01
 
-DebugEnemyPopulationData_Zebbo:
-    dw EnemyHeaders_Zebbo                                                ;B4EA47;
-    dw $0100,$0100,$0000,$6900,$0000,$0002,$0000                         ;B4EA49;
+DebugEnemyPopulationData_Zebbo:                                          ;B4EA47;
+    %EnemyPopulations(\
+    %enemyID(EnemyHeaders_Zebbo),
+    %XPosition($0100),
+    %YPosition($0100),
+    %initParam(0),
+    %properties($6900),
+    %extraProperties($0000),
+    %speedParams($0002, $0000))
     dw $FFFF : db $01
 
-DebugEnemyPopulationData_Zeela:
-    dw EnemyHeaders_Zeela                                                ;B4EA5A;
-    dw $0180,$008C,$0003,$2000,$0000,$0002,$0002                         ;B4EA5C;
+DebugEnemyPopulationData_Zeela:                                          ;B4EA5A;
+    %EnemyPopulations(\
+    %enemyID(EnemyHeaders_Zeela),
+    %XPosition($0180),
+    %YPosition($008C),
+    %initParam(3),
+    %properties($2000),
+    %extraProperties($0000),
+    %speedParams($0002, $0002))
     dw $FFFF : db $01
 
-DebugEnemyPopulationData_Zoa:
-    dw EnemyHeaders_Zoa                                                  ;B4EA6D;
-    dw $0100,$0100,$0000,$6100,$0000,$0000,$0000                         ;B4EA6F;
+DebugEnemyPopulationData_Zoa:                                            ;B4EA6D;
+    %EnemyPopulations(\
+    %enemyID(EnemyHeaders_Zoa),
+    %XPosition($0100),
+    %YPosition($0100),
+    %initParam(0),
+    %properties($6100),
+    %extraProperties($0000),
+    %speedParams($0000, $0000))
     dw $FFFF : db $01
 
-DebugEnemyPopulationData_Zoomer:
-    dw EnemyHeaders_Zoomer                                               ;B4EA80;
-    dw $00D8,$00C8,$0003,$2000,$0000,$0002,$0000                         ;B4EA82;
+DebugEnemyPopulationData_Zoomer:                                         ;B4EA80;
+    %EnemyPopulations(\
+    %enemyID(EnemyHeaders_Zoomer),
+    %XPosition($00D8),
+    %YPosition($00C8),
+    %initParam(3),
+    %properties($2000),
+    %extraProperties($0000),
+    %speedParams($0002, $0000))
     dw $FFFF : db $01
 
-DebugEnemyPopulationData_PirateGreenWall:
-    dw EnemyHeaders_PirateGreenWall                                      ;B4EA93;
-    dw $0100,$0100,$0000,$2000,$0004,$0001,$0030                         ;B4EA95;
+DebugEnemyPopulationData_PirateGreenWall:                                ;B4EA93;
+    %EnemyPopulations(\
+    %enemyID(EnemyHeaders_PirateGreenWall),
+    %XPosition($0100),
+    %YPosition($0100),
+    %initParam(0),
+    %properties($2000),
+    %extraProperties($0004),
+    %speedParams($0001, $0030))
     dw $FFFF : db $01
 
-DebugEnemyPopulationData_PirateRedWall:
-    dw EnemyHeaders_PirateRedWall                                        ;B4EAA6;
-    dw $0100,$0100,$0000,$2000,$0004,$0001,$0030                         ;B4EAA8;
+DebugEnemyPopulationData_PirateRedWall:                                  ;B4EAA6;
+    %EnemyPopulations(\
+    %enemyID(EnemyHeaders_PirateRedWall),
+    %XPosition($0100),
+    %YPosition($0100),
+    %initParam(0),
+    %properties($2000),
+    %extraProperties($0004),
+    %speedParams($0001, $0030))
     dw $FFFF : db $01
 
-DebugEnemyPopulationData_PirateGoldWall:
-    dw EnemyHeaders_PirateGoldWall                                       ;B4EAB9;
-    dw $0100,$0100,$0000,$2000,$0004,$0001,$0030                         ;B4EABB;
+DebugEnemyPopulationData_PirateGoldWall:                                 ;B4EAB9;
+    %EnemyPopulations(\
+    %enemyID(EnemyHeaders_PirateGoldWall),
+    %XPosition($0100),
+    %YPosition($0100),
+    %initParam(0),
+    %properties($2000),
+    %extraProperties($0004),
+    %speedParams($0001, $0030))
     dw $FFFF : db $01
 
-DebugEnemyPopulationData_PirateMagentaWall:
-    dw EnemyHeaders_PirateMagentaWall                                    ;B4EACC;
-    dw $0100,$0100,$0000,$2000,$0004,$0001,$0030                         ;B4EACE;
+DebugEnemyPopulationData_PirateMagentaWall:                              ;B4EACC;
+    %EnemyPopulations(\
+    %enemyID(EnemyHeaders_PirateMagentaWall),
+    %XPosition($0100),
+    %YPosition($0100),
+    %initParam(0),
+    %properties($2000),
+    %extraProperties($0004),
+    %speedParams($0001, $0030))
     dw $FFFF : db $01
 
-DebugEnemyPopulationData_PirateSilverWall:
-    dw EnemyHeaders_PirateSilverWall                                     ;B4EADF;
-    dw $0100,$0100,$0000,$2000,$0004,$0001,$0030                         ;B4EAE1;
+DebugEnemyPopulationData_PirateSilverWall:                               ;B4EADF;
+    %EnemyPopulations(\
+    %enemyID(EnemyHeaders_PirateSilverWall),
+    %XPosition($0100),
+    %YPosition($0100),
+    %initParam(0),
+    %properties($2000),
+    %extraProperties($0004),
+    %speedParams($0001, $0030))
     dw $FFFF : db $01
 
-DebugEnemyPopulationData_PirateGreenNinja:
-    dw EnemyHeaders_PirateGreenNinja                                     ;B4EAF2;
-    dw $0100,$0100,$0000,$2800,$0004,$0001,$0030                         ;B4EAF4;
+DebugEnemyPopulationData_PirateGreenNinja:                               ;B4EAF2;
+    %EnemyPopulations(\
+    %enemyID(EnemyHeaders_PirateGreenNinja),
+    %XPosition($0100),
+    %YPosition($0100),
+    %initParam(0),
+    %properties($2800),
+    %extraProperties($0004),
+    %speedParams($0001, $0030))
     dw $FFFF : db $01
 
-DebugEnemyPopulationData_PirateRedNinja:
-    dw EnemyHeaders_PirateRedNinja                                       ;B4EB05;
-    dw $0100,$0100,$0000,$2800,$0004,$0001,$0030                         ;B4EB07;
+DebugEnemyPopulationData_PirateRedNinja:                                 ;B4EB05;
+    %EnemyPopulations(\
+    %enemyID(EnemyHeaders_PirateRedNinja),
+    %XPosition($0100),
+    %YPosition($0100),
+    %initParam(0),
+    %properties($2800),
+    %extraProperties($0004),
+    %speedParams($0001, $0030))
     dw $FFFF : db $01
 
-DebugEnemyPopulationData_PirateGoldNinja:
-    dw EnemyHeaders_PirateGoldNinja                                      ;B4EB18;
-    dw $0100,$0100,$0000,$2800,$0004,$0001,$0030                         ;B4EB1A;
+DebugEnemyPopulationData_PirateGoldNinja:                                ;B4EB18;
+    %EnemyPopulations(\
+    %enemyID(EnemyHeaders_PirateGoldNinja),
+    %XPosition($0100),
+    %YPosition($0100),
+    %initParam(0),
+    %properties($2800),
+    %extraProperties($0004),
+    %speedParams($0001, $0030))
     dw $FFFF : db $01
 
-DebugEnemyPopulationData_PirateMagentaNinja:
-    dw EnemyHeaders_PirateMagentaNinja                                   ;B4EB2B;
-    dw $0100,$0100,$0000,$2800,$0004,$0001,$0030                         ;B4EB2D;
+DebugEnemyPopulationData_PirateMagentaNinja:                             ;B4EB2B;
+    %EnemyPopulations(\
+    %enemyID(EnemyHeaders_PirateMagentaNinja),
+    %XPosition($0100),
+    %YPosition($0100),
+    %initParam(0),
+    %properties($2800),
+    %extraProperties($0004),
+    %speedParams($0001, $0030))
     dw $FFFF : db $01
 
-DebugEnemyPopulationData_PirateSilverNinja:
-    dw EnemyHeaders_PirateSilverNinja                                    ;B4EB3E;
-    dw $0100,$0100,$0000,$2800,$0004,$0001,$0030                         ;B4EB40;
+DebugEnemyPopulationData_PirateSilverNinja:                              ;B4EB3E;
+    %EnemyPopulations(\
+    %enemyID(EnemyHeaders_PirateSilverNinja),
+    %XPosition($0100),
+    %YPosition($0100),
+    %initParam(0),
+    %properties($2800),
+    %extraProperties($0004),
+    %speedParams($0001, $0030))
     dw $FFFF : db $01
 
-DebugEnemyPopulationData_PirateGreenWalking:
-    dw EnemyHeaders_PirateGreenWalking                                   ;B4EB51;
-    dw $0100,$0100,$0000,$2000,$0004,$0001,$0030                         ;B4EB53;
+DebugEnemyPopulationData_PirateGreenWalking:                             ;B4EB51;
+    %EnemyPopulations(\
+    %enemyID(EnemyHeaders_PirateGreenWalking),
+    %XPosition($0100),
+    %YPosition($0100),
+    %initParam(0),
+    %properties($2000),
+    %extraProperties($0004),
+    %speedParams($0001, $0030))
     dw $FFFF : db $01
 
-DebugEnemyPopulationData_PirateRedWalking:
-    dw EnemyHeaders_PirateRedWalking                                     ;B4EB64;
-    dw $0100,$0100,$0000,$2000,$0004,$0001,$0030                         ;B4EB66;
+DebugEnemyPopulationData_PirateRedWalking:                               ;B4EB64;
+    %EnemyPopulations(\
+    %enemyID(EnemyHeaders_PirateRedWalking),
+    %XPosition($0100),
+    %YPosition($0100),
+    %initParam(0),
+    %properties($2000),
+    %extraProperties($0004),
+    %speedParams($0001, $0030))
     dw $FFFF : db $01
 
-DebugEnemyPopulationData_PirateGoldWalking:
-    dw EnemyHeaders_PirateGoldWalking                                    ;B4EB77;
-    dw $0100,$0100,$0000,$2000,$0004,$0001,$0030                         ;B4EB79;
+DebugEnemyPopulationData_PirateGoldWalking:                              ;B4EB77;
+    %EnemyPopulations(\
+    %enemyID(EnemyHeaders_PirateGoldWalking),
+    %XPosition($0100),
+    %YPosition($0100),
+    %initParam(0),
+    %properties($2000),
+    %extraProperties($0004),
+    %speedParams($0001, $0030))
     dw $FFFF : db $01
 
-DebugEnemyPopulationData_PirateMagentaWalking:
-    dw EnemyHeaders_PirateMagentaWalking                                 ;B4EB8A;
-    dw $0100,$0100,$0000,$2000,$0004,$0001,$0030                         ;B4EB8C;
+DebugEnemyPopulationData_PirateMagentaWalking:                           ;B4EB8A;
+    %EnemyPopulations(\
+    %enemyID(EnemyHeaders_PirateMagentaWalking),
+    %XPosition($0100),
+    %YPosition($0100),
+    %initParam(0),
+    %properties($2000),
+    %extraProperties($0004),
+    %speedParams($0001, $0030))
     dw $FFFF : db $01
 
-DebugEnemyPopulationData_PirateSilverWalking:
-    dw EnemyHeaders_PirateSilverWalking                                  ;B4EB9D;
-    dw $0100,$0100,$0000,$2000,$0004,$0001,$0030                         ;B4EB9F;
+DebugEnemyPopulationData_PirateSilverWalking:                            ;B4EB9D;
+    %EnemyPopulations(\
+    %enemyID(EnemyHeaders_PirateSilverWalking),
+    %XPosition($0100),
+    %YPosition($0100),
+    %initParam(0),
+    %properties($2000),
+    %extraProperties($0004),
+    %speedParams($0001, $0030))
     dw $FFFF : db $01
 
-DebugEnemyPopulationData_Fune:
-    dw EnemyHeaders_Fune                                                 ;B4EBB0;
-    dw $00F0,$04E0,$0000,$A000,$0000,$0110,$0F05                         ;B4EBB2;
+DebugEnemyPopulationData_Fune:                                           ;B4EBB0;
+    %EnemyPopulations(\
+    %enemyID(EnemyHeaders_Fune),
+    %XPosition($00F0),
+    %YPosition($04E0),
+    %initParam(0),
+    %properties($A000),
+    %extraProperties($0000),
+    %speedParams($0110, $0F05))
     dw $FFFF : db $01
 
-DebugEnemyPopulationData_KihunterYellow:
-    dw EnemyHeaders_KihunterYellow                                       ;B4EBC3;
-    dw $0100,$0100,$0000,$2800,$0000,$0001,$0000                         ;B4EBC5;
-    dw EnemyHeaders_KihunterYellowWings                                  ;B4EBD3;
-    dw $0100,$0100,$0000,$2C00,$0000,$0020,$0000                         ;B4EBD5;
+DebugEnemyPopulationData_KihunterYellow:                                 ;B4EBC3;
+    %EnemyPopulations(\
+    %enemyID(EnemyHeaders_KihunterYellow),
+    %XPosition($0100),
+    %YPosition($0100),
+    %initParam(0),
+    %properties($2800),
+    %extraProperties($0000),
+    %speedParams($0001, $0000))
+
+    %EnemyPopulations(\
+    %enemyID(EnemyHeaders_KihunterYellowWings),
+    %XPosition($0100),
+    %YPosition($0100),
+    %initParam(0),
+    %properties($2C00),
+    %extraProperties($0000),
+    %speedParams($0020, $0000))
     dw $FFFF : db $01
 
-DebugEnemyPopulationData_KihunterRed:
-    dw EnemyHeaders_KihunterRed                                          ;B4EBE6;
-    dw $0100,$0100,$0000,$2800,$0000,$0001,$0000                         ;B4EBE8;
-    dw EnemyHeaders_KihunterRedWings                                     ;B4EBF6;
-    dw $0100,$0100,$0000,$2C00,$0000,$0020,$0000                         ;B4EBF8;
+DebugEnemyPopulationData_KihunterRed:                                    ;B4EBE6;
+    %EnemyPopulations(\
+    %enemyID(EnemyHeaders_KihunterRed),
+    %XPosition($0100),
+    %YPosition($0100),
+    %initParam(0),
+    %properties($2800),
+    %extraProperties($0000),
+    %speedParams($0001, $0000))
+
+    %EnemyPopulations(\
+    %enemyID(EnemyHeaders_KihunterRedWings),
+    %XPosition($0100),
+    %YPosition($0100),
+    %initParam(0),
+    %properties($2C00),
+    %extraProperties($0000),
+    %speedParams($0020, $0000))
     dw $FFFF : db $01
 
-DebugEnemyPopulationData_RobotNoPower:
-    dw EnemyHeaders_RobotNoPower                                         ;B4EC09;
-    dw $0050,$00B0,$0000,$A800,$0000,$0001,$0000                         ;B4EC0B;
+DebugEnemyPopulationData_RobotNoPower:                                   ;B4EC09;
+    %EnemyPopulations(\
+    %enemyID(EnemyHeaders_RobotNoPower),
+    %XPosition($0050),
+    %YPosition($00B0),
+    %initParam(0),
+    %properties($A800),
+    %extraProperties($0000),
+    %speedParams($0001, $0000))
     dw $FFFF : db $01
 
 

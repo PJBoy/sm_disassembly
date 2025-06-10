@@ -869,7 +869,7 @@ MotherBrainHealthBasedPaletteHandling:
 ; BG palette 4: Mother Brain body
 ; Sprite palette 1: Mother Brain brain
 ; Sprite palette 3: Mother Brain's back leg
-    LDA.L $7E783E                                                        ;ADE3D5;
+    LDA.L MotherBrainBody.phase2CorpseState                              ;ADE3D5;
     CMP.W #$0002                                                         ;ADE3D9;
     BCS .recovered                                                       ;ADE3DC;
     RTL                                                                  ;ADE3DE;

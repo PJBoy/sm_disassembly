@@ -156,6 +156,10 @@ EnemySetNames:
 
 
 org $B40000
+SpriteObjectInstLists:
+
+
+org $B40000
 EnemySets:
   .ID: skip 2 ; 0: Enemy ID
   .palette: skip 2 ; 2: Palette index

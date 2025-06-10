@@ -1397,6 +1397,7 @@ ZebesExplosionAfterglowTimer: skip 0 ; $1A4B
 EndingShipXVelocity: skip 0 ; $1A4B
 PostCreditsSamusBeamVRAMTransferIndex: skip 2 ; $1A4B
 neverRead1A4D: skip 0 ; $1A4D
+unknown1A4D: skip 0 ; $1A4D
 IntroBabyMetroidXVelocity: skip 0 ; $1A4D
 IntroBabyMetroidIdleTimer: skip 0 ; $1A4D
 EndingShipShakeIndex: skip 0 ; $1A4D
