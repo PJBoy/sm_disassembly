@@ -44,37 +44,37 @@ incbin "../data/Tiles_SpacePirate.bin" ; $1800 bytes
 
 ;;; $DE00: Calculate Mother Brain rainbow beam HDMA tables ;;;
 CalculateMotherBrainRainbowBeamHDMATables:
-    LDA.L $7E8027                                                        ;ADDE00;
+    LDA.L MotherBrainBody.rainbowBeamAngularWidth+1                      ;ADDE00;
     AND.W #$00FF                                                         ;ADDE04;
     LSR                                                                  ;ADDE07;
-    STA.B $12                                                            ;ADDE08;
-    LDA.L $7E8022                                                        ;ADDE0A;
+    STA.B DP_Temp12                                                      ;ADDE08;
+    LDA.L MotherBrainBody.rainbowBeamAngle                               ;ADDE0A;
     SEC                                                                  ;ADDE0E;
-    SBC.B $12                                                            ;ADDE0F;
-    STA.L MotherBrainBody.rainbowBeamRightEdgeAngle                                                        ;ADDE11;
-    LDA.L $7E8022                                                        ;ADDE15;
+    SBC.B DP_Temp12                                                      ;ADDE0F;
+    STA.L MotherBrainBody.rainbowBeamRightEdgeAngle                      ;ADDE11;
+    LDA.L MotherBrainBody.rainbowBeamAngle                               ;ADDE15;
     CLC                                                                  ;ADDE19;
-    ADC.B $12                                                            ;ADDE1A;
-    STA.L MotherBrainBody.rainbowBeamLeftEdgeAngle                                                        ;ADDE1C;
-    LDA.W $0FB9                                                          ;ADDE20;
+    ADC.B DP_Temp12                                                      ;ADDE1A;
+    STA.L MotherBrainBody.rainbowBeamLeftEdgeAngle                       ;ADDE1C;
+    LDA.W Enemy[1].XPosition-1                                           ;ADDE20;
     CLC                                                                  ;ADDE23;
     ADC.W #$0E00                                                         ;ADDE24;
     AND.W #$FF00                                                         ;ADDE27;
-    STA.L MotherBrainBody.rainbowBeamRightEdgeOriginXPosition                                                        ;ADDE2A;
-    STA.L MotherBrainBody.rainbowBeamLeftEdgeOriginXPosition                                                        ;ADDE2E;
-    LDA.W $0FBE                                                          ;ADDE32;
+    STA.L MotherBrainBody.rainbowBeamRightEdgeOriginXPosition            ;ADDE2A;
+    STA.L MotherBrainBody.rainbowBeamLeftEdgeOriginXPosition             ;ADDE2E;
+    LDA.W Enemy[1].YPosition                                             ;ADDE32;
     CLC                                                                  ;ADDE35;
     ADC.W #$0005                                                         ;ADDE36;
-    STA.L MotherBrainBody.rainbowBeamOriginYPosition                                                        ;ADDE39;
-    STA.L MotherBrainBody.rainbowBeamOriginYPositionDuplicate                                                        ;ADDE3D;
-    LDA.L MotherBrainBody.rainbowBeamRightEdgeAngle                                                        ;ADDE41;
+    STA.L MotherBrainBody.rainbowBeamOriginYPosition                     ;ADDE39;
+    STA.L MotherBrainBody.rainbowBeamOriginYPositionDuplicate            ;ADDE3D;
+    LDA.L MotherBrainBody.rainbowBeamRightEdgeAngle                      ;ADDE41;
     AND.W #$00C0                                                         ;ADDE45;
     ASL                                                                  ;ADDE48;
     ASL                                                                  ;ADDE49;
-    STA.B $12                                                            ;ADDE4A;
-    LDA.L MotherBrainBody.rainbowBeamLeftEdgeAngle                                                        ;ADDE4C;
+    STA.B DP_Temp12                                                      ;ADDE4A;
+    LDA.L MotherBrainBody.rainbowBeamLeftEdgeAngle                       ;ADDE4C;
     AND.W #$00C0                                                         ;ADDE50;
-    ORA.B $12                                                            ;ADDE53;
+    ORA.B DP_Temp12                                                      ;ADDE53;
     ASL                                                                  ;ADDE55;
     ASL                                                                  ;ADDE56;
     ASL                                                                  ;ADDE57;
@@ -125,29 +125,29 @@ CalculateMotherBrainRainbowBeamHDMATables_pointers:
 
 ;;; $DE7F: Calculate Mother Brain rainbow beam HDMA tables - beam is aimed right ;;;
 CalculateMotherBrainRainbowBeamHDMATable_AimedRight:
-    LDA.L MotherBrainBody.rainbowBeamRightEdgeOriginXPosition                                                        ;ADDE7F;
-    STA.B $16                                                            ;ADDE83;
-    LDA.L MotherBrainBody.rainbowBeamLeftEdgeOriginXPosition                                                        ;ADDE85;
-    STA.B $18                                                            ;ADDE89;
+    LDA.L MotherBrainBody.rainbowBeamRightEdgeOriginXPosition            ;ADDE7F;
+    STA.B DP_Temp16                                                      ;ADDE83;
+    LDA.L MotherBrainBody.rainbowBeamLeftEdgeOriginXPosition             ;ADDE85;
+    STA.B DP_Temp18                                                      ;ADDE89;
     JSR.W CalculateMotherBrainRainbowBeamHDMADataTable_AimedRight        ;ADDE8B;
     LDA.W #$0010                                                         ;ADDE8E;
-    STA.L $7E9C00                                                        ;ADDE91;
-    LDA.W #$9C00                                                         ;ADDE95;
-    STA.L $7E9C01                                                        ;ADDE98;
+    STA.L MotherBrainRainbowBeamWindow1IndirectHDMATable                 ;ADDE91;
+    LDA.W #MotherBrainRainbowBeamWindow1IndirectHDMATable                ;ADDE95;
+    STA.L MotherBrainRainbowBeamWindow1IndirectHDMATable+1               ;ADDE98;
     LDA.W #$0010                                                         ;ADDE9C;
-    STA.L $7E9C03                                                        ;ADDE9F;
-    LDA.W #$9C03                                                         ;ADDEA3;
-    STA.L $7E9C04                                                        ;ADDEA6;
+    STA.L MotherBrainRainbowBeamWindow1IndirectHDMATable+3               ;ADDE9F;
+    LDA.W #MotherBrainRainbowBeamWindow1IndirectHDMATable+3              ;ADDEA3;
+    STA.L MotherBrainRainbowBeamWindow1IndirectHDMATable+4               ;ADDEA6;
     LDA.W #$00F0                                                         ;ADDEAA;
-    STA.L $7E9C06                                                        ;ADDEAD;
-    LDA.W #$9D04                                                         ;ADDEB1;
-    STA.L $7E9C07                                                        ;ADDEB4;
+    STA.L MotherBrainRainbowBeamWindow1IndirectHDMATable+6               ;ADDEAD;
+    LDA.W #MotherBrainRainbowBeamWindow1HDMADataTable+4                  ;ADDEB1;
+    STA.L MotherBrainRainbowBeamWindow1IndirectHDMATable+7               ;ADDEB4;
     LDA.W #$00F4                                                         ;ADDEB8;
-    STA.L $7E9C09                                                        ;ADDEBB;
-    LDA.W #$9DEC                                                         ;ADDEBF;
-    STA.L $7E9C0A                                                        ;ADDEC2;
+    STA.L MotherBrainRainbowBeamWindow1IndirectHDMATable+9               ;ADDEBB;
+    LDA.W #MotherBrainRainbowBeamWindow1HDMADataTable+$EC                ;ADDEBF;
+    STA.L MotherBrainRainbowBeamWindow1IndirectHDMATable+$A              ;ADDEC2;
     LDA.W #$0000                                                         ;ADDEC6;
-    STA.L $7E9C0C                                                        ;ADDEC9;
+    STA.L MotherBrainRainbowBeamWindow1IndirectHDMATable+$C              ;ADDEC9;
     RTS                                                                  ;ADDECD;
 
 
@@ -163,27 +163,27 @@ CalculateMotherBrainRainbowBeamHDMADataTable_AimedRight:
     PLB                                                                  ;ADDED2;
     PLB                                                                  ;ADDED3;
     LDA.W #$00FF                                                         ;ADDED4;
-    STA.W $9D00                                                          ;ADDED7;
-    STA.W $9D02                                                          ;ADDEDA;
-    LDA.W $8034                                                          ;ADDEDD;
+    STA.W MotherBrainRainbowBeamWindow1HDMADataTable                     ;ADDED7;
+    STA.W MotherBrainRainbowBeamWindow1HDMADataTable+2                   ;ADDEDA;
+    LDA.W MotherBrainBody.rainbowBeamRightEdgeAngle                      ;ADDEDD;
     AND.W #$00FF                                                         ;ADDEE0;
     ASL                                                                  ;ADDEE3;
     TAX                                                                  ;ADDEE4;
     LDA.L AbsoluteTangentTable,X                                         ;ADDEE5;
-    STA.B $12                                                            ;ADDEE9;
-    LDA.W $8036                                                          ;ADDEEB;
+    STA.B DP_Temp12                                                      ;ADDEE9;
+    LDA.W MotherBrainBody.rainbowBeamLeftEdgeAngle                       ;ADDEEB;
     AND.W #$00FF                                                         ;ADDEEE;
     ASL                                                                  ;ADDEF1;
     TAX                                                                  ;ADDEF2;
     LDA.L AbsoluteTangentTable,X                                         ;ADDEF3;
-    STA.B $14                                                            ;ADDEF7;
-    LDA.W $803E                                                          ;ADDEF9;
+    STA.B DP_Temp14                                                      ;ADDEF7;
+    LDA.W MotherBrainBody.rainbowBeamOriginYPositionDuplicate            ;ADDEF9;
     TAY                                                                  ;ADDEFC;
     SEC                                                                  ;ADDEFD;
     SBC.W #$0020                                                         ;ADDEFE;
     ASL                                                                  ;ADDF01;
     CLC                                                                  ;ADDF02;
-    ADC.W #$9D02                                                         ;ADDF03;
+    ADC.W #MotherBrainRainbowBeamWindow1HDMADataTable+2                  ;ADDF03;
     TAX                                                                  ;ADDF06;
     LDA.W #$00FF                                                         ;ADDF07;
     STA.W $0002,X                                                        ;ADDF0A;
@@ -191,11 +191,11 @@ CalculateMotherBrainRainbowBeamHDMADataTable_AimedRight:
     PHX                                                                  ;ADDF10;
 
   .loopLeftEdge:
-    LDA.B $18                                                            ;ADDF11;
+    LDA.B DP_Temp18                                                      ;ADDF11;
     CLC                                                                  ;ADDF13;
-    ADC.B $14                                                            ;ADDF14;
+    ADC.B DP_Temp14                                                      ;ADDF14;
     BCS ..done                                                           ;ADDF16;
-    STA.B $18                                                            ;ADDF18;
+    STA.B DP_Temp18                                                      ;ADDF18;
     XBA                                                                  ;ADDF1A;
     AND.W #$00FF                                                         ;ADDF1B;
     ORA.W #$FF00                                                         ;ADDF1E;
@@ -219,15 +219,15 @@ CalculateMotherBrainRainbowBeamHDMADataTable_AimedRight:
     PLX                                                                  ;ADDF3A;
     INX                                                                  ;ADDF3B;
     INX                                                                  ;ADDF3C;
-    LDA.W $803E                                                          ;ADDF3D;
+    LDA.W MotherBrainBody.rainbowBeamOriginYPositionDuplicate            ;ADDF3D;
     TAY                                                                  ;ADDF40;
 
   .loopRightEdge:
-    LDA.B $16                                                            ;ADDF41;
+    LDA.B DP_Temp16                                                      ;ADDF41;
     CLC                                                                  ;ADDF43;
-    ADC.B $12                                                            ;ADDF44;
+    ADC.B DP_Temp12                                                      ;ADDF44;
     BCS ..done                                                           ;ADDF46;
-    STA.B $16                                                            ;ADDF48;
+    STA.B DP_Temp16                                                      ;ADDF48;
     XBA                                                                  ;ADDF4A;
     AND.W #$00FF                                                         ;ADDF4B;
     ORA.W #$FF00                                                         ;ADDF4E;
@@ -256,74 +256,74 @@ CalculateMotherBrainRainbowBeamHDMADataTable_AimedRight:
 
 ;;; $DF6E: Calculate Mother Brain rainbow beam HDMA tables - beam is aimed upwards ;;;
 CalculateMotherBrainRainbowBeamHDMADataTable_AimedUpwards:
-    LDA.L MotherBrainBody.rainbowBeamRightEdgeOriginXPosition                                                        ;ADDF6E;
-    STA.B $16                                                            ;ADDF72;
-    LDA.L MotherBrainBody.rainbowBeamLeftEdgeOriginXPosition                                                        ;ADDF74;
-    STA.B $18                                                            ;ADDF78;
+    LDA.L MotherBrainBody.rainbowBeamRightEdgeOriginXPosition            ;ADDF6E;
+    STA.B DP_Temp16                                                      ;ADDF72;
+    LDA.L MotherBrainBody.rainbowBeamLeftEdgeOriginXPosition             ;ADDF74;
+    STA.B DP_Temp18                                                      ;ADDF78;
     SEP #$20                                                             ;ADDF7A;
-    LDA.L MotherBrainBody.rainbowBeamRightEdgeAngle                                                        ;ADDF7C;
+    LDA.L MotherBrainBody.rainbowBeamRightEdgeAngle                      ;ADDF7C;
     ASL                                                                  ;ADDF80;
-    ROL.B $12                                                            ;ADDF81;
-    LDA.L MotherBrainBody.rainbowBeamLeftEdgeAngle                                                        ;ADDF83;
+    ROL.B DP_Temp12                                                      ;ADDF81;
+    LDA.L MotherBrainBody.rainbowBeamLeftEdgeAngle                       ;ADDF83;
     ASL                                                                  ;ADDF87;
-    ROL.B $12                                                            ;ADDF88;
-    LDA.B $12                                                            ;ADDF8A;
+    ROL.B DP_Temp12                                                      ;ADDF88;
+    LDA.B DP_Temp12                                                      ;ADDF8A;
     REP #$20                                                             ;ADDF8C;
     AND.W #$0003                                                         ;ADDF8E;
     ASL                                                                  ;ADDF91;
     TAX                                                                  ;ADDF92;
     JSR.W (.pointers,X)                                                  ;ADDF93;
     LDA.W #$0010                                                         ;ADDF96;
-    STA.L $7E9C00                                                        ;ADDF99;
-    LDA.W #$9D00                                                         ;ADDF9D;
-    STA.L $7E9C01                                                        ;ADDFA0;
+    STA.L MotherBrainRainbowBeamWindow1IndirectHDMATable                 ;ADDF99;
+    LDA.W #MotherBrainRainbowBeamWindow1HDMADataTable                    ;ADDF9D;
+    STA.L MotherBrainRainbowBeamWindow1IndirectHDMATable+1               ;ADDFA0;
     LDA.W #$0010                                                         ;ADDFA4;
-    STA.L $7E9C03                                                        ;ADDFA7;
-    LDA.W #$9D02                                                         ;ADDFAB;
-    STA.L $7E9C04                                                        ;ADDFAE;
-    LDA.L MotherBrainBody.rainbowBeamOriginYPosition                                                        ;ADDFB2;
+    STA.L MotherBrainRainbowBeamWindow1IndirectHDMATable+3               ;ADDFA7;
+    LDA.W #MotherBrainRainbowBeamWindow1HDMADataTable+2                  ;ADDFAB;
+    STA.L MotherBrainRainbowBeamWindow1IndirectHDMATable+4               ;ADDFAE;
+    LDA.L MotherBrainBody.rainbowBeamOriginYPosition                     ;ADDFB2;
     SEC                                                                  ;ADDFB6;
     SBC.W #$0020                                                         ;ADDFB7;
     CMP.W #$0080                                                         ;ADDFBA;
     BCS .greaterThanEqualTo80                                            ;ADDFBD;
     PHA                                                                  ;ADDFBF;
     ORA.W #$0080                                                         ;ADDFC0;
-    STA.L $7E9C06                                                        ;ADDFC3;
-    LDA.W #$9D04                                                         ;ADDFC7;
-    STA.L $7E9C07                                                        ;ADDFCA;
+    STA.L MotherBrainRainbowBeamWindow1IndirectHDMATable+6               ;ADDFC3;
+    LDA.W #MotherBrainRainbowBeamWindow1HDMADataTable+4                  ;ADDFC7;
+    STA.L MotherBrainRainbowBeamWindow1IndirectHDMATable+7               ;ADDFCA;
     LDA.W #$007F                                                         ;ADDFCE;
-    STA.L $7E9C09                                                        ;ADDFD1;
+    STA.L MotherBrainRainbowBeamWindow1IndirectHDMATable+9               ;ADDFD1;
     PLA                                                                  ;ADDFD5;
     ASL                                                                  ;ADDFD6;
     CLC                                                                  ;ADDFD7;
-    ADC.W #$9D04                                                         ;ADDFD8;
-    STA.L $7E9C0A                                                        ;ADDFDB;
+    ADC.W #MotherBrainRainbowBeamWindow1HDMADataTable+4                  ;ADDFD8;
+    STA.L MotherBrainRainbowBeamWindow1IndirectHDMATable+$A              ;ADDFDB;
     LDA.W #$0000                                                         ;ADDFDF;
-    STA.L $7E9C0C                                                        ;ADDFE2;
+    STA.L MotherBrainRainbowBeamWindow1IndirectHDMATable+$C              ;ADDFE2;
     RTS                                                                  ;ADDFE6;
 
   .greaterThanEqualTo80:
     SEC                                                                  ;ADDFE7;
     SBC.W #$007F                                                         ;ADDFE8;
-    STA.B $12                                                            ;ADDFEB;
+    STA.B DP_Temp12                                                      ;ADDFEB;
     ORA.W #$0080                                                         ;ADDFED;
-    STA.L $7E9C06                                                        ;ADDFF0;
-    LDA.W #$9D04                                                         ;ADDFF4;
-    STA.L $7E9C07                                                        ;ADDFF7;
+    STA.L MotherBrainRainbowBeamWindow1IndirectHDMATable+6               ;ADDFF0;
+    LDA.W #MotherBrainRainbowBeamWindow1HDMADataTable+4                  ;ADDFF4;
+    STA.L MotherBrainRainbowBeamWindow1IndirectHDMATable+7               ;ADDFF7;
     LDA.W #$00FF                                                         ;ADDFFB;
-    STA.L $7E9C09                                                        ;ADDFFE;
-    LDA.B $12                                                            ;ADE002;
+    STA.L MotherBrainRainbowBeamWindow1IndirectHDMATable+9               ;ADDFFE;
+    LDA.B DP_Temp12                                                      ;ADE002;
     ASL                                                                  ;ADE004;
-    ADC.W #$9D04                                                         ;ADE005;
-    STA.L $7E9C0A                                                        ;ADE008;
+    ADC.W #MotherBrainRainbowBeamWindow1HDMADataTable+4                  ;ADE005;
+    STA.L MotherBrainRainbowBeamWindow1IndirectHDMATable+$A              ;ADE008;
     PHA                                                                  ;ADE00C;
     LDA.W #$007F                                                         ;ADE00D;
-    STA.L $7E9C0C                                                        ;ADE010;
+    STA.L MotherBrainRainbowBeamWindow1IndirectHDMATable+$C              ;ADE010;
     PLA                                                                  ;ADE014;
     ADC.W #$00FE                                                         ;ADE015;
-    STA.L $7E9C0D                                                        ;ADE018;
+    STA.L MotherBrainRainbowBeamWindow1IndirectHDMATable+$D              ;ADE018;
     LDA.W #$0000                                                         ;ADE01C;
-    STA.L $7E9C0F                                                        ;ADE01F;
+    STA.L MotherBrainRainbowBeamWindow1IndirectHDMATable+$F              ;ADE01F;
     RTS                                                                  ;ADE023;
 
   .pointers:
@@ -345,52 +345,52 @@ CalculateMotherBrainRainbowBeamHDMADataTable_AimedUpRight:
     PLB                                                                  ;ADE030;
     PLB                                                                  ;ADE031;
     LDA.W #$00FF                                                         ;ADE032;
-    STA.W $9D00                                                          ;ADE035;
-    STA.W $9D02                                                          ;ADE038;
-    LDA.W $8036                                                          ;ADE03B;
+    STA.W MotherBrainRainbowBeamWindow1HDMADataTable                     ;ADE035;
+    STA.W MotherBrainRainbowBeamWindow1HDMADataTable+2                   ;ADE038;
+    LDA.W MotherBrainBody.rainbowBeamLeftEdgeAngle                       ;ADE03B;
     AND.W #$00FF                                                         ;ADE03E;
     ASL                                                                  ;ADE041;
     TAX                                                                  ;ADE042;
     LDA.L AbsoluteTangentTable,X                                         ;ADE043;
-    STA.B $12                                                            ;ADE047;
-    LDA.W $8034                                                          ;ADE049;
+    STA.B DP_Temp12                                                      ;ADE047;
+    LDA.W MotherBrainBody.rainbowBeamRightEdgeAngle                      ;ADE049;
     AND.W #$00FF                                                         ;ADE04C;
     ASL                                                                  ;ADE04F;
     TAX                                                                  ;ADE050;
     LDA.L AbsoluteTangentTable,X                                         ;ADE051;
-    STA.B $14                                                            ;ADE055;
-    LDA.W $803A                                                          ;ADE057;
+    STA.B DP_Temp14                                                      ;ADE055;
+    LDA.W MotherBrainBody.rainbowBeamOriginYPosition                     ;ADE057;
     TAY                                                                  ;ADE05A;
     SEC                                                                  ;ADE05B;
     SBC.W #$0020                                                         ;ADE05C;
     ASL                                                                  ;ADE05F;
     CLC                                                                  ;ADE060;
-    ADC.W #$9D02                                                         ;ADE061;
+    ADC.W #MotherBrainRainbowBeamWindow1HDMADataTable+2                  ;ADE061;
     TAX                                                                  ;ADE064;
     LDA.W #$00FF                                                         ;ADE065;
     STA.W $0002,X                                                        ;ADE068;
     STA.W $0004,X                                                        ;ADE06B;
 
   .loop:
-    LDA.B $16                                                            ;ADE06E;
+    LDA.B DP_Temp16                                                      ;ADE06E;
     CLC                                                                  ;ADE070;
-    ADC.B $12                                                            ;ADE071;
+    ADC.B DP_Temp12                                                      ;ADE071;
     BCC +                                                                ;ADE073;
     LDA.W #$FFFF                                                         ;ADE075;
 
-+   STA.B $16                                                            ;ADE078;
++   STA.B DP_Temp16                                                      ;ADE078;
     AND.W #$FF00                                                         ;ADE07A;
     XBA                                                                  ;ADE07D;
-    STA.B $24                                                            ;ADE07E;
-    LDA.B $18                                                            ;ADE080;
+    STA.B DP_Temp24                                                      ;ADE07E;
+    LDA.B DP_Temp18                                                      ;ADE080;
     CLC                                                                  ;ADE082;
-    ADC.B $14                                                            ;ADE083;
+    ADC.B DP_Temp14                                                      ;ADE083;
     BCC +                                                                ;ADE085;
     LDA.W #$FFFF                                                         ;ADE087;
 
-+   STA.B $18                                                            ;ADE08A;
++   STA.B DP_Temp18                                                      ;ADE08A;
     AND.W #$FF00                                                         ;ADE08C;
-    ORA.B $24                                                            ;ADE08F;
+    ORA.B DP_Temp24                                                      ;ADE08F;
     CMP.W #$FFFF                                                         ;ADE091;
     BNE .next                                                            ;ADE094;
     LDA.W #$00FF                                                         ;ADE096;
@@ -418,54 +418,54 @@ CalculateMotherBrainRainbowBeamHDMADataTable_AimedUp:
     PLB                                                                  ;ADE0AA;
     PLB                                                                  ;ADE0AB;
     LDA.W #$00FF                                                         ;ADE0AC;
-    STA.W $9D00                                                          ;ADE0AF;
-    STA.W $9D02                                                          ;ADE0B2;
-    LDA.W $8036                                                          ;ADE0B5;
+    STA.W MotherBrainRainbowBeamWindow1HDMADataTable                     ;ADE0AF;
+    STA.W MotherBrainRainbowBeamWindow1HDMADataTable+2                   ;ADE0B2;
+    LDA.W MotherBrainBody.rainbowBeamLeftEdgeAngle                       ;ADE0B5;
     EOR.W #$FFFF                                                         ;ADE0B8;
     INC                                                                  ;ADE0BB;
     AND.W #$00FF                                                         ;ADE0BC;
     ASL                                                                  ;ADE0BF;
     TAX                                                                  ;ADE0C0;
     LDA.L AbsoluteTangentTable,X                                         ;ADE0C1;
-    STA.B $12                                                            ;ADE0C5;
-    LDA.W $8034                                                          ;ADE0C7;
+    STA.B DP_Temp12                                                      ;ADE0C5;
+    LDA.W MotherBrainBody.rainbowBeamRightEdgeAngle                      ;ADE0C7;
     AND.W #$00FF                                                         ;ADE0CA;
     ASL                                                                  ;ADE0CD;
     TAX                                                                  ;ADE0CE;
     LDA.L AbsoluteTangentTable,X                                         ;ADE0CF;
-    STA.B $14                                                            ;ADE0D3;
-    LDA.W $803A                                                          ;ADE0D5;
+    STA.B DP_Temp14                                                      ;ADE0D3;
+    LDA.W MotherBrainBody.rainbowBeamOriginYPosition                     ;ADE0D5;
     TAY                                                                  ;ADE0D8;
     SEC                                                                  ;ADE0D9;
     SBC.W #$0020                                                         ;ADE0DA;
     ASL                                                                  ;ADE0DD;
     CLC                                                                  ;ADE0DE;
-    ADC.W #$9D02                                                         ;ADE0DF;
+    ADC.W #MotherBrainRainbowBeamWindow1HDMADataTable+2                  ;ADE0DF;
     TAX                                                                  ;ADE0E2;
     LDA.W #$00FF                                                         ;ADE0E3;
     STA.W $0002,X                                                        ;ADE0E6;
     STA.W $0004,X                                                        ;ADE0E9;
 
   .loop:
-    LDA.B $16                                                            ;ADE0EC;
+    LDA.B DP_Temp16                                                      ;ADE0EC;
     SEC                                                                  ;ADE0EE;
-    SBC.B $12                                                            ;ADE0EF;
+    SBC.B DP_Temp12                                                      ;ADE0EF;
     BCS +                                                                ;ADE0F1;
     LDA.W #$0000                                                         ;ADE0F3;
 
-+   STA.B $16                                                            ;ADE0F6;
++   STA.B DP_Temp16                                                      ;ADE0F6;
     AND.W #$FF00                                                         ;ADE0F8;
     XBA                                                                  ;ADE0FB;
-    STA.B $1A                                                            ;ADE0FC;
-    LDA.B $18                                                            ;ADE0FE;
+    STA.B DP_Temp1A                                                      ;ADE0FC;
+    LDA.B DP_Temp18                                                      ;ADE0FE;
     CLC                                                                  ;ADE100;
-    ADC.B $14                                                            ;ADE101;
+    ADC.B DP_Temp14                                                      ;ADE101;
     BCC +                                                                ;ADE103;
     LDA.W #$FFFF                                                         ;ADE105;
 
-+   STA.B $18                                                            ;ADE108;
++   STA.B DP_Temp18                                                      ;ADE108;
     AND.W #$FF00                                                         ;ADE10A;
-    ORA.B $1A                                                            ;ADE10D;
+    ORA.B DP_Temp1A                                                      ;ADE10D;
     CMP.W #$FFFF                                                         ;ADE10F;
     BNE .next                                                            ;ADE112;
     LDA.W #$00FF                                                         ;ADE114;
@@ -493,56 +493,56 @@ CalculateMotherBrainRainbowBeamHDMADataTable_AimedUpLeft:
     PLB                                                                  ;ADE128;
     PLB                                                                  ;ADE129;
     LDA.W #$00FF                                                         ;ADE12A;
-    STA.W $9D00                                                          ;ADE12D;
-    STA.W $9D02                                                          ;ADE130;
-    LDA.W $8036                                                          ;ADE133;
+    STA.W MotherBrainRainbowBeamWindow1HDMADataTable                     ;ADE12D;
+    STA.W MotherBrainRainbowBeamWindow1HDMADataTable+2                   ;ADE130;
+    LDA.W MotherBrainBody.rainbowBeamLeftEdgeAngle                       ;ADE133;
     EOR.W #$FFFF                                                         ;ADE136;
     INC                                                                  ;ADE139;
     AND.W #$00FF                                                         ;ADE13A;
     ASL                                                                  ;ADE13D;
     TAX                                                                  ;ADE13E;
     LDA.L AbsoluteTangentTable,X                                         ;ADE13F;
-    STA.B $12                                                            ;ADE143;
-    LDA.W $8034                                                          ;ADE145;
+    STA.B DP_Temp12                                                      ;ADE143;
+    LDA.W MotherBrainBody.rainbowBeamRightEdgeAngle                      ;ADE145;
     EOR.W #$FFFF                                                         ;ADE148;
     INC                                                                  ;ADE14B;
     AND.W #$00FF                                                         ;ADE14C;
     ASL                                                                  ;ADE14F;
     TAX                                                                  ;ADE150;
     LDA.L AbsoluteTangentTable,X                                         ;ADE151;
-    STA.B $14                                                            ;ADE155;
-    LDA.W $803A                                                          ;ADE157;
+    STA.B DP_Temp14                                                      ;ADE155;
+    LDA.W MotherBrainBody.rainbowBeamOriginYPosition                     ;ADE157;
     TAY                                                                  ;ADE15A;
     SEC                                                                  ;ADE15B;
     SBC.W #$0020                                                         ;ADE15C;
     ASL                                                                  ;ADE15F;
     CLC                                                                  ;ADE160;
-    ADC.W #$9D02                                                         ;ADE161;
+    ADC.W #MotherBrainRainbowBeamWindow1HDMADataTable+2                  ;ADE161;
     TAX                                                                  ;ADE164;
     LDA.W #$00FF                                                         ;ADE165;
     STA.W $0002,X                                                        ;ADE168;
     STA.W $0004,X                                                        ;ADE16B;
 
   .loop:
-    LDA.B $16                                                            ;ADE16E;
+    LDA.B DP_Temp16                                                      ;ADE16E;
     SEC                                                                  ;ADE170;
-    SBC.B $12                                                            ;ADE171;
+    SBC.B DP_Temp12                                                      ;ADE171;
     BCS +                                                                ;ADE173;
     LDA.W #$0000                                                         ;ADE175;
 
-+   STA.B $16                                                            ;ADE178;
++   STA.B DP_Temp16                                                      ;ADE178;
     AND.W #$FF00                                                         ;ADE17A;
     XBA                                                                  ;ADE17D;
-    STA.B $24                                                            ;ADE17E;
-    LDA.B $18                                                            ;ADE180;
+    STA.B DP_Temp24                                                      ;ADE17E;
+    LDA.B DP_Temp18                                                      ;ADE180;
     SEC                                                                  ;ADE182;
-    SBC.B $14                                                            ;ADE183;
+    SBC.B DP_Temp14                                                      ;ADE183;
     BCS +                                                                ;ADE185;
     LDA.W #$0000                                                         ;ADE187;
 
-+   STA.B $18                                                            ;ADE18A;
++   STA.B DP_Temp18                                                      ;ADE18A;
     AND.W #$FF00                                                         ;ADE18C;
-    ORA.B $24                                                            ;ADE18F;
+    ORA.B DP_Temp24                                                      ;ADE18F;
     CMP.W #$FFFF                                                         ;ADE191;
     BNE .next                                                            ;ADE194;
     LDA.W #$00FF                                                         ;ADE196;
@@ -560,41 +560,41 @@ CalculateMotherBrainRainbowBeamHDMADataTable_AimedUpLeft:
 
 ;;; $E1A6: Calculate Mother Brain rainbow beam HDMA tables - beam is aimed downwards ;;;
 CalculateMotherBrainRainbowBeamHDMADataTable_AimedDownwards:
-    LDA.L MotherBrainBody.rainbowBeamRightEdgeOriginXPosition                                                        ;ADE1A6;
-    STA.B $16                                                            ;ADE1AA;
-    LDA.L MotherBrainBody.rainbowBeamLeftEdgeOriginXPosition                                                        ;ADE1AC;
-    STA.B $18                                                            ;ADE1B0;
+    LDA.L MotherBrainBody.rainbowBeamRightEdgeOriginXPosition            ;ADE1A6;
+    STA.B DP_Temp16                                                      ;ADE1AA;
+    LDA.L MotherBrainBody.rainbowBeamLeftEdgeOriginXPosition             ;ADE1AC;
+    STA.B DP_Temp18                                                      ;ADE1B0;
     SEP #$20                                                             ;ADE1B2;
-    LDA.L MotherBrainBody.rainbowBeamRightEdgeAngle                                                        ;ADE1B4;
+    LDA.L MotherBrainBody.rainbowBeamRightEdgeAngle                      ;ADE1B4;
     ASL                                                                  ;ADE1B8;
-    ROL.B $12                                                            ;ADE1B9;
-    LDA.L MotherBrainBody.rainbowBeamLeftEdgeAngle                                                        ;ADE1BB;
+    ROL.B DP_Temp12                                                      ;ADE1B9;
+    LDA.L MotherBrainBody.rainbowBeamLeftEdgeAngle                       ;ADE1BB;
     ASL                                                                  ;ADE1BF;
-    ROL.B $12                                                            ;ADE1C0;
-    LDA.B $12                                                            ;ADE1C2;
+    ROL.B DP_Temp12                                                      ;ADE1C0;
+    LDA.B DP_Temp12                                                      ;ADE1C2;
     REP #$20                                                             ;ADE1C4;
     AND.W #$0003                                                         ;ADE1C6;
     ASL                                                                  ;ADE1C9;
     TAX                                                                  ;ADE1CA;
     JSR.W (.pointers,X)                                                  ;ADE1CB;
     LDA.W #$0010                                                         ;ADE1CE;
-    STA.L $7E9C00                                                        ;ADE1D1;
+    STA.L MotherBrainRainbowBeamWindow1IndirectHDMATable                 ;ADE1D1;
     LDA.W #$9C00                                                         ;ADE1D5;
-    STA.L $7E9C01                                                        ;ADE1D8;
+    STA.L MotherBrainRainbowBeamWindow1IndirectHDMATable+1               ;ADE1D8;
     LDA.W #$0010                                                         ;ADE1DC;
-    STA.L $7E9C03                                                        ;ADE1DF;
+    STA.L MotherBrainRainbowBeamWindow1IndirectHDMATable+3               ;ADE1DF;
     LDA.W #$9C03                                                         ;ADE1E3;
-    STA.L $7E9C04                                                        ;ADE1E6;
+    STA.L MotherBrainRainbowBeamWindow1IndirectHDMATable+4               ;ADE1E6;
     LDA.W #$00F0                                                         ;ADE1EA;
-    STA.L $7E9C06                                                        ;ADE1ED;
+    STA.L MotherBrainRainbowBeamWindow1IndirectHDMATable+6               ;ADE1ED;
     LDA.W #$9D04                                                         ;ADE1F1;
-    STA.L $7E9C07                                                        ;ADE1F4;
+    STA.L MotherBrainRainbowBeamWindow1IndirectHDMATable+7               ;ADE1F4;
     LDA.W #$00F4                                                         ;ADE1F8;
-    STA.L $7E9C09                                                        ;ADE1FB;
+    STA.L MotherBrainRainbowBeamWindow1IndirectHDMATable+9               ;ADE1FB;
     LDA.W #$9DE6                                                         ;ADE1FF;
-    STA.L $7E9C0A                                                        ;ADE202;
+    STA.L MotherBrainRainbowBeamWindow1IndirectHDMATable+$A              ;ADE202;
     LDA.W #$0000                                                         ;ADE206;
-    STA.L $7E9C0C                                                        ;ADE209;
+    STA.L MotherBrainRainbowBeamWindow1IndirectHDMATable+$C              ;ADE209;
     RTS                                                                  ;ADE20D;
 
   .pointers:
@@ -616,25 +616,25 @@ CalculateMotherBrainRainbowBeamHDMADataTable_AimedDownRight:
     PLB                                                                  ;ADE21A;
     PLB                                                                  ;ADE21B;
     LDA.W #$00FF                                                         ;ADE21C;
-    STA.W $9D00                                                          ;ADE21F;
-    STA.W $9D02                                                          ;ADE222;
-    LDA.W $8034                                                          ;ADE225;
+    STA.W MotherBrainRainbowBeamWindow1HDMADataTable                     ;ADE21F;
+    STA.W MotherBrainRainbowBeamWindow1HDMADataTable+2                   ;ADE222;
+    LDA.W MotherBrainBody.rainbowBeamRightEdgeAngle                      ;ADE225;
     AND.W #$00FF                                                         ;ADE228;
     ASL                                                                  ;ADE22B;
     TAX                                                                  ;ADE22C;
     LDA.L AbsoluteTangentTable,X                                         ;ADE22D;
-    STA.B $12                                                            ;ADE231;
-    LDA.W $8036                                                          ;ADE233;
+    STA.B DP_Temp12                                                      ;ADE231;
+    LDA.W MotherBrainBody.rainbowBeamLeftEdgeAngle                       ;ADE233;
     AND.W #$00FF                                                         ;ADE236;
     ASL                                                                  ;ADE239;
     TAX                                                                  ;ADE23A;
     LDA.L AbsoluteTangentTable,X                                         ;ADE23B;
-    STA.B $14                                                            ;ADE23F;
-    LDA.W $803A                                                          ;ADE241;
+    STA.B DP_Temp14                                                      ;ADE23F;
+    LDA.W MotherBrainBody.rainbowBeamOriginYPosition                     ;ADE241;
     SEC                                                                  ;ADE244;
     SBC.W #$0020                                                         ;ADE245;
     TAY                                                                  ;ADE248;
-    LDX.W #$9D04                                                         ;ADE249;
+    LDX.W #MotherBrainRainbowBeamWindow1HDMADataTable+4                  ;ADE249;
     LDA.W #$00FF                                                         ;ADE24C;
 
   .loopPadAbove:
@@ -643,29 +643,29 @@ CalculateMotherBrainRainbowBeamHDMADataTable_AimedDownRight:
     INX                                                                  ;ADE253;
     DEY                                                                  ;ADE254;
     BNE .loopPadAbove                                                    ;ADE255;
-    LDA.W $803A                                                          ;ADE257;
+    LDA.W MotherBrainBody.rainbowBeamOriginYPosition                     ;ADE257;
     TAY                                                                  ;ADE25A;
 
   .loopBeam:
-    LDA.B $16                                                            ;ADE25B;
+    LDA.B DP_Temp16                                                      ;ADE25B;
     CLC                                                                  ;ADE25D;
-    ADC.B $12                                                            ;ADE25E;
+    ADC.B DP_Temp12                                                      ;ADE25E;
     BCC +                                                                ;ADE260;
     LDA.W #$FFFF                                                         ;ADE262;
 
-+   STA.B $16                                                            ;ADE265;
++   STA.B DP_Temp16                                                      ;ADE265;
     AND.W #$FF00                                                         ;ADE267;
     XBA                                                                  ;ADE26A;
-    STA.B $1A                                                            ;ADE26B;
-    LDA.B $18                                                            ;ADE26D;
+    STA.B DP_Temp1A                                                      ;ADE26B;
+    LDA.B DP_Temp18                                                      ;ADE26D;
     CLC                                                                  ;ADE26F;
-    ADC.B $14                                                            ;ADE270;
+    ADC.B DP_Temp14                                                      ;ADE270;
     BCC +                                                                ;ADE272;
     LDA.W #$FFFF                                                         ;ADE274;
 
-+   STA.B $18                                                            ;ADE277;
++   STA.B DP_Temp18                                                      ;ADE277;
     AND.W #$FF00                                                         ;ADE279;
-    ORA.B $1A                                                            ;ADE27C;
+    ORA.B DP_Temp1A                                                      ;ADE27C;
     CMP.W #$FFFF                                                         ;ADE27E;
     BNE +                                                                ;ADE281;
     LDA.W #$00FF                                                         ;ADE283;
@@ -692,27 +692,27 @@ CalculateMotherBrainRainbowBeamHDMADataTable_AimedDown:
     PLB                                                                  ;ADE297;
     PLB                                                                  ;ADE298;
     LDA.W #$00FF                                                         ;ADE299;
-    STA.W $9D00                                                          ;ADE29C;
-    STA.W $9D02                                                          ;ADE29F;
-    LDA.W $8034                                                          ;ADE2A2;
+    STA.W MotherBrainRainbowBeamWindow1HDMADataTable                     ;ADE29C;
+    STA.W MotherBrainRainbowBeamWindow1HDMADataTable+2                   ;ADE29F;
+    LDA.W MotherBrainBody.rainbowBeamRightEdgeAngle                      ;ADE2A2;
     EOR.W #$FFFF                                                         ;ADE2A5;
     INC                                                                  ;ADE2A8;
     AND.W #$00FF                                                         ;ADE2A9;
     ASL                                                                  ;ADE2AC;
     TAX                                                                  ;ADE2AD;
     LDA.L AbsoluteTangentTable,X                                         ;ADE2AE;
-    STA.B $12                                                            ;ADE2B2;
-    LDA.W $8036                                                          ;ADE2B4;
+    STA.B DP_Temp12                                                      ;ADE2B2;
+    LDA.W MotherBrainBody.rainbowBeamLeftEdgeAngle                       ;ADE2B4;
     AND.W #$00FF                                                         ;ADE2B7;
     ASL                                                                  ;ADE2BA;
     TAX                                                                  ;ADE2BB;
     LDA.L AbsoluteTangentTable,X                                         ;ADE2BC;
-    STA.B $14                                                            ;ADE2C0;
-    LDA.W $803A                                                          ;ADE2C2;
+    STA.B DP_Temp14                                                      ;ADE2C0;
+    LDA.W MotherBrainBody.rainbowBeamOriginYPosition                     ;ADE2C2;
     SEC                                                                  ;ADE2C5;
     SBC.W #$0020                                                         ;ADE2C6;
     TAY                                                                  ;ADE2C9;
-    LDX.W #$9D04                                                         ;ADE2CA;
+    LDX.W #MotherBrainRainbowBeamWindow1HDMADataTable+4                  ;ADE2CA;
     LDA.W #$00FF                                                         ;ADE2CD;
 
   .loopPadAbove:
@@ -721,29 +721,29 @@ CalculateMotherBrainRainbowBeamHDMADataTable_AimedDown:
     INX                                                                  ;ADE2D4;
     DEY                                                                  ;ADE2D5;
     BNE .loopPadAbove                                                    ;ADE2D6;
-    LDA.W $803A                                                          ;ADE2D8;
+    LDA.W MotherBrainBody.rainbowBeamOriginYPosition                     ;ADE2D8;
     TAY                                                                  ;ADE2DB;
 
   .loopBeam:
-    LDA.B $16                                                            ;ADE2DC;
+    LDA.B DP_Temp16                                                      ;ADE2DC;
     SEC                                                                  ;ADE2DE;
-    SBC.B $12                                                            ;ADE2DF;
+    SBC.B DP_Temp12                                                      ;ADE2DF;
     BCS +                                                                ;ADE2E1;
     LDA.W #$0000                                                         ;ADE2E3;
 
-+   STA.B $16                                                            ;ADE2E6;
++   STA.B DP_Temp16                                                      ;ADE2E6;
     AND.W #$FF00                                                         ;ADE2E8;
     XBA                                                                  ;ADE2EB;
-    STA.B $1A                                                            ;ADE2EC;
-    LDA.B $18                                                            ;ADE2EE;
+    STA.B DP_Temp1A                                                      ;ADE2EC;
+    LDA.B DP_Temp18                                                      ;ADE2EE;
     CLC                                                                  ;ADE2F0;
-    ADC.B $14                                                            ;ADE2F1;
+    ADC.B DP_Temp14                                                      ;ADE2F1;
     BCC +                                                                ;ADE2F3;
     LDA.W #$FFFF                                                         ;ADE2F5;
 
-+   STA.B $18                                                            ;ADE2F8;
++   STA.B DP_Temp18                                                      ;ADE2F8;
     AND.W #$FF00                                                         ;ADE2FA;
-    ORA.B $1A                                                            ;ADE2FD;
+    ORA.B DP_Temp1A                                                      ;ADE2FD;
     CMP.W #$FFFF                                                         ;ADE2FF;
     BNE +                                                                ;ADE302;
     LDA.W #$00FF                                                         ;ADE304;
@@ -770,29 +770,29 @@ CalculateMotherBrainRainbowBeamHDMADataTable_AimedDownLeft:
     PLB                                                                  ;ADE318;
     PLB                                                                  ;ADE319;
     LDA.W #$00FF                                                         ;ADE31A;
-    STA.W $9D00                                                          ;ADE31D;
-    STA.W $9D02                                                          ;ADE320;
-    LDA.W $8034                                                          ;ADE323;
+    STA.W MotherBrainRainbowBeamWindow1HDMADataTable                     ;ADE31D;
+    STA.W MotherBrainRainbowBeamWindow1HDMADataTable+2                   ;ADE320;
+    LDA.W MotherBrainBody.rainbowBeamRightEdgeAngle                      ;ADE323;
     EOR.W #$FFFF                                                         ;ADE326;
     INC                                                                  ;ADE329;
     AND.W #$00FF                                                         ;ADE32A;
     ASL                                                                  ;ADE32D;
     TAX                                                                  ;ADE32E;
     LDA.L AbsoluteTangentTable,X                                         ;ADE32F;
-    STA.B $12                                                            ;ADE333;
-    LDA.W $8036                                                          ;ADE335;
+    STA.B DP_Temp12                                                      ;ADE333;
+    LDA.W MotherBrainBody.rainbowBeamLeftEdgeAngle                       ;ADE335;
     EOR.W #$FFFF                                                         ;ADE338;
     INC                                                                  ;ADE33B;
     AND.W #$00FF                                                         ;ADE33C;
     ASL                                                                  ;ADE33F;
     TAX                                                                  ;ADE340;
     LDA.L AbsoluteTangentTable,X                                         ;ADE341;
-    STA.B $14                                                            ;ADE345;
-    LDA.W $803A                                                          ;ADE347;
+    STA.B DP_Temp14                                                      ;ADE345;
+    LDA.W MotherBrainBody.rainbowBeamOriginYPosition                     ;ADE347;
     SEC                                                                  ;ADE34A;
     SBC.W #$0020                                                         ;ADE34B;
     TAY                                                                  ;ADE34E;
-    LDX.W #$9D04                                                         ;ADE34F;
+    LDX.W #MotherBrainRainbowBeamWindow1HDMADataTable+4                  ;ADE34F;
     LDA.W #$00FF                                                         ;ADE352;
 
   .loopPadAbove:
@@ -801,29 +801,29 @@ CalculateMotherBrainRainbowBeamHDMADataTable_AimedDownLeft:
     INX                                                                  ;ADE359;
     DEY                                                                  ;ADE35A;
     BNE .loopPadAbove                                                    ;ADE35B;
-    LDA.W $803A                                                          ;ADE35D;
+    LDA.W MotherBrainBody.rainbowBeamOriginYPosition                     ;ADE35D;
     TAY                                                                  ;ADE360;
 
   .loopBeam:
-    LDA.B $16                                                            ;ADE361;
+    LDA.B DP_Temp16                                                      ;ADE361;
     SEC                                                                  ;ADE363;
-    SBC.B $12                                                            ;ADE364;
+    SBC.B DP_Temp12                                                      ;ADE364;
     BCS +                                                                ;ADE366;
     LDA.W #$0000                                                         ;ADE368;
 
-+   STA.B $16                                                            ;ADE36B;
++   STA.B DP_Temp16                                                      ;ADE36B;
     AND.W #$FF00                                                         ;ADE36D;
     XBA                                                                  ;ADE370;
-    STA.B $1A                                                            ;ADE371;
-    LDA.B $18                                                            ;ADE373;
+    STA.B DP_Temp1A                                                      ;ADE371;
+    LDA.B DP_Temp18                                                      ;ADE373;
     SEC                                                                  ;ADE375;
-    SBC.B $14                                                            ;ADE376;
+    SBC.B DP_Temp14                                                      ;ADE376;
     BCS +                                                                ;ADE378;
     LDA.W #$0000                                                         ;ADE37A;
 
-+   STA.B $18                                                            ;ADE37D;
++   STA.B DP_Temp18                                                      ;ADE37D;
     AND.W #$FF00                                                         ;ADE37F;
-    ORA.B $1A                                                            ;ADE382;
+    ORA.B DP_Temp1A                                                      ;ADE382;
     BNE +                                                                ;ADE384;
     LDA.W #$00FF                                                         ;ADE386;
 
@@ -840,16 +840,16 @@ CalculateMotherBrainRainbowBeamHDMADataTable_AimedDownLeft:
 ;;; $E396: Seal Mother Brain's wall, function = fake death - descent ;;;
 SealMotherBrainsWallFunction_FakeDeath_Descent:
     LDA.W #$00F8                                                         ;ADE396;
-    STA.B $12                                                            ;ADE399;
+    STA.B DP_Temp12                                                      ;ADE399;
     LDA.W #$0048                                                         ;ADE39B;
-    STA.B $14                                                            ;ADE39E;
+    STA.B DP_Temp14                                                      ;ADE39E;
     LDA.W #$0009                                                         ;ADE3A0;
     LDY.W #EnemyProjectile_MiscDust                                      ;ADE3A3;
     JSL.L SpawnEnemyProjectileY_ParameterA_RoomGraphics                  ;ADE3A6;
     LDA.W #$00F8                                                         ;ADE3AA;
-    STA.B $12                                                            ;ADE3AD;
+    STA.B DP_Temp12                                                      ;ADE3AD;
     LDA.W #$0098                                                         ;ADE3AF;
-    STA.B $14                                                            ;ADE3B2;
+    STA.B DP_Temp14                                                      ;ADE3B2;
     LDA.W #$0009                                                         ;ADE3B4;
     LDY.W #EnemyProjectile_MiscDust                                      ;ADE3B7;
     JSL.L SpawnEnemyProjectileY_ParameterA_RoomGraphics                  ;ADE3BA;
@@ -860,7 +860,7 @@ SealMotherBrainsWallFunction_FakeDeath_Descent:
     db $0F,$09                                                           ;ADE3CA;
     dw PLMEntries_fillMotherBrainsWall                                   ;ADE3CC;
     LDA.W #Function_MotherBrainBody_FakeDeath_Descent_InitialPause       ;ADE3CE;
-    STA.W $0FA8                                                          ;ADE3D1;
+    STA.W MotherBrainBody.function                                       ;ADE3D1;
     RTL                                                                  ;ADE3D4;
 
 
@@ -876,11 +876,11 @@ MotherBrainHealthBasedPaletteHandling:
 
   .recovered:
     PHB                                                                  ;ADE3DF;
-    PEA.W $AD00                                                          ;ADE3E0;
+    PEA.W MotherBrainBodyRainbowBeamPalette_Pointers>>8&$FF00            ;ADE3E0;
     PLB                                                                  ;ADE3E3;
     PLB                                                                  ;ADE3E4;
     LDY.W #$0000                                                         ;ADE3E5;
-    LDA.W $0FCC                                                          ;ADE3E8;
+    LDA.W Enemy[1].health                                                ;ADE3E8;
     CMP.W #$2328                                                         ;ADE3EB;
     BCS .writePalette                                                    ;ADE3EE;
     LDY.W #$0002                                                         ;ADE3F0;
@@ -926,7 +926,8 @@ MotherBrainBodyRainbowBeamPalette_Pointers:
     dw MotherBrainBodyRainbowBeamPalette_5                               ;ADE43E;
 
 MotherBrainPhase2DeathBeforeGreyPalette_Pointers:
-    dw MotherBrainBodyRainbowBeamPalette_6                               ;ADE440; shared with MotherBrainBodyRainbowBeamPalette_Pointers
+; shared with MotherBrainBodyRainbowBeamPalette_Pointers
+    dw MotherBrainBodyRainbowBeamPalette_6                               ;ADE440;
     dw MotherBrainBodyRainbowBeamPalette_7                               ;ADE442;
     dw MotherBrainBodyRainbowBeamPalette_8                               ;ADE444;
     dw MotherBrainBodyRainbowBeamPalette_9                               ;ADE446;
@@ -1193,7 +1194,7 @@ FadeMotherBrainPaletteToBlack:
 
   .notZero:
     PHB                                                                  ;ADE9BE;
-    PEA.W $AD00                                                          ;ADE9BF;
+    PEA.W FadeMotherBrainPaletteToBlack_pointers>>8&$FF00                ;ADE9BF;
     PLB                                                                  ;ADE9C2;
     PLB                                                                  ;ADE9C3;
     TAY                                                                  ;ADE9C4;
@@ -1429,7 +1430,7 @@ TransitionMotherBrainPaletteToFromGrey_FakeDeath:
 ; Expects a pushed X
     PHY                                                                  ;ADEEF6;
     PHB                                                                  ;ADEEF7;
-    PEA.W $AD00                                                          ;ADEEF8;
+    PEA.W MotherBrainPalettes_TransitionToGrey>>8&$FF00                  ;ADEEF8;
     PLB                                                                  ;ADEEFB;
     PLB                                                                  ;ADEEFC;
     TAY                                                                  ;ADEEFD;
@@ -1457,7 +1458,7 @@ TransitionMotherBrainPaletteFromGrey_DrainedByBabyMetroid:
 
   .notZero:
     PHB                                                                  ;ADEF17;
-    PEA.W $AD00                                                          ;ADEF18;
+    PEA.W MotherBrainPalettes_TransitionFromGrey>>8&$FF00                ;ADEF18;
     PLB                                                                  ;ADEF1B;
     PLB                                                                  ;ADEF1C;
     TAY                                                                  ;ADEF1D;
@@ -1494,7 +1495,7 @@ TransitionMotherBrainPaletteToGrey_DrainedByBabyMetroid:
 
   .notZero:
     PHB                                                                  ;ADEF54;
-    PEA.W $AD00                                                          ;ADEF55;
+    PEA.W TransitionMotherBrainPaletteToGrey_DrainedByBabyMetroid>>8&$FF00 ;ADEF55;
     PLB                                                                  ;ADEF58;
     PLB                                                                  ;ADEF59;
     TAY                                                                  ;ADEF5A;
@@ -1583,7 +1584,7 @@ TransitionMotherBrainPaletteToGrey_RealDeath:
 
   .notZero:
     PHB                                                                  ;ADF0F3;
-    PEA.W $AD00                                                          ;ADF0F4;
+    PEA.W TransitionMotherBrainPaletteToGrey_RealDeath>>8&$FF00          ;ADF0F4;
     PLB                                                                  ;ADF0F7;
     PLB                                                                  ;ADF0F8;
     TAY                                                                  ;ADF0F9;
@@ -1645,7 +1646,7 @@ FadeOutBackgroundForBabyMetroidDeathSequence:
 ; BG palette 3: Room background
 ; BG palette 5: Room level graphics
     PHB                                                                  ;ADF209;
-    PEA.W $AD00                                                          ;ADF20A;
+    PEA.W FadeOutBackgroundForBabyMetroidDeathSequence>>8&$FF00          ;ADF20A;
     PLB                                                                  ;ADF20D;
     PLB                                                                  ;ADF20E;
     PHX                                                                  ;ADF20F;
@@ -1682,7 +1683,7 @@ FadeInBackgroundForMotherBrainPhase3:
 
   .notZero:
     PHB                                                                  ;ADF255;
-    PEA.W $AD00                                                          ;ADF256;
+    PEA.W FadeInBackgroundForMotherBrainPhase3>>8&$FF00                  ;ADF256;
     PLB                                                                  ;ADF259;
     PLB                                                                  ;ADF25A;
     TAY                                                                  ;ADF25B;
@@ -1753,9 +1754,9 @@ FadeInBackgroundForMotherBrainPhase3:
 
 ;;; $F40B: Enable earthquake type [A] for 20 frames ;;;
 EnableEarthquakeTypeInAFor20Frames:
-    STA.W $183E                                                          ;ADF40B;
+    STA.W EarthquakeType                                                 ;ADF40B;
     LDA.W #$0014                                                         ;ADF40E;
-    STA.W $1840                                                          ;ADF411;
+    STA.W EarthquakeTimer                                                ;ADF411;
     LDA.W #$0025                                                         ;ADF414;
     JSL.L QueueSound_Lib2_Max6                                           ;ADF417;
     RTL                                                                  ;ADF41B;
@@ -1763,24 +1764,24 @@ EnableEarthquakeTypeInAFor20Frames:
 
 ;;; $F41C: Handle Mother Brain body flickering ;;;
 HandleMotherBrainBodyFlickering:
-    LDA.W $0FA4                                                          ;ADF41C;
+    LDA.W Enemy.frameCounter                                             ;ADF41C;
     LSR                                                                  ;ADF41F;
     BCC .invisible                                                       ;ADF420;
-    LDA.B $69                                                            ;ADF422;
+    LDA.B DP_MainScreenLayers                                            ;ADF422;
     ORA.W #$0002                                                         ;ADF424;
-    STA.B $69                                                            ;ADF427;
-    LDA.W $0F86                                                          ;ADF429;
+    STA.B DP_MainScreenLayers                                            ;ADF427;
+    LDA.W Enemy.properties                                               ;ADF429;
     AND.W #$FEFF                                                         ;ADF42C;
-    STA.W $0F86                                                          ;ADF42F;
+    STA.W Enemy.properties                                               ;ADF42F;
     RTL                                                                  ;ADF432;
 
   .invisible:
-    LDA.B $69                                                            ;ADF433;
+    LDA.B DP_MainScreenLayers                                            ;ADF433;
     AND.W #$FFFD                                                         ;ADF435;
-    STA.B $69                                                            ;ADF438;
-    LDA.W $0F86                                                          ;ADF43A;
+    STA.B DP_MainScreenLayers                                            ;ADF438;
+    LDA.W Enemy.properties                                               ;ADF43A;
     ORA.W #$0100                                                         ;ADF43D;
-    STA.W $0F86                                                          ;ADF440;
+    STA.W Enemy.properties                                               ;ADF440;
     RTL                                                                  ;ADF443;
 
 
