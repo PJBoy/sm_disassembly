@@ -550,8 +550,8 @@ SamusPalettes_Intro:
     dw $4252,$4252,$4252,$1908,$4252,$1908,$2DAD,$1908                   ;9BA3B0;
 
 SamusPalettes_Visor:                                                     ;9BA3C0;
-    dw $3BE0,$5FF0,$7FFF ; Using x-ray
-    dw $43FF,$2F5A,$1AB5 ; In room with layer blending configuration = 28h/2Ah (with colour math backdrops)
+    dw $3BE0,$5FF0,$7FFF ; Palette transition when x-ray is widening
+    dw $43FF,$2F5A,$1AB5 ; Full x-ray beam, or in room with layer blending configuration = 28h/2Ah (with colour math backdrop)
 
 
 ;;; $A3CC: Set projectile trail position ;;;

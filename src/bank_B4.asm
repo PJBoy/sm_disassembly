@@ -11608,19 +11608,15 @@ EnemyVulnerabilities_MotherBrainBody:
 
 ; see labels.asm for EnemyDropChances:
 ;;; $F1F4: Enemy drop chances ;;;
+;        _____________________ ; 0: Small health
+;       |    _________________ ; 1: Big health
+;       |   |    _____________ ; 2: Missiles
+;       |   |   |    _________ ; 3: Nothing
+;       |   |   |   |    _____ ; 4: Super missiles
+;       |   |   |   |   |    _ ; 5: Power bombs
+;       |   |   |   |   |   |
 EnemyDropChances_Geruta:
-  .smallEnergy:
-    db $3C                                                               ;B4F1F4;
-  .bigEnergy:
-    db     $3C                                                           ;B4F1F5;
-  .missiles:
-    db         $3C                                                       ;B4F1F6;
-  .nothing:
-    db             $05                                                   ;B4F1F7;
-  .superMissiles:
-    db                 $3C                                               ;B4F1F8;
-  .powerBombs:
-    db                     $0A                                           ;B4F1F9; 23.5%  23.5%  23.5%   2.0%  23.5%   3.9%
+    db $3C,$3C,$3C,$05,$3C,$0A                                           ;B4F1F4; 23.5%  23.5%  23.5%   2.0%  23.5%   3.9%
 
 EnemyDropChances_Rio:
     db $1E,$50,$55,$28,$0A,$0A                                           ;B4F1FA; 11.8%  31.4%  33.3%  15.7%   3.9%   3.9%

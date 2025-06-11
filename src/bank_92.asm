@@ -4,6 +4,11 @@ org $928000
 
 ;;; $8000: Set Samus tiles definitions for current animation ;;;
 Set_SamusTilesDefinitions_ForCurrentAnimation:
+; $D94E is a table of pointers to animation definition lists
+; The table is indexed by Samus pose, the animation definition list is indexed by Samus animation frame
+; Animation definitions are 4 bytes
+; First byte indexes the top half tiles definitions pointer table ($D91E) for a pointer to a list of DMA entries that is indexed by the second byte
+; Third byte indexes the bottom half tiles definitions pointer table ($D938) for a pointer to a list of DMA entries that is indexed by the fourth byte
     PHP                                                                  ;928000;
     PHB                                                                  ;928001;
     PHK                                                                  ;928002;

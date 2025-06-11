@@ -3827,6 +3827,16 @@ Interrupt_Cmd12_VerticalDoorTransition_EndHUDDrawing:
 ;;     A: Interrupt command
 ;;     X: IRQ h-counter target
 ;;     Y: IRQ v-counter target
+
+; The call to $80:AE4E does a non-trivial amount of work, not a particularly sensible thing to do in an interrupt
+; Of note:
+;     Multiplication registers are clobbered (by $A9DE/$AB78)
+;     Samus position is modified (by $AE7E/$AEC2/$AF02/$AF89)
+;     Layer 1 position is modified (by $AE4E)
+;     BG1/2 scroll is modified (by $A37B)
+
+; $82:E91C (set closing PLM instruction list if coloured doorcap is present) actually takes the precaution of disabling IRQ to do its multiplication,
+; I think just about every other routine that runs during door transition is susceptible to seemingly random multiplication errors due to this interrupt command
     SEP #$20                                                             ;809771;
     LDA.W CREBitset                                                      ;809773;
     ORA.W PreviousCREBitset                                              ;809776;
@@ -3905,6 +3915,16 @@ Interrupt_Cmd18_HorizontalDoorTransition_EndHUDDrawing:
 ;;     A: Interrupt command
 ;;     X: IRQ h-counter target
 ;;     Y: IRQ v-counter target
+
+; The call to $80:AE4E does a non-trivial amount of work, not a particularly sensible thing to do in an interrupt
+; Of note:
+;     Multiplication registers are clobbered (by $A9DE/$AB78)
+;     Samus position is modified (by $AE7E/$AEC2/$AF02/$AF89)
+;     Layer 1 position is modified (by $AE4E)
+;     BG1/2 scroll is modified (by $A37B)
+
+; $82:E91C (set closing PLM instruction list if coloured doorcap is present) actually takes the precaution of disabling IRQ to do its multiplication,
+; I think just about every other routine that runs during door transition is susceptible to seemingly random multiplication errors due to this interrupt command
     SEP #$20                                                             ;8097DA;
     LDA.W CREBitset                                                      ;8097DC;
     ORA.W PreviousCREBitset                                              ;8097DF;

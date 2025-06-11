@@ -2524,6 +2524,14 @@ SetLiquidPhysicsType_Water:
 
 ;;; $8E64: Samus X movement ;;;
 Samus_X_Movement:
+; Called by:
+;     $A3E5: Samus movement - running
+;     $A521: Samus movement - morph ball - on ground
+;     $A67C: Samus movement - turning around - on ground
+;     $A694: Samus movement - moonwalking
+;     $A69F: Samus movement - spring ball - on ground
+;     $A790: Samus movement - turning around - jumping
+;     $A7AD: Samus movement - turning around - falling
     PHP                                                                  ;908E64;
     REP #$30                                                             ;908E65;
     JSR.W Handle_Samus_XExtraRunSpeed                                    ;908E67;
@@ -2572,6 +2580,17 @@ endif ; !FEATURE_KEEP_UNREFERENCED
 MoveSamus_Horizontally:
 ;; Parameters:
 ;;     $12.$14: Samus X base speed
+
+; Called by:
+;     $8E64: Samus X movement
+;     $8E75: Unused
+;     $8FB3: Samus jumping movement
+;     $9040: Samus spin jumping movement
+;     $9168: Samus falling movement
+;     $919F: Samus morphed falling movement
+;     $91D1: Samus morphed bouncing movement
+;     $9348: Move Samus horizontally with zero base X speed
+;     $946E: Samus movement handler - released from grapple swing
     LDA.W SamusXAccelerationMode                                         ;908EA9;
     BEQ .notTurning                                                      ;908EAC;
     CMP.W #$0002                                                         ;908EAE;
@@ -2608,6 +2627,10 @@ MoveSamus_Horizontally:
 
 ;;; $8EDF: Move Samus horizontally - knockback or bomb jump ;;;
 MoveSamus_Horizontally_KnockbackBombJump:
+; Called by:
+;     $DF53: Knockback movement - up
+;     $DF64: Knockback movement - down
+;     $E04C: Samus movement handler - bomb jump - main - horizontal
     PHP                                                                  ;908EDF;
     REP #$30                                                             ;908EE0;
     LDA.W KnockbackDirection                                             ;908EE2;
@@ -2734,7 +2757,11 @@ MoveSamus_Vertically_PushedByCeresRidley:
 
 ;;; $8FB3: Samus jumping movement ;;;
 Samus_Jumping_Movement:
-; Used for normal jumping, spring ball - in air, wall jumping, damage boost
+; Called by:
+;     $A42E: Samus movement - normal jumping
+;     $A6F1: Samus movement - spring ball - in air
+;     $A734: Samus movement - wall jumping
+;     $A7CA: Samus movement - damage boost
     PHP                                                                  ;908FB3;
     REP #$30                                                             ;908FB4;
     JSR.W Handle_Samus_XExtraRunSpeed                                    ;908FB6;
@@ -2808,6 +2835,8 @@ Samus_Jumping_Movement:
 
 ;;; $9040: Samus spin jumping movement ;;;
 Samus_SpinJumping_Movement:
+; Called by:
+;     $A436: Samus movement - spin jumping
     PHP                                                                  ;909040;
     REP #$30                                                             ;909041;
     JSR.W Handle_Samus_XExtraRunSpeed                                    ;909043;
@@ -2896,6 +2925,20 @@ CheckIfSamusHasStartedFalling:
 
 ;;; $90E2: Samus Y movement - with speed calculations ;;;
 Samus_Y_Movement_WithSpeedCalculations:
+; Called by:
+;     $8FB3: Samus jumping movement
+;     $9040: Samus spin jumping movement
+;     $9168: Samus falling movement
+;     $919F: Samus morphed falling movement
+;     $91D1: Samus morphed bouncing movement
+;     $92B8: Simple Samus Y movement
+;     $92C7: Simple Samus Y movement
+;     $946E: Samus movement handler - released from grapple swing
+;     $94CB: Samus movement handler - Samus drained - falling
+;     $DF53: Knockback movement - up
+;     $DF5D: Knockback movement - straight up (unused)
+;     $E04C: Samus movement handler - bomb jump - main - horizontal
+;     $E066: Samus movement handler - bomb jump - main - straight
     PHP                                                                  ;9090E2;
     REP #$30                                                             ;9090E3;
     LDA.W SamusYSubSpeed                                                 ;9090E5;
@@ -2968,6 +3011,8 @@ Samus_Y_Movement_WithSpeedCalculations:
 
 ;;; $9168: Samus falling movement ;;;
 Samus_Falling_Movement:
+; Called by:
+;     $A58D: Samus movement - falling
     PHP                                                                  ;909168;
     REP #$30                                                             ;909169;
     JSR.W Handle_Samus_XExtraRunSpeed                                    ;90916B;
@@ -2998,6 +3043,9 @@ Samus_Falling_Movement:
 
 ;;; $919F: Samus morphed falling movement ;;;
 Samus_Morphed_Falling_Movement:
+; Called by:
+;     $A5CA: Samus movement - morph ball - fallingMore actions
+;     $A703: Samus movement - spring ball - falling
     PHP                                                                  ;90919F;
     REP #$30                                                             ;9091A0;
     JSR.W Determine_SamusXSpeedTable_EntryPointer                        ;9091A2;
@@ -3025,6 +3073,10 @@ Samus_Morphed_Falling_Movement:
 
 ;;; $91D1: Samus morphed bouncing movement ;;;
 Samus_Morphed_Bouncing_Movement:
+; Called by:
+;     $A5CA: Samus movement - morph ball - falling
+;     $A6F1: Samus movement - spring ball - in air
+;     $A703: Samus movement - spring ball - falling
     PHP                                                                  ;9091D1;
     REP #$30                                                             ;9091D2;
     JSR.W Determine_SamusXSpeedTable_EntryPointer                        ;9091D4;
@@ -3085,6 +3137,21 @@ Samus_Morphed_Bouncing_Movement:
 
 ;;; $923F: Samus Y movement - no speed calculations ;;;
 Samus_Y_Movement_NoSpeedCalculations:
+; Called by:
+;     $A383: Samus movement - standingMore actions
+;     $A3E5: Samus movement - running
+;     $A521: Samus movement - morph ball - on ground
+;     $A573: Samus movement - crouching
+;     $A5FC: Samus movement - knockback / crystal flash ending
+;     $A61C: Samus movement - crouching/standing/morphing/unmorphing transition
+;     $A67C: Samus movement - turning around - on ground
+;     $A694: Samus movement - moonwalking
+;     $A69F: Samus movement - spring ball - on ground
+;     $A75F: Samus movement - ran into a wall
+;     $A790: Samus movement - turning around - jumping
+;     $A7AD: Samus movement - turning around - falling
+;     $DF64: Knockback movement - down
+
 ; Total X speed is added to distance moved down in an attempt to keep Samus in contact with downwards slopes
 ; (unless it's already been determined that she's on a slope, in which case no adjustment is made)
 ; You'll note that this only works up to a steepness of 45°, which may or may not be intentional...
@@ -3174,7 +3241,15 @@ MoveSamus_ByExtraYDisplacement:
 ;;; $92B8: Simple Samus Y movement ;;;
 Simple_Samus_Y_Movement:
 ;; Returns:
-;;     Carry: set if [Samus Y direction] != none, clear otherwise
+;;     Carry: Set if [Samus Y direction] != none, clear otherwise
+
+; Called by:More actions
+;     $A521: Samus movement - morph ball - on ground
+;     $A69F: Samus movement - spring ball - on ground
+;     $A790: Samus movement - turning around - jumping
+;     $A7AD: Samus movement - turning around - falling
+
+; In all cases, if this routine returns carry clear, $923F (Samus Y movement - no speed calculations) is called
     LDA.W SamusYDirection                                                ;9092B8;
     BNE .movingUpDown                                                    ;9092BB;
     CLC                                                                  ;9092BD;
@@ -3193,6 +3268,8 @@ Simple_Samus_Y_Movement_duplicate:
 ;;     Carry: set if [Samus Y direction] != none, clear otherwise
 
 ; Clone of Simple_Samus_Y_Movement
+; Called by:
+;     $A61C: Samus movement - crouching/standing/morphing/unmorphing transition
     LDA.W SamusYDirection                                                ;9092C7;
     BNE .movingUpDown                                                    ;9092CA;
     CLC                                                                  ;9092CC;
@@ -3208,6 +3285,8 @@ Simple_Samus_Y_Movement_duplicate:
 if !FEATURE_KEEP_UNREFERENCED
 ;;; $92D6: Unused ;;;
 UNUSED_MoveSamus_9092D6:
+;; Parameters:
+;;     $12: Samus Y velocity
     PHP                                                                  ;9092D6;
     REP #$30                                                             ;9092D7;
     BRA .uselessBranch                                                   ;9092D9; >.<
@@ -3965,6 +4044,8 @@ Handle_Samus_XExtraRunSpeed:
 
 ;;; $9826: Move Samus right by [$12].[$14], no collision detection ;;;
 MoveSamus_Right_NoCollisionDetection:
+;; Parameters:
+;;     $12.$14: Distance to move Samus
     LDA.W SamusXSubPosition                                              ;909826;
     CLC                                                                  ;909829;
     ADC.B DP_Temp14                                                      ;90982A;
@@ -3981,6 +4062,8 @@ MoveSamus_Right_NoCollisionDetection:
 
 ;;; $9842: Move Samus left by [$12].[$14], no collision detection ;;;
 MoveSamus_Left_NoCollisionDetection:
+;; Parameters:
+;;     $12.$14: Distance to move Samus
     LDA.W SamusXSubPosition                                              ;909842;
     SEC                                                                  ;909845;
     SBC.B DP_Temp14                                                      ;909846;
@@ -4007,6 +4090,8 @@ MoveSamus_Left_NoCollisionDetection:
 
 ;;; $9871: Move Samus down by [$12].[$14], no collision detection ;;;
 MoveSamus_Down_NoCollisionDetection:
+;; Parameters:
+;;     $12.$14: Distance to move Samus
     LDA.W SamusYSubPosition                                              ;909871;
     CLC                                                                  ;909874;
     ADC.B DP_Temp14                                                      ;909875;
@@ -4023,6 +4108,8 @@ MoveSamus_Down_NoCollisionDetection:
 
 ;;; $988D: Move Samus up by [$12].[$14], no collision detection ;;;
 MoveSamus_Up_NoCollisionDetection:
+;; Parameters:
+;;     $12.$14: Distance to move Samus
     LDA.W SamusYSubPosition                                              ;90988D;
     SEC                                                                  ;909890;
     SBC.B DP_Temp14                                                      ;909891;
@@ -6047,7 +6134,11 @@ DisableMinimap_MarkBossRoomTilesExplored:
 
 ;;; $A8A6: Mark map tile as explored ;;;
 MarkMapTilesExplored:
-; Set tiles explored for current area, depending on $12 and $18 (X and Y offsets from room's top-left corner).
+;; Parameters:
+;;     $12: X offset of map tile in room. Unit px
+;;     $18: Y offset of map tile in room. Unit px
+
+; Set tiles explored for current area, used only for marking boss room map tiles as explored
 ; The first row is skipped during index calculation, that is, room (0, 0) maps to MapTilesExplored+4 rather than MapTilesExplored
 
 ; From RAM map, MapTilesExplored:
@@ -6111,7 +6202,7 @@ Initialise_Minimap_broken:
 ; Called by:
 ;     $9A79: Initialise HUD
 
-; This function isn't setting the variables needed for the call to $AA43 and otherwise unnecessary
+; This function isn't setting the variables needed for the call to $AA43 and otherwise is unnecessary
     PHP                                                                  ;90A8EF;
     REP #$30                                                             ;90A8F0;
     LDA.W SamusXPosition                                                 ;90A8F2;
@@ -6301,7 +6392,7 @@ Update_Minimap:
     CMP.W #$0003                                                         ;90A9FD;
     BNE .singlePage                                                      ;90AA00;
 
-; If [X] % 3 then mini-map origin is within last 8 tiles of the row.
+; If [X] % 4 == 3 then mini-map origin is within last 8 tiles of the row.
 ; If the mini-map origin is on the same page as Samus map position,
 ; then there's a chance that at least one of the two tiles right of Samus map position spilled onto the next map page.
 ; If the mini-map origin is on a different page to Samus map position,
@@ -6932,6 +7023,8 @@ Reset_Projectile_Data:
 
 ;;; $ADB7: Clear projectile ;;;
 Clear_Projectile:
+;; Parameters:
+;;     X: Projectile index
     PHP                                                                  ;90ADB7;
     REP #$30                                                             ;90ADB8;
     STZ.W SamusProjectile_XPositions,X                                   ;90ADBA;
@@ -6969,6 +7062,8 @@ Clear_Projectile:
 
 ;;; $AE06: Kill projectile ;;;
 Kill_Projectile:
+;; Parameters:
+;;     X: Projectile index
     PHP                                                                  ;90AE06;
     PHB                                                                  ;90AE07;
     PHK                                                                  ;90AE08;
@@ -7016,6 +7111,8 @@ Kill_Projectile:
 
 ;;; $AE4E: Kill beam - up ;;;
 KillBeam_Up:
+;; Parameters:
+;;     X: Projectile index
     LDA.W SamusProjectile_YPositions,Y                                   ;90AE4E;
     SEC                                                                  ;90AE51;
     SBC.W SamusProjectile_YRadii,Y                                       ;90AE52;
@@ -7025,6 +7122,8 @@ KillBeam_Up:
 
 ;;; $AE59: Kill beam - up-right ;;;
 KillBeam_UpRight:
+;; Parameters:
+;;     X: Projectile index
     LDA.W SamusProjectile_XPositions,Y                                   ;90AE59;
     CLC                                                                  ;90AE5C;
     ADC.W SamusProjectile_XRadii,Y                                       ;90AE5D;
@@ -7038,6 +7137,8 @@ KillBeam_UpRight:
 
 ;;; $AE6E: Kill beam - right ;;;
 KillBeam_Right:
+;; Parameters:
+;;     X: Projectile index
     LDA.W SamusProjectile_XPositions,Y                                   ;90AE6E;
     CLC                                                                  ;90AE71;
     ADC.W SamusProjectile_XRadii,Y                                       ;90AE72;
@@ -7047,6 +7148,8 @@ KillBeam_Right:
 
 ;;; $AE79: Kill beam - down-right ;;;
 KillBeam_DownRight:
+;; Parameters:
+;;     X: Projectile index
     LDA.W SamusProjectile_XPositions,Y                                   ;90AE79;
     CLC                                                                  ;90AE7C;
     ADC.W SamusProjectile_XRadii,Y                                       ;90AE7D;
@@ -7060,6 +7163,8 @@ KillBeam_DownRight:
 
 ;;; $AE8E: Kill beam - down ;;;
 KillBeam_Down:
+;; Parameters:
+;;     X: Projectile index
     LDA.W SamusProjectile_YPositions,Y                                   ;90AE8E;
     CLC                                                                  ;90AE91;
     ADC.W SamusProjectile_YRadii,Y                                       ;90AE92;
@@ -7069,6 +7174,8 @@ KillBeam_Down:
 
 ;;; $AE99: Kill beam - down-left ;;;
 KillBeam_DownLeft:
+;; Parameters:
+;;     X: Projectile index
     LDA.W SamusProjectile_XPositions,Y                                   ;90AE99;
     SEC                                                                  ;90AE9C;
     SBC.W SamusProjectile_XRadii,Y                                       ;90AE9D;
@@ -7082,6 +7189,8 @@ KillBeam_DownLeft:
 
 ;;; $AEAE: Kill beam - left ;;;
 KillBeam_Left:
+;; Parameters:
+;;     X: Projectile index
     LDA.W SamusProjectile_XPositions,Y                                   ;90AEAE;
     SEC                                                                  ;90AEB1;
     SBC.W SamusProjectile_XRadii,Y                                       ;90AEB2;
@@ -7091,6 +7200,8 @@ KillBeam_Left:
 
 ;;; $AEB9: Kill beam - up-left ;;;
 KillBeam_UpLeft:
+;; Parameters:
+;;     X: Projectile index
     LDA.W SamusProjectile_XPositions,Y                                   ;90AEB9;
     SEC                                                                  ;90AEBC;
     SBC.W SamusProjectile_XRadii,Y                                       ;90AEBD;
@@ -7200,6 +7311,8 @@ BeamBlockCollision_NoWaveBeam_Horizontal:
 
 ;;; $AF68: Projectile pre-instruction - missile ;;;
 ProjectilePreInstruction_Missile:
+;; Parameters:
+;;     X: Projectile index
     LDA.W SamusProjectile_Directions,X                                   ;90AF68;
     AND.W #$00F0                                                         ;90AF6B;
     BEQ .notDeleted                                                      ;90AF6E;
@@ -7277,6 +7390,8 @@ MissileBlockCollision_Horizontal:
 
 ;;; $AFE5: Projectile pre-instruction - super missile ;;;
 ProjectilePreInstruction_SuperMissile:
+;; Parameters:
+;;     X: Projectile index
     LDA.W SamusProjectile_Directions,X                                   ;90AFE5;
     AND.W #$00F0                                                         ;90AFE8;
     BEQ .notDeleted                                                      ;90AFEB;
@@ -7366,6 +7481,9 @@ SuperMissileBlockCollision_Horizontal:
 
 ;;; $B075: Projectile pre-instruction - super missile link ;;;
 ProjectilePreInstruction_SuperMissileLink:
+;; Parameters:
+;;     X: Projectile index
+
 ; If super missile link is flagged for deletion, clear *all* super missile projectiles
     LDA.W SamusProjectile_Directions,X                                   ;90B075;
     AND.W #$00F0                                                         ;90B078;
@@ -7392,6 +7510,8 @@ ProjectilePreInstruction_SuperMissileLink:
 
 ;;; $B099: Projectile pre-instruction - bomb ;;;
 ProjectilePreInstruction_Bomb:
+;; Parameters:
+;;     X: Projectile index
     LDA.W SamusProjectile_Directions,X                                   ;90B099;
     AND.W #$00F0                                                         ;90B09C;
     BEQ .notDeleted                                                      ;90B09F;
@@ -7406,6 +7526,8 @@ ProjectilePreInstruction_Bomb:
 
 ;;; $B0AE: Projectile pre-instruction - power bomb ;;;
 ProjectilePreInstruction_PowerBomb:
+;; Parameters:
+;;     X: Projectile index
     LDA.W SamusProjectile_Directions,X                                   ;90B0AE;
     AND.W #$00F0                                                         ;90B0B1;
     BEQ .notDeleted                                                      ;90B0B4;
@@ -7420,6 +7542,8 @@ ProjectilePreInstruction_PowerBomb:
 
 ;;; $B0C3: Projectile pre-instruction - beam - wave + plasma/spazer / charged (ice) wave ;;;
 ProjectilePreInstruction_Beam_WavePlasmaSpazer_ChargeIceWave:
+;; Parameters:
+;;     X: Projectile index
     LDA.W SamusProjectile_Directions,X                                   ;90B0C3;
     AND.W #$00F0                                                         ;90B0C6;
     BEQ .notDeleted                                                      ;90B0C9;
@@ -7438,6 +7562,8 @@ ProjectilePreInstruction_Beam_WavePlasmaSpazer_ChargeIceWave:
 
 ;;; $B0E4: Projectile pre-instruction - beam - uncharged (ice) wave ;;;
 ProjectilePreInstruction_Beam_UnchargedIceWave:
+;; Parameters:
+;;     X: Projectile index
     LDA.W SamusProjectile_Directions,X                                   ;90B0E4;
     AND.W #$00F0                                                         ;90B0E7;
     BEQ .notDeleted                                                      ;90B0EA;
@@ -7512,6 +7638,8 @@ WaveBeamBlockCollision_Horizontal:
 
 ;;; $B159: Projectile pre-instruction - hyper beam ;;;
 ProjectilePreInstruction_HyperBeam:
+;; Parameters:
+;;     X: Projectile index
     LDA.W SamusProjectile_Directions,X                                   ;90B159;
     AND.W #$00F0                                                         ;90B15C;
     BEQ .gotoShared                                                      ;90B15F;
@@ -7527,10 +7655,10 @@ RTS_90B169:
     RTS                                                                  ;90B169;
 
 
-;;; $B159: Projectile pre-instruction - hyper beam ;;;
+;;; $B16A: Delete projectile if too far off-screen ;;;
 DeleteProjectileIfTooFarOffScreen:
 ;; Returns:
-;;     Carry: set if projectile deleted, clear otherwise
+;;     Carry: Set if projectile deleted, clear otherwise
     LDX.W ProjectileIndex                                                ;90B16A;
     LDA.W SamusProjectile_XPositions,X                                   ;90B16D;
     SEC                                                                  ;90B170;
@@ -7559,6 +7687,8 @@ DeleteProjectileIfTooFarOffScreen:
 
 ;;; $B197: Initialise beam velocities ;;;
 InitializeBeamVelocities:
+;; Parameters:
+;;     $14: Projectile index
     PHP                                                                  ;90B197;
     PHB                                                                  ;90B198;
     PHK                                                                  ;90B199;
@@ -7672,7 +7802,6 @@ InitializeProjectileVelocities:
 ;;; $B218: Initialise projectile velocities - up ;;;
 InitializeProjectileVelocities_Up:
 ;; Parameters:
-;;     X: Projectile index
 ;;     $12: Projectile index
 ;;     $16: Base speed
 
@@ -7703,7 +7832,6 @@ InitializeProjectileVelocities_Up:
 ;;; $B23D: Initialise projectile velocities - up-right ;;;
 InitializeProjectileVelocities_UpRight:
 ;; Parameters:
-;;     X: Projectile index
 ;;     $12: Projectile index
 ;;     $16: Base speed
     LDX.B DP_Temp12                                                      ;90B23D;
@@ -7735,7 +7863,6 @@ InitializeProjectileVelocities_UpRight:
 ;;; $B268: Initialise projectile velocities - right ;;;
 InitializeProjectileVelocities_Right:
 ;; Parameters:
-;;     X: Projectile index
 ;;     $12: Projectile index
 ;;     $16: Base speed
     LDX.B DP_Temp12                                                      ;90B268;
@@ -7750,7 +7877,6 @@ InitializeProjectileVelocities_Right:
 ;;; $B277: Initialise projectile velocities - down-right ;;;
 InitializeProjectileVelocities_DownRight:
 ;; Parameters:
-;;     X: Projectile index
 ;;     $12: Projectile index
 ;;     $16: Base speed
     LDX.B DP_Temp12                                                      ;90B277;
@@ -7768,7 +7894,6 @@ InitializeProjectileVelocities_DownRight:
 ;;; $B28C: Initialise projectile velocities - down ;;;
 InitializeProjectileVelocities_Down:
 ;; Parameters:
-;;     X: Projectile index
 ;;     $12: Projectile index
 ;;     $16: Base speed
     LDX.B DP_Temp12                                                      ;90B28C;
@@ -7783,7 +7908,6 @@ InitializeProjectileVelocities_Down:
 ;;; $B29B: Initialise projectile velocities - down-left ;;;
 InitializeProjectileVelocities_DownLeft:
 ;; Parameters:
-;;     X: Projectile index
 ;;     $12: Projectile index
 ;;     $16: Base speed
     LDX.B DP_Temp12                                                      ;90B29B;
@@ -7803,7 +7927,6 @@ InitializeProjectileVelocities_DownLeft:
 ;;; $B2B4: Initialise projectile velocities - left ;;;
 InitializeProjectileVelocities_Left:
 ;; Parameters:
-;;     X: Projectile index
 ;;     $12: Projectile index
 ;;     $16: Base speed
 
@@ -7823,7 +7946,6 @@ InitializeProjectileVelocities_Left:
 ;;; $B2C7: Initialise projectile velocities - up-left ;;;
 InitializeProjectileVelocities_UpLeft:
 ;; Parameters:
-;;     X: Projectile index
 ;;     $12: Projectile index
 ;;     $16: Base speed
     LDX.B DP_Temp12                                                      ;90B2C7;
@@ -7856,6 +7978,8 @@ InitializeProjectileVelocities_UpLeft:
 
 ;;; $B2F6: Accelerate (super) missile ;;;
 AccelerateMissile:
+;; Parameters:
+;;     X: Projectile index
     PHP                                                                  ;90B2F6;
     REP #$30                                                             ;90B2F7;
     PHX                                                                  ;90B2F9;
@@ -8098,6 +8222,8 @@ SuperMissileLink_HorizontalBlockCollisionDetection:
 if !FEATURE_KEEP_UNREFERENCED
 ;;; $B4A6: Unused. Clear linked super missile if super missile explosion ;;;
 UNUSED_ClearLinkedSuperMissileIfSuperMissileExplosion_90B4A6:
+;; Parameters:
+;;     X: Projectile index
     PHP                                                                  ;90B4A6;
     REP #$30                                                             ;90B4A7;
     LDA.W SamusProjectile_Variables,X                                    ;90B4A9;
@@ -8161,6 +8287,8 @@ InstList_LeftBeamTrail_IceBeams_ChargedPowerBeam:                        ;90B4CB
 
 ;;; $B525: Instruction - move left projectile trail down one pixel ;;;
 Instruction_MoveLeftProjectileTrailDownOnePixel:
+;; Parameters:
+;;     Y: Projectile trail index
     LDA.W ProjectileTrail_LeftYPosition,Y                                ;90B525;
     INC                                                                  ;90B528;
     STA.W ProjectileTrail_LeftYPosition,Y                                ;90B529;
@@ -8201,6 +8329,8 @@ InstList_RightBeamTrail_SomeIceBeams:                                    ;90B52D
 
 ;;; $B587: Instruction - move right projectile trail down one pixel ;;;
 Instruction_MoveRightProjectileTrailDownOnePixel:
+;; Parameters:
+;;     Y: Projectile trail index
     LDA.W ProjectileTrail_RightYPosition,Y                               ;90B587;
     INC                                                                  ;90B58A;
     STA.W ProjectileTrail_RightYPosition,Y                               ;90B58B;
@@ -8227,6 +8357,8 @@ InstList_BeamTrail_SuperMissile:                                         ;90B5A1
 
 ;;; $B5B3: Instruction - move left projectile trail up one pixel ;;;
 Instruction_MoveLeftProjectileTrailUpOnePixel:
+;; Parameters:
+;;     Y: Projectile trail index
     LDA.W ProjectileTrail_LeftYPosition,Y                                ;90B5B3;
     DEC                                                                  ;90B5B6;
     STA.W ProjectileTrail_LeftYPosition,Y                                ;90B5B7;
@@ -8321,6 +8453,8 @@ ProjectileTrail_InstListPointers_Right:
 
 ;;; $B657: Spawn projectile trail ;;;
 Spawn_ProjectileTrail:
+;; Parameters:
+;;     X: Projectile index
     PHB                                                                  ;90B657;
     LDA.W SamusProjectile_Types,X                                        ;90B658;
     BIT.W #$0F00                                                         ;90B65B;
@@ -9302,6 +9436,8 @@ FireHyperBeam:
 
 ;;; $BD64: Initial beam block collision - no wave beam ;;;
 InitialBeamBlockCollision_NoWaveBeam:
+;; Parameters:
+;;     X: Projectile index
     PHX                                                                  ;90BD64;
     LDA.W SamusProjectile_Directions,X                                   ;90BD65;
     AND.W #$000F                                                         ;90BD68;
@@ -9360,6 +9496,8 @@ InitialBeamBlockCollision_NoWaveBeam_Left:
 
 ;;; $BDB2: Initial wave beam block collision ;;;
 InitialWaveBeamBlockCollision:
+;; Parameters:
+;;     X: Projectile index
     PHX                                                                  ;90BDB2;
     LDA.W SamusProjectile_Directions,X                                   ;90BDB3;
     AND.W #$000F                                                         ;90BDB6;
@@ -9418,6 +9556,8 @@ InitialWaveBeamBlockCollision_Left:
 
 ;;; $BE00: Projectile reflection ;;;
 ProjectileReflection:
+;; Parameters:
+;;     $14: Projectile index
     PHP                                                                  ;90BE00;
     PHB                                                                  ;90BE01;
     PHK                                                                  ;90BE02;
@@ -9795,10 +9935,10 @@ HUDSelectionHandler_MorphBall:
     RTS                                                                  ;90C0AA;
 
 
-;;; $C0AB: Fire bomb or bomb spread ;;;
+;;; $C0AB: Charge bomb spread or reserve slot to fire bomb ;;;
 FireBombOrBombSpread:
 ;; Returns:
-;;     Carry: set if bomb fired, clear otherwise
+;;     Carry: Set if reserved bomb slot, otherwise clear
     LDA.W EquippedItems                                                  ;90C0AB;
     BIT.W #$1000                                                         ;90C0AE;
     BEQ .return                                                          ;90C0B1;
@@ -9828,10 +9968,10 @@ FireBombOrBombSpread:
     RTS                                                                  ;90C0E6;
 
 
-;;; $C0E7: Fire (power) bomb ;;;
+;;; $C0E7: Reserve slot to fire (power) bomb ;;;
 FireBomb:
 ;; Returns:
-;;     Carry: set if bomb fired, clear otherwise
+;;     Carry: sSet if reserved bomb slot, otherwise clear
 
 ; The caller routines overwrite the cooldown timer ($C017/$C089), so the (rather odd) increment done here has no effect
     LDA.B DP_Controller1New                                              ;90C0E7;
@@ -10729,7 +10869,17 @@ DrawArmCannon:
     RTS                                                                  ;90C790;
 
   .spriteValues:
-; Indexed by direction (see SamusProjectile_Directions)
+;        _________________________________________________________ 0: Up, facing right
+;       |      ___________________________________________________ 1: Up-right
+;       |     |      _____________________________________________ 2: Right
+;       |     |     |      _______________________________________ 3: Down-right
+;       |     |     |     |      _________________________________ 4: Down, facing right
+;       |     |     |     |     |      ___________________________ 5: Down, facing left
+;       |     |     |     |     |     |      _____________________ 6: Down-left
+;       |     |     |     |     |     |     |      _______________ 7: Left
+;       |     |     |     |     |     |     |     |      _________ 8: Up-left
+;       |     |     |     |     |     |     |     |     |      ___ 9: Up, facing left
+;       |     |     |     |     |     |     |     |     |     |
     dw $281F,$281F,$281F,$681F,$A81F,$E81F,$281F,$681F,$681F,$681F       ;90C791; Sprite tile number and attributes
 
   .pointers:
@@ -11367,8 +11517,16 @@ CostOfSBAsInPowerBombs:                                                  ;90CC21
     dw $0000 ; Bh: Plasma + ice + wave
 
 
-;;; $CC39: ($14, $16) = ([A] * sin([Y] * pi / 80h), [A] * -cos([Y] * pi / 80h)) ;;;
+;;; $CC39: Calculate X/Y components of radius [A], angle [Y] ;;;
 Math_90CC39:
+;; Parameters:
+;;     A: Radius
+;;     Y: Angle. Origin = up, positive direction = clockwise
+;; Returns:
+;;     $14: X component of radius
+;;     $16: Y component of radius
+
+; Clone of Calculate_XY_ComponentsOf_RadiusA_AngleY
     PHP                                                                  ;90CC39;
     REP #$30                                                             ;90CC3A;
     PHX                                                                  ;90CC3C;
@@ -11422,6 +11580,12 @@ Math_90CC39:
 
 ;;; $CC8A: A = [$18] * sin([X] / 2 * pi / 80h) ;;;
 Math_90CC8A:
+;; Parameters:
+;;     X: Angle * 2
+;;     $18: Radius
+;; Returns:
+;;     A: Sine component
+
 ; Clone of $8B:8EA3
 ; Angle [X] / 2 must be less than 80h, as this routine does unsigned multiplication
     SEP #$20                                                             ;90CC8A;
@@ -11519,6 +11683,8 @@ CLCRTS_90CD18:
 
 ;;; $CD1A: Fire wave SBA ;;;
 FireWaveSBA:
+;; Returns:
+;;     Carry: Set. Fire SBA succeeded
     LDX.W #$0006                                                         ;90CD1A;
 
   .loop:
@@ -11575,6 +11741,8 @@ FireWaveSBA:
 
 ;;; $CD9B: Fire ice SBA ;;;
 FireIceSBA:
+;; Returns:
+;;     Carry: Set if succeeded
     LDA.W SamusProjectile_PreInstructions                                ;90CD9B;
     CMP.W #ProjectilePreInstruction_IceSBA_End                           ;90CD9E;
     BEQ .returnCarryClear                                                ;90CDA1;
@@ -11635,6 +11803,8 @@ FireIceSBA:
 
 ;;; $CE14: Fire spazer SBA ;;;
 FireSpazerSBA:
+;; Returns:
+;;     Carry: Set. Fire SBA succeeded
     LDX.W #$0006                                                         ;90CE14;
 
   .loop:
@@ -11693,6 +11863,8 @@ FireSpazerSBA:
 
 ;;; $CE98: Fire plasma SBA ;;;
 FirePlasmaSBA:
+;; Returns:
+;;     Carry: Set if succeeded
     LDA.W SamusProjectile_PreInstructions                                ;90CE98;
     CMP.W #ProjectilePreInstruction_PlasmaSBA                            ;90CE9B;
     BNE +                                                                ;90CE9E;
@@ -11747,6 +11919,8 @@ FirePlasmaSBA:
 
 ;;; $CF09: Projectile pre-instruction - ice SBA - main ;;;
 ProjectilePreInstruction_IceSBA_Main:
+;; Parameters:
+;;     X: Projectile index
     LDA.W SamusProjectile_Directions,X                                   ;90CF09;
     AND.W #$00F0                                                         ;90CF0C;
     BEQ .trail                                                           ;90CF0F;
@@ -11798,6 +11972,8 @@ ProjectilePreInstruction_IceSBA_Main:
 
 ;;; $CF7A: Projectile pre-instruction - ice SBA - end ;;;
 ProjectilePreInstruction_IceSBA_End:
+;; Parameters:
+;;     X: Projectile index
     LDA.W SamusProjectile_Directions,X                                   ;90CF7A;
     AND.W #$00F0                                                         ;90CF7D;
     BEQ .notDeleted                                                      ;90CF80;
@@ -12212,6 +12388,8 @@ Shinespark_Vertical_Movement:
 
 ;;; $D2BA: End shinespark if collision detected or low health ;;;
 EndShinesparkIfCollisionDetectedOrLowEnergy:
+;; Returns:
+;;     Carry: Set if shinespark ended, otherwise clear
     LDA.W Energy                                                         ;90D2BA;
     CMP.W #$001E                                                         ;90D2BD;
     BMI .endShinespark                                                   ;90D2C0;
@@ -12592,6 +12770,8 @@ endif ; !FEATURE_KEEP_UNREFERENCED
 
 ;;; $D5A2: Crystal flash ;;;
 CrystalFlash:
+;; Returns:
+;;     Carry: Clear if succeeded, otherwise set
     PHP                                                                  ;90D5A2;
     REP #$30                                                             ;90D5A3;
     LDA.W GameState                                                      ;90D5A5;
@@ -12843,6 +13023,8 @@ SamusMovementHandler_CrystalFlash_Finish:
 
 ;;; $D793: Projectile pre-instruction - plasma SBA ;;;
 ProjectilePreInstruction_PlasmaSBA:
+;; Parameters:
+;;     X: Projectile index
     LDA.W SamusProjectile_Directions,X                                   ;90D793;
     AND.W #$00F0                                                         ;90D796;
     BEQ .notDeleted                                                      ;90D799;
@@ -12884,6 +13066,8 @@ ProjectilePreInstruction_PlasmaSBA:
 
 ;;; $D7E1: Plasma SBA - phase 0: expanding ;;;
 PlasmaSBA_Phase0_Expanding:
+;; Parameters:
+;;     X: Projectile index
     LDA.W SamusProjectile_XVelocities,Y                                  ;90D7E1;
     CLC                                                                  ;90D7E4;
     ADC.W #$0004                                                         ;90D7E5;
@@ -12900,6 +13084,8 @@ PlasmaSBA_Phase0_Expanding:
 
 ;;; $D7FA: Plasma SBA - phase 1: contracting ;;;
 PlasmaSBA_Phase1_Contracting:
+;; Parameters:
+;;     X: Projectile index
     LDA.W SamusProjectile_XVelocities,Y                                  ;90D7FA;
     SEC                                                                  ;90D7FD;
     SBC.W #$0004                                                         ;90D7FE;
@@ -12916,6 +13102,8 @@ PlasmaSBA_Phase1_Contracting:
 
 ;;; $D813: Plasma SBA - phase 2: dispersing ;;;
 PlasmaSBA_Phase2_Dispersing:
+;; Parameters:
+;;     X: Projectile index
     LDA.W SamusProjectile_XPositions,Y                                   ;90D813;
     SEC                                                                  ;90D816;
     SBC.W Layer1XPosition                                                ;90D817;
@@ -13021,6 +13209,8 @@ BombSpreadData:
 
 ;;; $D8F7: Projectile pre-instruction - spread bomb ;;;
 ProjectilePreInstruction_BombSpread:
+;; Parameters:
+;;     X: Projectile index
     LDA.W SamusProjectile_Directions,X                                   ;90D8F7;
     AND.W #$00F0                                                         ;90D8FA;
     BEQ .notDeleted                                                      ;90D8FD;
@@ -13154,6 +13344,8 @@ ProjectilePreInstruction_BombSpread:
 
 ;;; $DA08: Projectile pre-instruction - wave SBA ;;;
 ProjectilePreInstruction_WaveSBA:
+;; Parameters:
+;;     X: Projectile index
     LDA.W SamusProjectile_Directions,X                                   ;90DA08;
     BIT.W #$00F0                                                         ;90DA0B;
     BNE .deleted                                                         ;90DA0E;
@@ -13282,6 +13474,8 @@ ProjectilePreInstruction_WaveSBA:
 
 ;;; $DB06: Projectile pre-instruction - spazer SBA ;;;
 ProjectilePreInstruction_SpazerSBA:
+;; Parameters:
+;;     X: Projectile index
     LDA.W SamusProjectile_Directions,X                                   ;90DB06;
     AND.W #$00F0                                                         ;90DB09;
     BEQ .notDeleted                                                      ;90DB0C;
@@ -13327,8 +13521,10 @@ ProjectilePreInstruction_SpazerSBA:
     dw ClearSpazerSBAPair_6                                              ;90DB55;
 
 
-;;; $DB57: Clear spazer SBA projectile pair - [X] = 0 ;;;
+;;; $DB57: Clear spazer SBA projectile pair - projectile index 0 ;;;
 ClearSpazerSBAPair_0:
+;; Parameters:
+;;     X: Projectile index
     JSL.L Clear_Projectile                                               ;90DB57;
     LDX.W #$0004                                                         ;90DB5B;
     JSL.L Clear_Projectile                                               ;90DB5E;
@@ -13336,8 +13532,10 @@ ClearSpazerSBAPair_0:
     RTS                                                                  ;90DB65;
 
 
-;;; $DB66: Clear spazer SBA projectile pair - [X] = 2 ;;;
+;;; $DB66: Clear spazer SBA projectile pair - projectile index 2 ;;;
 ClearSpazerSBAPair_2:
+;; Parameters:
+;;     X: Projectile index
     JSL.L Clear_Projectile                                               ;90DB66;
     LDX.W #$0006                                                         ;90DB6A;
     JSL.L Clear_Projectile                                               ;90DB6D;
@@ -13345,8 +13543,10 @@ ClearSpazerSBAPair_2:
     RTS                                                                  ;90DB74;
 
 
-;;; $DB75: Clear spazer SBA projectile pair - [X] = 4 ;;;
+;;; $DB75: Clear spazer SBA projectile pair - projectile index 4 ;;;
 ClearSpazerSBAPair_4:
+;; Parameters:
+;;     X: Projectile index
     JSL.L Clear_Projectile                                               ;90DB75;
     LDX.W #$0000                                                         ;90DB79;
     JSL.L Clear_Projectile                                               ;90DB7C;
@@ -13354,8 +13554,10 @@ ClearSpazerSBAPair_4:
     RTS                                                                  ;90DB83;
 
 
-;;; $DB84: Clear spazer SBA projectile pair - [X] = 6 ;;;
+;;; $DB84: Clear spazer SBA projectile pair - projectile index 6 ;;;
 ClearSpazerSBAPair_6:
+;; Parameters:
+;;     X: Projectile index
     JSL.L Clear_Projectile                                               ;90DB84;
     LDX.W #$0002                                                         ;90DB88;
     JSL.L Clear_Projectile                                               ;90DB8B;
@@ -13365,6 +13567,8 @@ ClearSpazerSBAPair_6:
 
 ;;; $DB93: Spazer SBA - phase 0: circling ;;;
 SpazerSBA_Phase0_Circling:
+;; Parameters:
+;;     Y: Projectile index
     LDA.W SamusYPosition                                                 ;90DB93;
     CLC                                                                  ;90DB96;
     ADC.B DP_Temp16                                                      ;90DB97;
@@ -13394,6 +13598,8 @@ SpazerSBA_Phase0_Circling:
 
 ;;; $DBCF: Spazer SBA - phase 2: flying up towards point ;;;
 SpazerSBA_Phase2_FlyingUpTowardsPoint:
+;; Parameters:
+;;     Y: Projectile index
     LDA.W SamusYPosition                                                 ;90DBCF;
     SEC                                                                  ;90DBD2;
     SBC.W #$0072                                                         ;90DBD3;
@@ -13440,6 +13646,8 @@ SpazerSBA_Phase2_FlyingUpTowardsPoint:
 
 ;;; $DC30: Spazer SBA - phase 4: flying up away from point ;;;
 SpazerSBA_Phase4_FlyingUpAwayFromPoint:
+;; Parameters:
+;;     Y: Projectile index
     LDA.W SamusYPosition                                                 ;90DC30;
     SEC                                                                  ;90DC33;
     SBC.W #$0072                                                         ;90DC34;
@@ -13472,6 +13680,8 @@ SpazerSBA_Phase4_FlyingUpAwayFromPoint:
 
 ;;; $DC67: Fire end of spazer SBA ;;;
 FireEndOfSpazerSBA:
+;; Parameters:
+;;     Y: Projectile index
     LDA.W SamusProjectile_XPositions,Y                                   ;90DC67;
     CLC                                                                  ;90DC6A;
     ADC.W .data,Y                                                        ;90DC6B;
@@ -13498,6 +13708,8 @@ FireEndOfSpazerSBA:
 
 ;;; $DC9C: Projectile pre-instruction - end of spazer SBA ;;;
 ProjectilePreInstruction_EndOfSpazerSBA:
+;; Parameters:
+;;     Y: Projectile index
     LDA.W SamusProjectile_Directions,X                                   ;90DC9C;
     AND.W #$00F0                                                         ;90DC9F;
     BEQ .notDeleted                                                      ;90DCA2;
@@ -13846,6 +14058,9 @@ SamusIsHit_Interruption:
 
 ;;; $DEBA: Knockback transition - set Samus drained hurt animation or ignore ;;;
 KnockbackTransition_SetSamusDrainedHurtAnimation_OrIgnore:
+;; Returns:
+;;     Carry: Clear. Ignore knockback
+
 ; 1Bh: Shinespark / crystal flash / drained by metroid / damaged by MB's attacks
 
 ; This routine checks for pose E8h, but the facing right version doesn't support these non-idle animations
@@ -13871,6 +14086,9 @@ KnockbackTransition_SetSamusDrainedHurtAnimation_OrIgnore:
 
 ;;; $DEDD: Knockback transition - ignore ;;;
 KnockbackTransition_Ignore:
+;; Returns:
+;;     Carry: Clear. Ignore knockback
+
 ; Ah: Knockback / crystal flash ending
 ; 16h: Grappling
     STZ.W SpecialProspectivePoseChangeCommand                            ;90DEDD;
@@ -13880,6 +14098,9 @@ KnockbackTransition_Ignore:
 
 ;;; $DEE2: Knockback transition - ignore ;;;
 KnockbackTransition_Ignore_ClearDirection:
+;; Returns:
+;;     Carry: Clear. Ignore knockback
+
 ; Bh: Unused
 ; Ch: Unused
 ; Eh: Turning around - on ground
@@ -13896,6 +14117,9 @@ KnockbackTransition_Ignore_ClearDirection:
 
 ;;; $DEEA: Knockback transition - normal ;;;
 KnockbackTransition_Normal_Falling:
+;; Returns:
+;;     Carry: Set to start knockback, clear to ignore
+
 ; 6: Falling
     LDA.W HackHandler                                                    ;90DEEA;
     CMP.W #UNUSED_SamusTimerHackHandler_SpecialFalling_90E41B            ;90DEED;
@@ -13908,6 +14132,9 @@ KnockbackTransition_Normal_Falling:
 
 ;;; $DEFA: Knockback transition - normal ;;;
 KnockbackTransition_Normal:
+;; Returns:
+;;     Carry: Set. Start knockback
+
 ; 0: Standing
 ; 1: Running
 ; 2: Normal jumping
@@ -13936,6 +14163,9 @@ KnockbackTransition_Normal:
 
 ;;; $DF15: Knockback transition - morphed ;;;
 KnockbackTransition_Morphed:
+;; Returns:
+;;     Carry: Set. Start knockback
+
 ; 4: Morph ball - on ground
 ; 8: Morph ball - falling
 ; 9: Unused
@@ -13950,6 +14180,9 @@ KnockbackTransition_Morphed:
 
 ;;; $DF1D: Knockback transition - movement type 7 ;;;
 UNUSED_KnockbackTransition_Movement7_90DF1D:
+;; Returns:
+;;     Carry: Set. Start knockback
+
 ; 7: Unused
     LDA.W PoseXDirection                                                 ;90DF1D;
     AND.W #$00FF                                                         ;90DF20;
@@ -14087,6 +14320,8 @@ SerupBombJump:
 
 ;;; $DFED: Set up bomb jump - standing / crouching ;;;
 SetupBombJump_Standing_Crouching:
+;; Returns:
+;;     Carry: Set if bomb jump enabled, otherwise clear
     LDA.W TimeIsFrozenFlag                                               ;90DFED;
     BEQ SetupBombJump_Run_Fall_Moonwalk_WallJump_RanIntoWall_Grapple     ;90DFF0;
     STZ.W BombJumpDirection                                              ;90DFF2;
@@ -14096,6 +14331,8 @@ SetupBombJump_Standing_Crouching:
 
 ;;; $DFF7: Set up bomb jump - running / falling / moonwalking / wall jumping / ran into a wall / grappling ;;;
 SetupBombJump_Run_Fall_Moonwalk_WallJump_RanIntoWall_Grapple:
+;; Returns:
+;;     Carry: Set. Bomb jump enabled
     LDA.W PoseXDirection                                                 ;90DFF7;
     AND.W #$00FF                                                         ;90DFFA;
     CMP.W #$0004                                                         ;90DFFD;
@@ -14115,6 +14352,8 @@ SetupBombJump_Run_Fall_Moonwalk_WallJump_RanIntoWall_Grapple:
 
 ;;; $E012: Set up bomb jump - morphed / knockback / crystal flash ending ;;;
 SetupBombJump_Morphed_Knockback_CrystalFlashEnding:
+;; Returns:
+;;     Carry: Set. Bomb jump enabled
     LDA.W Pose                                                           ;90E012;
     STA.W SpecialProspectivePose                                         ;90E015;
     SEC                                                                  ;90E018;
@@ -14123,12 +14362,16 @@ SetupBombJump_Morphed_Knockback_CrystalFlashEnding:
 
 ;;; $E01A: Set up bomb jump - jumping / turning around / damage boost / crouching/standing/morphing/unmorphing transition ;;;
 SetupBombJump_Jumping_Turning_DamageBoost_TransitionPoses:
+;; Returns:
+;;     Carry: Clear. Bomb jump not enabled
     LDA.W #SamusPoseInputHandler_Normal                                  ;90E01A;
     STA.W PoseInputHandler                                               ;90E01D; fallthrough to SetupBombJump_DraygonGrab_Shinespark_CF_Drained_DamagedMB
 
 
 ;;; $E020: Set up bomb jump - grabbed by Draygon / shinespark / crystal flash / drained by metroid / damaged by MB's attacks ;;;
 SetupBombJump_DraygonGrab_Shinespark_CF_Drained_DamagedMB:
+;; Returns:
+;;     Carry: Clear. Bomb jump not enabled
     STZ.W BombJumpDirection                                              ;90E020;
     CLC                                                                  ;90E023;
     RTS                                                                  ;90E024;
@@ -14860,7 +15103,7 @@ CalculateSamusXSpeed:
 ;; Parameters:
 ;;     $12.$14: Samus X base speed
 ;; Returns:
-;;     $12.$14: Samus X speed
+;;     $12.$14: Total Samus X speed
 
 ; TotalSamusXSpeed.TotalSamusXSubSpeed = $12.$14 = ([$12].[$14] + [Samus X extra run speed]) / 2^min(4, [Samus X speed divisor])
 
@@ -14884,6 +15127,10 @@ CalculateSamusXSpeed:
 
 ;;; $E500: Calculate Samus X speed - [Samus X speed divisor] = 0 ;;;
 CalculateSamusXSpeed_Divisor0:
+;; Parameters:
+;;     $12.$14: Samus X base speed
+;; Returns:
+;;     $12.$14: Total Samus X speed
     LDA.B DP_Temp14                                                      ;90E500;
     CLC                                                                  ;90E502;
     ADC.W SamusXExtraRunSubSpeed                                         ;90E503;
@@ -14898,6 +15145,11 @@ CalculateSamusXSpeed_Divisor0:
 
 ;;; $E516: Calculate Samus X speed - [Samus X speed divisor] = 1 ;;;
 CalculateSamusXSpeed_Divisor1:
+;; Parameters:
+;;     $12.$14: Samus X base speed
+;; Returns:
+;;     $12.$14: Total Samus X speed
+
 ; $12.$14 = ([$12].[$14] + [Samus X extra run speed]) / 2
 ; Calculation here is only valid for [$12] + [Samus X extra run speed] < 100h
     LDA.B DP_Temp14                                                      ;90E516;
@@ -14927,6 +15179,11 @@ CalculateSamusXSpeed_Divisor1:
 
 ;;; $E541: Calculate Samus X speed - [Samus X speed divisor] = 2 ;;;
 CalculateSamusXSpeed_Divisor2:
+;; Parameters:
+;;     $12.$14: Samus X base speed
+;; Returns:
+;;     $12.$14: Total Samus X speed
+
 ; $12.$14 = ([$12].[$14] + [Samus X extra run speed]) / 4
 ; Calculation here is only valid for [$12] + [Samus X extra run speed] < 100h
     LDA.B DP_Temp14                                                      ;90E541;
@@ -14958,6 +15215,11 @@ CalculateSamusXSpeed_Divisor2:
 
 ;;; $E56E: Calculate Samus X speed - [Samus X speed divisor] = 3 ;;;
 CalculateSamusXSpeed_Divisor3:
+;; Parameters:
+;;     $12.$14: Samus X base speed
+;; Returns:
+;;     $12.$14: Total Samus X speed
+
 ; $12.$14 = ([$12].[$14] + [Samus X extra run speed]) / 8
 ; Calculation here is only valid for [$12] + [Samus X extra run speed] < 100h
     LDA.B DP_Temp14                                                      ;90E56E;
@@ -14991,6 +15253,11 @@ CalculateSamusXSpeed_Divisor3:
 
 ;;; $E59D: Calculate Samus X speed - [Samus X speed divisor] = 4 ;;;
 CalculateSamusXSpeed_Divisor4:
+;; Parameters:
+;;     $12.$14: Samus X base speed
+;; Returns:
+;;     $12.$14: Total Samus X speed
+
 ; $12.$14 = ([$12].[$14] + [Samus X extra run speed]) / 10h
 ; Calculation here is only valid for [$12] + [Samus X extra run speed] < 100h
     LDA.B DP_Temp14                                                      ;90E59D;
@@ -15111,6 +15378,12 @@ SetSamusSolidVerticalCollisionResult_DownwardsMovement:
     RTS                                                                  ;90E659;
 
   .data0:                                                                ;90E65A;
+; Samus downwards movement solid collision results - falling
+;     0: Airborne
+;     1: Morph ball airborne
+;     2: Unused (unused movement type 7)
+;     3: Spring ball airborne
+;     4: No change
     db $00 ; 0: Standing
     db $00 ; 1: Running
     db $04 ; 2: Normal jumping
@@ -15141,6 +15414,13 @@ SetSamusSolidVerticalCollisionResult_DownwardsMovement:
     db $04 ; 1Bh: Shinespark / crystal flash / drained by metroid / damaged by MB's attacks
 
   .data1:                                                                ;90E676;
+; Samus downwards movement solid collision results - landed
+;     0: Grounded
+;     1: Morph ball grounded
+;     2: Unused (unused movement type 9)
+;     3: Spring ball grounded
+;     4: No change
+;     5: Unused
     db $04 ; 0: Standing
     db $04 ; 1: Running
     db $00 ; 2: Normal jumping
@@ -16080,6 +16360,8 @@ SetSamusRadius:
 
 ;;; $EC3E: $12 = Samus bottom boundary ;;;
 Get_Samus_Bottom_Boundary:
+;; Returns:
+;;     $12: Samus bottom boundary (Samus Y position + pose Y radius - 1)
     PHP                                                                  ;90EC3E;
     REP #$30                                                             ;90EC3F;
     LDA.W Pose                                                           ;90EC41;
@@ -16099,6 +16381,9 @@ Get_Samus_Bottom_Boundary:
 
 ;;; $EC58: $12 / $14 = Samus bottom / top boundary ;;;
 Get_Samus_BottomTop_Boundary:
+;; Returns:
+;;     $12: Samus bottom boundary (Samus Y position + pose Y radius - 1)
+;;     $14: Samus top boundary (Samus Y position - pose Y radius)
     PHP                                                                  ;90EC58;
     REP #$30                                                             ;90EC59;
     LDA.W Pose                                                           ;90EC5B;
@@ -16387,6 +16672,7 @@ FootstepGraphics_Crateria:
 
 ;;; $EDEC: Footstep graphics - Maridia ;;;
 FootstepGraphics_Maridia:
+; Called for some Crateria rooms too
     JSL.L Get_Samus_Bottom_Boundary                                      ;90EDEC;
     LDA.W FX_YPosition                                                   ;90EDF0;
     BMI .negativeYPosition                                               ;90EDF3;
@@ -16641,6 +16927,9 @@ UNUSED_FireUnknownProjectile27_90EF5E:
 
 ;;; $EFD3: Projectile pre-instruction - unknown projectile 27h ;;;
 UNUSED_ProjectilePreInstruction_UnknownProjectile27_90EFD3:
+;; Parameters:
+;;     Y: Projectile index
+
 ; Shinespark beam code(?)
     LDA.W SamusProjectile_XPositions,X                                   ;90EFD3;
     CLC                                                                  ;90EFD6;
@@ -16766,6 +17055,8 @@ Run_Samus_Command:
 ;;         1Dh: Clear sounds when going through door
 ;;         1Eh: Resume sounds after power bomb explosion
 ;;         1Fh: Kill grapple beam
+;; Returns:
+;;     A: If [A] = Dh: 1 if grapple beam is active, otherwise 0
 
 ; Some of these commands unconditionally return false, and you might be wondering what the point is in calling that code indirectly through this function
     PHP                                                                  ;90F084;
@@ -16841,7 +17132,7 @@ Update_Samus_PreviousPose:
     RTS                                                                  ;90F106;
 
 
-;;; $F107: Clear carry ;;;
+;;; $F107: Unused. Clear carry ;;;
 CLCRTS_90F107:
     CLC                                                                  ;90F107;
     RTS                                                                  ;90F108;
@@ -16849,6 +17140,9 @@ CLCRTS_90F107:
 
 ;;; $F109: Samus command 0: lock Samus ;;;
 SamusCommand_0_LockSamus:
+;; Returns:
+;;     Carry: Set. Cancel any pending pose transition
+
 ; Called by:
 ;     $82:E17D: Door transition function - handle elevator
 ;     $82:E6A2: Door transition function - nudge Samus if she's intercepting the door
@@ -16856,9 +17150,9 @@ SamusCommand_0_LockSamus:
 ;     $84:D5E6: Instruction - lock Samus
 ;     $84:D620: Setup - PLM $D6F2 (collision reaction, special, BTS Wrecked Ship 80h. Wrecked Ship chozo hand trigger)
 ;     $87:815A: Unused. Instruction - lock Samus
-;     $8F:E26C: Door ASM: set up elevatube from south
-;     $8F:E291: Door ASM: set up elevatube from north
-;     $A6:BC68: (Draygon grabs Samus)
+;     $8F:E26C: Door ASM - set up elevatube from south
+;     $8F:E291: Door ASM - set up elevatube from north
+;     $A6:BC68: (Ridley grabs Samus)
 ;     $A9:8829: Mother Brain body function - fake death - descent - lock Samus and set scroll region
     LDA.W #SamusCurrentStateHandler_SamusIsLocked                        ;90F109;
     STA.W CurrentStateHandler                                            ;90F10C;
@@ -16870,6 +17164,9 @@ SamusCommand_0_LockSamus:
 
 ;;; $F117: Samus command 1: unlock Samus ;;;
 SamusCommand_1_UnlockSamus:
+;; Returns:
+;;     Carry: Set. Cancel any pending pose transition
+
 ; Called by:
 ;     $84:8CAF: Instruction - activate energy station
 ;     $84:8CD0: Instruction - activate missile station
@@ -16878,9 +17175,9 @@ SamusCommand_1_UnlockSamus:
 ;     $84:B030: Instruction - enable movement and set save station used
 ;     $84:D5EE: Instruction - unlock Samus
 ;     $87:8162: Unused. Instruction - unlock Samus
-;     $8F:E301: Door ASM: reset elevatube on north exit
-;     $8F:E309: Door ASM: reset elevatube on south exit
-;     $A6:BC84: (Draygon releases Samus)
+;     $8F:E301: Door ASM - reset elevatube on north exit
+;     $8F:E309: Door ASM - reset elevatube on south exit
+;     $A6:BC84: (Ridley releases Samus)
 ;     $A9:886C: Mother Brain body function - fake death - descent - unlock Samus
 ;     $A9:BA5E: Mother Brain body function - second phase - firing rainbow beam - finish firing rainbow beam
 ;     $AA:E43D: Instruction - unlock Samus
@@ -16895,6 +17192,9 @@ SamusCommand_1_UnlockSamus:
 
 ;;; $F125: Samus command 2: Samus reached Ceres elevator ;;;
 SamusCommand_2_SamusReachedCeresElevator:
+;; Returns:
+;;     Carry: Set. Cancel any pending pose transition
+
 ; Called by:
 ;     $89:ACC3: Room main ASM - Ceres elevator shaft
     LDA.W PoseXDirection                                                 ;90F125;
@@ -16918,8 +17218,11 @@ SamusCommand_2_SamusReachedCeresElevator:
 
 ;;; $F152: Samus command 3: unspin Samus ;;;
 SamusCommand_3_UnspinSamus:
+;; Returns:
+;;     Carry: Set to cancel any pending pose transition, otherwise clear
+
 ; Called by:
-;     $A8:A665: (yapping maw)
+;     $A8:A665: Move Samus with yapping maw pincers
     LDA.W GrappleBeam_Function                                           ;90F152;
     CMP.W #GrappleBeamFunction_Inactive                                  ;90F155;
     BEQ .grappleInactive                                                 ;90F158;
@@ -16961,6 +17264,9 @@ SamusCommand_3_UnspinSamus:
 
 ;;; $F19B: Samus command 4: end charge beam ;;;
 SamusCommand_4_EndChargeBeam:
+;; Returns:
+;;     Carry: Clear. Allow any pending pose transition
+
 ; Called by:
 ;     $A0:A4A1: Normal enemy touch AI - no death check
 
@@ -16970,6 +17276,8 @@ SamusCommand_4_EndChargeBeam:
 
 ;;; $F19E: End charge beam ;;;
 EndChargeBeam:
+;; Returns:
+;;     Carry: Clear. Allow any pending pose transition
     STZ.W SamusProjectile_FlareCounter                                   ;90F19E;
     JSR.W ClearFlareAnimationState                                       ;90F1A1;
     JSL.L LoadSamusSuitPalette                                           ;90F1A4;
@@ -16979,6 +17287,9 @@ EndChargeBeam:
 
 ;;; $F1AA: Samus command 6: lock Samus into recharge station ;;;
 SamusCommand_6_LockSamusIntoRefillStation:
+;; Returns:
+;;     Carry: Clear. Allow any pending pose transition
+
 ; Called by:
 ;     $84:B146: Activate the station at block index [A] if Samus arm cannon is lined up
     LDA.W #SamusCurrentStateHandler_SamusIsLocked                        ;90F1AA;
@@ -16997,6 +17308,9 @@ SamusCommand_6_LockSamusIntoRefillStation:
 
 ;;; $F1C8: Samus command 7: set up Samus for elevator ;;;
 SamusCommand_7_SetupSamusForElevator:
+;; Returns:
+;;     Carry: Set. Cancel any pending pose transition
+
 ; Called by:
 ;     $82:E6A2: Door transition function - nudge Samus if she's intercepting the door
 ;     $A3:9548: Elevator AI - elevator status = 0: inactive
@@ -17016,6 +17330,9 @@ SamusCommand_7_SetupSamusForElevator:
 
 ;;; $F1E9: Samus command 8: set up Samus for Ceres start ;;;
 SamusCommand_8_SetupSamusForCeresStart:
+;; Returns:
+;;     Carry: Set. Cancel any pending pose transition
+
 ; Called by:
 ;     $82:8000: Game state 6/1Fh/28h (loading game data / set up new game / load demo game data)
     LDA.W #RTL_90E8CD                                                    ;90F1E9;
@@ -17049,6 +17366,9 @@ SamusCommand_8_SetupSamusForCeresStart:
 
 ;;; $F23C: Samus command 9: set up Samus for Zebes start ;;;
 SamusCommand_9_SetupSamusForZebesStart:
+;; Returns:
+;;     Carry: Set. Cancel any pending pose transition
+
 ; Called by:
 ;     $82:8000: Game state 6/1Fh/28h (loading game data / set up new game / load demo game data)
     LDA.W EquippedItems                                                  ;90F23C;
@@ -17089,6 +17409,9 @@ SamusCommand_9_SetupSamusForZebesStart:
 
 ;;; $F28D: Samus command Ah: stop drawing Samus ;;;
 SamusCommand_A_StopDrawingSamus:
+;; Returns:
+;;     Carry: Clear. Allow any pending pose transition
+
 ; Called by:
 ;     $A2:AAA2: Gunship function - go to liftoff or restore Samus health / ammo
     LDA.W #RTS_90E90E                                                    ;90F28D;
@@ -17099,6 +17422,9 @@ SamusCommand_A_StopDrawingSamus:
 
 ;;; $F295: Samus command Bh: unlock Samus from facing forward ;;;
 SamusCommand_B_UnlockSamusFromFacingForward:
+;; Returns:
+;;     Carry: Set. Cancel any pending pose transition
+
 ; Called by:
 ;     $88:E25F: Suit pickup stage 6
 ;     $A3:95BC: Elevator AI - elevator status = 3: entering room
@@ -17109,6 +17435,9 @@ SamusCommand_B_UnlockSamusFromFacingForward:
 
 ;;; $F29E: Samus command Ch: update Samus due to unpause ;;;
 SamusCommand_C_UpdateSamusDueToUnpause:
+;; Returns:
+;;     Carry: Set. Cancel any pending pose transition
+
 ; Called by:
 ;     $82:A2E3: Continue initialising gameplay resume
 
@@ -17129,6 +17458,10 @@ SamusCommand_C_UpdateSamusDueToUnpause:
 
 ;;; $F2B8: Samus command Dh: check if grapple beam is active ;;;
 SamusCommand_D_CheckIfGrappleBeamIsActive:
+;; Returns:
+;;     Carry: Clear. Allow any pending pose transition
+;;     A: 1 if grapple beam is active, otherwise 0
+
 ; Called by:
 ;     $86:EFE0: Pre-instruction - enemy projectile $F337 (pickup)
 ;     $A0:9E9A: Enemy / grapple beam collision detection
@@ -17148,6 +17481,9 @@ SamusCommand_D_CheckIfGrappleBeamIsActive:
 
 ;;; $F2CA: Samus command Eh: unlock Samus from Ceres elevator ;;;
 SamusCommand_E_UnlockSamusFromCeresElevator:
+;; Returns:
+;;     Carry: Set. Cancel any pending pose transition
+
 ; Called by:
 ;     $86:A328: Pre-instruction - enemy projectile $A387 (Ceres elevator pad)
     LDA.W #SamusCurrentStateHandler_Normal                               ;90F2CA;
@@ -17160,6 +17496,8 @@ SamusCommand_E_UnlockSamusFromCeresElevator:
 
 ;;; $F2D8: Samus command Fh: enable timer handling ;;;
 SamusCommand_F_EnableTimerHandling:
+;; Returns:
+;;     Carry: Clear. Allow any pending pose transition
     LDA.W #SamusTimerHackHandler_HandleTimer                             ;90F2D8;
     STA.W HackHandler                                                    ;90F2DB;
     CLC                                                                  ;90F2DE;
@@ -17168,6 +17506,9 @@ SamusCommand_F_EnableTimerHandling:
 
 ;;; $F2E0: Samus command 10h: unlock Samus from reserve tank ;;;
 SamusCommand_10_UnlockSamusFromReserveTank:
+;; Returns:
+;;     Carry: Set. Cancel any pending pose transition
+
 ; Called by:
 ;     $82:DC10: Game state 1Bh (reserve tank auto)
     LDA.W NewStateHandler                                                ;90F2E0;
@@ -17187,6 +17528,9 @@ SamusCommand_10_UnlockSamusFromReserveTank:
 
 ;;; $F2F8: Samus command 11h: set up Samus for death sequence ;;;
 SamusCommand_11_SetupSamusForDeathSequence:
+;; Returns:
+;;     Carry: Set. Cancel any pending pose transition
+
 ; Called by:
 ;     $82:DB69: Handle Samus running out of health and increment game time
     JSL.L Disable_PaletteFXObjects                                       ;90F2F8; fallthrough to LockSamus_SetInanimateSamusDrawingHandler
@@ -17194,6 +17538,8 @@ SamusCommand_11_SetupSamusForDeathSequence:
 
 ;;; $F2FC: Lock Samus and set inanimate Samus drawing handler ;;;
 LockSamus_SetInanimateSamusDrawingHandler:
+;; Returns:
+;;     Carry: Set. Cancel any pending pose transition
     LDA.W #SamusCurrentStateHandler_SamusIsLocked                        ;90F2FC;
     STA.W CurrentStateHandler                                            ;90F2FF;
     LDA.W #RTL_90E8CD                                                    ;90F302;
@@ -17206,6 +17552,9 @@ LockSamus_SetInanimateSamusDrawingHandler:
 
 ;;; $F310: Samus command 15h: lock Samus into suit pickup ;;;
 SamusCommand_15_LockSamusIntoSuitPickup:
+;; Returns:
+;;     Carry: Set. Cancel any pending pose transition
+
 ; Called by:
 ;     $91:D4E4: Varia suit pick up
 ;     $91:D5BA: Gravity suit pick up
@@ -17218,6 +17567,9 @@ SamusCommand_15_LockSamusIntoSuitPickup:
 
 ;;; $F320: Samus command 12h: enable Samus blue flashing ;;;
 SamusCommand_12_EnableSamusBlueFlashing:
+;; Returns:
+;;     Carry: Clear. Allow any pending pose transition
+
 ; Called by:
 ;     $A3:EDEB: Enemy touch - enemy $DD7F (metroid)
 ;     $A9:F20E: Shitroid function - start draining Samus
@@ -17229,6 +17581,9 @@ SamusCommand_12_EnableSamusBlueFlashing:
 
 ;;; $F328: Samus command 13h: disable Samus blue flashing ;;;
 SamusCommand_13_DisableSamusBlueFlashing:
+;; Returns:
+;;     Carry: Clear. Allow any pending pose transition
+
 ; Called by:
 ;     $A3:EF07: Enemy shot - enemy $DD7F (metroid)
 ;     $A3:F042: Power bomb reaction - enemy $DD7F (metroid)
@@ -17241,6 +17596,9 @@ SamusCommand_13_DisableSamusBlueFlashing:
 
 ;;; $F331: Samus command 14h: queue low health and grapple sound effects ;;;
 SamusCommand_14_QueueLowEnergyAndGrappleSFX:
+;; Returns:
+;;     Carry: Clear. Allow any pending pose transition
+
 ; Called by:
 ;     $82:BE2F: Queue Samus movement sound effects
 
@@ -17297,6 +17655,9 @@ SamusCommand_14_QueueLowEnergyAndGrappleSFX:
 
 ;;; $F38E: Samus command 5: set up Samus for being drained - able to stand ;;;
 SamusCommand_5_SetupSamusForBeingDrained_AbleToStand:
+;; Returns:
+;;     Carry: Set. Cancel any pending pose transition
+
 ; Called by:
 ;     $A9:B975: Mother Brain body function - second phase - firing rainbow beam - start firing rainbow beam
     LDA.W #SamusTimerHackHandler_HandleLettingSamusUpFromBeingDrained    ;90F38E; fallthrough to SetupSamusForBeingDrained
@@ -17305,6 +17666,8 @@ SamusCommand_5_SetupSamusForBeingDrained_AbleToStand:
 
 ;;; $F394: Set up Samus for being drained ;;;
 SetupSamusForBeingDrained:
+;; Returns:
+;;     Carry: Clear. Allow any pending pose transition
     LDA.W #$0054                                                         ;90F394;
     STA.W Pose                                                           ;90F397;
     STZ.W NewPoseSamusAnimationFrame                                     ;90F39A;
@@ -17324,6 +17687,9 @@ SetupSamusForBeingDrained:
 
 ;;; $F3C0: Samus command 18h: set up Samus for being drained - unable to stand ;;;
 SamusCommand_18_SetupSamusForBeingDrained_UnableToStand:
+;; Returns:
+;;     Carry: Set. Clear any pending pose transition
+
 ; Called by:
 ;     $A9:B975: Mother Brain body function - second phase - firing rainbow beam - start firing rainbow beam
     LDA.W #SamusTimerHackHandler_LetSamusFailToStandUpFromBeingDrained   ;90F3C0;
@@ -17333,6 +17699,9 @@ SamusCommand_18_SetupSamusForBeingDrained_UnableToStand:
 
 ;;; $F3C9: Samus command 16h: enable rainbow Samus ;;;
 SamusCommand_16_EnableRainbowSamus:
+;; Returns:
+;;     Carry: Clear. Allow any pending pose transition
+
 ; Called by:
 ;     $A9:CD30: Samus rainbow palette function - activate rainbow when enemy is low enough
     LDA.W #$8000                                                         ;90F3C9;
@@ -17347,6 +17716,9 @@ SamusCommand_16_EnableRainbowSamus:
 
 ;;; $F3DD: Samus command 17h: disable rainbow Samus and stand her up ;;;
 SamusCommand_17_DisableRainbowSamus_StandHerUp:
+;; Returns:
+;;     Carry: Clear. Allow any pending pose transition
+
 ; Called by:
 ;     $90:F54C: Debug command handler - disable rainbow Samus and stand her up if controller 2 Y is newly pressed
 ;     $A9:CCF0: Shitroid function - finish cutscene
@@ -17365,6 +17737,9 @@ SamusCommand_17_DisableRainbowSamus_StandHerUp:
 
 ;;; $F3FB: Samus command 19h: freeze drained Samus animation ;;;
 SamusCommand_19_FreezeDrainedSamusAnimation:
+;; Returns:
+;;     Carry: Set. Cancel any pending pose transition
+
 ; Called by:
 ;     $A9:CC7F: Shitroid function - prepare Samus for hyper beam acquisition
     LDA.W #$0001                                                         ;90F3FB;
@@ -17377,6 +17752,9 @@ SamusCommand_19_FreezeDrainedSamusAnimation:
 
 ;;; $F409: Samus command 1Ah: Samus enters gunship ;;;
 SamusCommand_1A_SamusEntersGunship:
+;; Returns:
+;;     Carry: Clear. Allow any pending pose transition
+
 ; Called by:
 ;     $A2:A9BD: Gunship function - handle letting Samus enter
     LDA.W #SamusNewStateHandler_EnteringExitingGunship                   ;90F409;
@@ -17387,6 +17765,9 @@ SamusCommand_1A_SamusEntersGunship:
 
 ;;; $F411: Samus command 1Bh: lock Samus for reserve tank ;;;
 SamusCommand_1B_LockSamusForReserveTank:
+;; Returns:
+;;     Carry: Set. Cancel any pending pose transition
+
 ; Called by:
 ;     $82:DB69: Handle Samus running out of health and increment game time
     LDA.W NewStateHandler                                                ;90F411;
@@ -17401,6 +17782,9 @@ SamusCommand_1B_LockSamusForReserveTank:
 
 ;;; $F41E: Samus command 1Ch: play spin jump sound if spin jumping ;;;
 SamusCommand_1C_PlaySpinJumpSoundIfSpinJumping:
+;; Returns:
+;;     Carry: Clear. Allow any pending pose transition
+
 ; Called by:
 ;     $84:8270: Play spin jump sound if spin jumping
 ;     $91:D8A5: Handle misc. Samus palette
@@ -17454,6 +17838,9 @@ SamusCommand_1C_PlaySpinJumpSoundIfSpinJumping:
 
 ;;; $F471: Samus command 1Dh: clear sounds when going through door ;;;
 SamusCommand_1D_ClearSoundsWhenGoingThroughDoor:
+;; Returns:
+;;     Carry: Clear. Allow any pending pose transition
+
 ; Called by:
 ;     $84:8250: Clear sounds when going through door
     LDA.W MovementType                                                   ;90F471;
@@ -17486,6 +17873,9 @@ SamusCommand_1D_ClearSoundsWhenGoingThroughDoor:
 
 ;;; $F4A2: Samus command 1Eh: resume sounds after power bomb explosion ;;;
 SamusCommand_1E_ResumeSoundsAfterPowerBombExplosion:
+;; Returns:
+;;     Carry: Clear. Allow any pending pose transition
+
 ; Called by:
 ;     $88:8B4E: Power bomb explosion - clean up and try crystal flash
     LDA.W GameState                                                      ;90F4A2;
@@ -17517,6 +17907,9 @@ SamusCommand_1E_ResumeSoundsAfterPowerBombExplosion:
 
 ;;; $F4D0: Samus command 1Fh: kill grapple beam ;;;
 SamusCommand_1F_KillGrappleBeam:
+;; Returns:
+;;     Carry: Clear. Allow any pending pose transition
+
 ; Called by:
 ;     $91:E3F6: Make Samus face forward
     LDA.W GrappleBeam_Function                                           ;90F4D0;

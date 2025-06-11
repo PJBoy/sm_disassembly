@@ -3043,6 +3043,7 @@ EraseMeltingCrocomirePixelColumn:
 
 ;;; $97D3: Crocomire main AI - death sequence index 3Eh - behind wall - wait for Samus ;;;
 MainAI_Crocomire_DeathSequence_3E_BehindWall_WaitForSamus:
+; Setting the camera distance index has no effect because the screen is locked by the red scrolls on either side >_<;
     REP #$20                                                             ;A497D3;
     LDA.W SamusXPosition                                                 ;A497D5;
     CMP.W #$0280                                                         ;A497D8;

@@ -8115,6 +8115,21 @@ Setup_CollisionReaction_SaveStationTrigger:
 ; I wrote `[Samus X position] < PLM X position + 18h` below,
 ; but Samus X position must be less than PLM X position + 10h for the collision to happen in the first place.
 ; So save stations cruelly require Samus center to be within the center-left quarter of the station
+
+; All the save stations in the game are placed in rooms that only have one PLM,
+; so this (questionable) loop over all PLM slots finishes after just one iteration
+
+; Note that having two free PLM slots before a save station PLM can cause the save station triggering mechanism to fail
+; If two trigger PLMs are spawned on the same frame (e.g. the first due to vertical movement, the second due to pose change),
+; and the first one returns early (e.g. due to Samus pose), then there's two situations to analyse:
+; If the second trigger PLM doesn't return early (not sure if possible), then it finds the first trigger PLM in the loop
+; Otherwise, if the second trigger PLM also returns early, then its block index isn't cleared,
+; and a future trigger PLM will find this second trigger PLM in the loop
+
+; In the latter situation, the second trigger PLM is deleted, so advancing its instruction list has no effect
+; In the former situation (if it's possible), the first trigger PLM will not have been deleted yet (it's relying on the instruction list to do this),
+; its instruction list would advance to $AAE5, which is normally used by PLM $B773 (crumble access to Tourian elevator),
+; which would cause a bunch of blocks to be erased
     LDA.W PowerBombExplosionStatus                                       ;84B590;
     BNE .collisionReturn                                                 ;84B593;
     LDA.W Pose                                                           ;84B595;
@@ -9910,7 +9925,7 @@ PreInstruction_PLM_PlayDudSound:
     JMP.W Play_Dud_Sound                                                 ;84BE1C;
 
 
-;;; $BE1F: Pre-instruction - go to link instruction if Tourian statue has finished processing else play dud sound ;;;
+;;; $BE1F: Pre-instruction - go to link instruction if Tourian entrance statue has finished processing else play dud sound ;;;
 PreInst_PLM_GotoLinkInstIfTourianStatueFinishedProcessing:
 ;; Parameter:
 ;;     X: PLM index

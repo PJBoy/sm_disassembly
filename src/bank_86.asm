@@ -4782,6 +4782,8 @@ DoSomeMathWithSineAndPi_869BF3:
 ;;     $18: Radius
 ;; Returns:
 ;;     A: Sine component
+
+; Angle [X] / 2 must be less than 80h, as this routine does unsigned multiplication
     SEP #$20                                                             ;869BF3;
     LDA.L SineCosineTables_8bitSine_SignExtended,X                       ;869BF5;
     STA.W $4202                                                          ;869BF9;
@@ -7583,7 +7585,7 @@ InitAI_EnemyProj_WreckedShipChozoSpikeClearingFootsteps:
     RTS                                                                  ;86AF13;
 
 
-;;; $AF14: Instruction list - enemy projectile $AF84 (Tourian statue dust clouds) ;;;
+;;; $AF14: Instruction list - enemy projectile $AF84 (Tourian entrance statue dust clouds) ;;;
 InstList_EnemyProj_TourianStatueDustClouds_0:
     dw Instruction_EnemyProjectile_TimerInY,$0040                        ;86AF14;
 
@@ -7613,7 +7615,7 @@ Instruction_EnemyProjectile_ResetPosition:
     RTS                                                                  ;86AF42;
 
 
-;;; $AF43: Initialisation AI - enemy projectile $AF84 (Tourian statue dust clouds) ;;;
+;;; $AF43: Initialisation AI - enemy projectile $AF84 (Tourian entrance statue dust clouds) ;;;
 InitAI_EnemyProjectile_TourianStatueDustClouds:
 ;; Parameters:
 ;;     Y: Enemy projectile index
@@ -8942,7 +8944,7 @@ InstList_EnemyProjectile_TourianStatue_Delete:
     dw Instruction_EnemyProjectile_Delete                                ;86B79F;
 
 
-;;; $B7A1: Instruction list - enemy projectile $BA5C (Tourian statue unlocking particle water splash) ;;;
+;;; $B7A1: Instruction list - enemy projectile $BA5C (Tourian entrance statue unlocking particle water splash) ;;;
 InstList_EnemyProj_TourianStatueUnlockingParticleWaterSplash:
     dw $0008,EnemyProjSpritemaps_TourianStatueUnlockParticleWaterSplash_0 ;86B7A1;
     dw $0008,EnemyProjSpritemaps_TourianStatueUnlockParticleWaterSplash_1 ;86B7A5;
@@ -8951,7 +8953,7 @@ InstList_EnemyProj_TourianStatueUnlockingParticleWaterSplash:
     dw Instruction_EnemyProjectile_Delete                                ;86B7B1;
 
 
-;;; $B7B3: Instruction list - enemy projectile $BA6A (Tourian statue eye glow) ;;;
+;;; $B7B3: Instruction list - enemy projectile $BA6A (Tourian entrance statue eye glow) ;;;
 InstList_EnemyProj_TourianStatueEyeGlow:
     dw $0008,EnemyProjSpritemaps_TourianStatueEyeGlow_8                  ;86B7B3;
     dw $0008,EnemyProjSpritemaps_TourianStatueEyeGlow_7                  ;86B7B7;
@@ -8972,7 +8974,7 @@ InstList_EnemyProj_TourianStatueEyeGlow:
     dw Instruction_EnemyProjectile_Delete                                ;86B7E8;
 
 
-;;; $B7EA: Instruction - spawn Tourian statue unlocking particle enemy projectile ;;;
+;;; $B7EA: Instruction - spawn Tourian entrance statue unlocking particle enemy projectile ;;;
 Instruction_EnemyProj_SpawnTourianStatueUnlockingParticle:
 ;; Parameters:
 ;;     X: Enemy projectile index
@@ -8984,7 +8986,7 @@ Instruction_EnemyProj_SpawnTourianStatueUnlockingParticle:
     RTS                                                                  ;86B7F4;
 
 
-;;; $B7F5: Instruction - Tourian statue unlocking earthquake ;;;
+;;; $B7F5: Instruction - Tourian entrance statue unlocking earthquake ;;;
 Instruction_EnemyProj_TourianStatueUnlockingEarthquake:
     LDA.W #$0001                                                         ;86B7F5;
     STA.W EarthquakeType                                                 ;86B7F8;
@@ -8993,7 +8995,7 @@ Instruction_EnemyProj_TourianStatueUnlockingEarthquake:
     RTS                                                                  ;86B801;
 
 
-;;; $B802: Instruction list - enemy projectile $BA78 (Tourian statue unlocking particle) ;;;
+;;; $B802: Instruction list - enemy projectile $BA78 (Tourian entrance statue unlocking particle) ;;;
 InstList_EnemyProjectile_TourianStatueUnlockingParticle:
 ; Timer isn't set, making the instruction loop effectively infinite
     dw $0003,EnemyProjSpritemaps_TourianStatueUnlockingParticle_0        ;86B802;
@@ -9005,7 +9007,7 @@ InstList_EnemyProjectile_TourianStatueUnlockingParticle:
     dw InstList_EnemyProjectile_TourianStatueUnlockingParticle           ;86B816;
 
 
-;;; $B818: Instruction - spawn Tourian statue unlocking particle tail enemy projectile ;;;
+;;; $B818: Instruction - spawn Tourian entrance statue unlocking particle tail enemy projectile ;;;
 Inst_EnemyProj_SpawnTourianStatueUnlockingParticleTail:
 ;; Parameters:
 ;;     X: Enemy projectile index
@@ -9017,7 +9019,7 @@ Inst_EnemyProj_SpawnTourianStatueUnlockingParticleTail:
     RTS                                                                  ;86B822;
 
 
-;;; $B823: Instruction list - enemy projectile $BA86 (Tourian statue unlocking particle tail) ;;;
+;;; $B823: Instruction list - enemy projectile $BA86 (Tourian entrance statue unlocking particle tail) ;;;
 InstList_EnemyProj_SpawnTourianStatueUnlockingParticleTail:
     dw $0004,EnemyProjSpritemaps_TourianStatueUnlockingParticleTail_0    ;86B823;
     dw Instruction_EnemyProjectile_YPositionInY,$0008                    ;86B827;
@@ -9045,7 +9047,7 @@ Instruction_EnemyProjectile_YPositionInY:
     RTS                                                                  ;86B84D;
 
 
-;;; $B84E: Instruction list - enemy projectile $BA94 (Tourian statue's soul) ;;;
+;;; $B84E: Instruction list - enemy projectile $BA94 (Tourian entrance statue's soul) ;;;
 InstList_EnemyProjectile_TourianStatuesSoul:
     dw $0008,EnemyProjSpritemaps_TourianStatuesSoul_0                    ;86B84E;
     dw $0008,EnemyProjSpritemaps_TourianStatuesSoul_1                    ;86B852;
@@ -9053,7 +9055,7 @@ InstList_EnemyProjectile_TourianStatuesSoul:
     dw InstList_EnemyProjectile_TourianStatuesSoul                       ;86B858;
 
 
-;;; $B85A: Instruction list - enemy projectile $BABE (Tourian statue - base decoration) ;;;
+;;; $B85A: Instruction list - enemy projectile $BABE (Tourian entrance statue - base decoration) ;;;
 InstList_EnemyProjectile_TourianStatueBaseDecoration_0:
     dw $0080,EnemyProjSpritemaps_TourianStatueBaseDecoration             ;86B85A;
     dw Instruction_EnemyProjectile_PreInstructionInY                     ;86B85E;
@@ -9065,25 +9067,25 @@ InstList_EnemyProjectile_TourianStatueBaseDecoration_1:
     dw InstList_EnemyProjectile_TourianStatueBaseDecoration_1            ;86B868;
 
 
-;;; $B86A: Instruction list - enemy projectile $BAA2 (Tourian statue - Ridley) ;;;
+;;; $B86A: Instruction list - enemy projectile $BAA2 (Tourian entrance statue - Ridley) ;;;
 InstList_EnemyProjectile_TourianStatueRidley:
     dw $0777,EnemyProjSpritemaps_TourianStatueRidley                     ;86B86A;
     dw Instruction_EnemyProjectile_GotoY                                 ;86B86E;
     dw InstList_EnemyProjectile_TourianStatueRidley                      ;86B870;
 
 
-;;; $B872: Instruction list - enemy projectile $BAB0 (Tourian statue - Phantoon) ;;;
+;;; $B872: Instruction list - enemy projectile $BAB0 (Tourian entrance statue - Phantoon) ;;;
 InstList_EnemyProjectile_TourianStatuePhantoon:
     dw $0777,EnemyProjSpritemaps_TourianStatuePhantoon                   ;86B872;
     dw Instruction_EnemyProjectile_GotoY                                 ;86B876;
     dw InstList_EnemyProjectile_TourianStatuePhantoon                    ;86B878;
 
 
-;;; $B87A: Initialisation AI - enemy projectile $BA5C (Tourian statue unlocking particle water splash) ;;;
+;;; $B87A: Initialisation AI - enemy projectile $BA5C (Tourian entrance statue unlocking particle water splash) ;;;
 InitAI_EnemyProj_TourianStatueUnlockingParticleWaterSplash:
 ;; Parameters:
 ;;     Y: Enemy projectile index
-;;     EnemyProjectile_InitParam0: Tourian statue unlocking particle enemy projectile index
+;;     EnemyProjectile_InitParam0: Tourian entrance statue unlocking particle enemy projectile index
     LDX.W EnemyProjectile_InitParam0                                     ;86B87A;
     LDA.W EnemyProjectile_XPositions,X                                   ;86B87D;
     STA.W EnemyProjectile_XPositions,Y                                   ;86B880;
@@ -9094,7 +9096,7 @@ InitAI_EnemyProj_TourianStatueUnlockingParticleWaterSplash:
     RTS                                                                  ;86B88D;
 
 
-;;; $B88E: Initialisation AI - enemy projectile $BA6A (Tourian statue eye glow) ;;;
+;;; $B88E: Initialisation AI - enemy projectile $BA6A (Tourian entrance statue eye glow) ;;;
 InitAI_EnemyProjectile_TourianStatueEyeGlow:
 ;; Parameters:
 ;;     Y: Enemy projectile index
@@ -9126,11 +9128,11 @@ InitAI_EnemyProjectile_TourianStatueEyeGlow:
     RTS                                                                  ;86B8B4;
 
 
-;;; $B8B5: Initialisation AI - enemy projectile $BA78 (Tourian statue unlocking particle) ;;;
+;;; $B8B5: Initialisation AI - enemy projectile $BA78 (Tourian entrance statue unlocking particle) ;;;
 InitAI_EnemyProjectile_TourianStatueUnlockingParticle:
 ;; Parameters:
 ;;     Y: Enemy projectile index
-;;     EnemyProjectile_InitParam0: Tourian statue eye glow enemy projectile index
+;;     EnemyProjectile_InitParam0: Tourian entrance statue eye glow enemy projectile index
     LDX.W EnemyProjectile_InitParam0                                     ;86B8B5;
     LDA.W EnemyProjectile_XPositions,X                                   ;86B8B8;
     STA.W EnemyProjectile_XPositions,Y                                   ;86B8BB;
@@ -9153,11 +9155,11 @@ InitAI_EnemyProjectile_TourianStatueUnlockingParticle:
     RTS                                                                  ;86B8E7;
 
 
-;;; $B8E8: Initialisation AI - enemy projectile $BA86 (Tourian statue unlocking particle tail) ;;;
+;;; $B8E8: Initialisation AI - enemy projectile $BA86 (Tourian entrance statue unlocking particle tail) ;;;
 InitAI_EnemyProjectile_TourianStatueUnlockingParticleTail:
 ;; Parameters:
 ;;     Y: Enemy projectile index
-;;     EnemyProjectile_InitParam0: Tourian statue unlocking particle enemy projectile index
+;;     EnemyProjectile_InitParam0: Tourian entrance statue unlocking particle enemy projectile index
     LDX.W EnemyProjectile_InitParam0                                     ;86B8E8;
     LDA.W EnemyProjectile_XPositions,X                                   ;86B8EB;
     STA.W EnemyProjectile_XPositions,Y                                   ;86B8EE;
@@ -9184,9 +9186,9 @@ InitAI_EnemyProjectile_TourianStatuesSoul:
     RTS                                                                  ;86B90D;
 
 
-;;; $B90E: Tourian statue eye data ;;;
+;;; $B90E: Tourian entrance statue eye data ;;;
 TourianStatueEyeData:
-; Tourian statue eye/soul positions
+; Tourian entrance statue eye/soul positions
 ;        _____________________ Phantoon
 ;       |      _______________ Ridley
 ;       |     |      _________ Draygon
@@ -9208,7 +9210,7 @@ TourianStatueEyeData:
     dw $6BFA,$3BE0,$2680,$1580                                           ;86B936; green
 
 
-;;; $B93E: Initialisation AI - enemy projectile $BABE (Tourian statue - base decoration) ;;;
+;;; $B93E: Initialisation AI - enemy projectile $BABE (Tourian entrance statue - base decoration) ;;;
 InitAI_EnemyProjectile_TourianStatueBaseDecoration:
 ;; Parameters:
 ;;     Y: Enemy projectile index
@@ -9221,7 +9223,7 @@ InitAI_EnemyProjectile_TourianStatueBaseDecoration:
     RTS                                                                  ;86B950;
 
 
-;;; $B951: Initialisation AI - enemy projectile $BAA2 (Tourian statue - Ridley) ;;;
+;;; $B951: Initialisation AI - enemy projectile $BAA2 (Tourian entrance statue - Ridley) ;;;
 InitAI_EnemyProjectile_TourianStatue_Ridley:
 ;; Parameters:
 ;;     Y: Enemy projectile index
@@ -9234,7 +9236,7 @@ InitAI_EnemyProjectile_TourianStatue_Ridley:
     RTS                                                                  ;86B963;
 
 
-;;; $B964: Initialisation AI - enemy projectile $BAB0 (Tourian statue - Phantoon) ;;;
+;;; $B964: Initialisation AI - enemy projectile $BAB0 (Tourian entrance statue - Phantoon) ;;;
 InitAI_EnemyProjectile_TourianStatue_Phantoon:
 ;; Parameters:
 ;;     Y: Enemy projectile index
@@ -9247,7 +9249,7 @@ InitAI_EnemyProjectile_TourianStatue_Phantoon:
     RTS                                                                  ;86B976;
 
 
-;;; $B977: Pre-instruction - enemy projectile $BA5C (Tourian statue unlocking particle water splash) ;;;
+;;; $B977: Pre-instruction - enemy projectile $BA5C (Tourian entrance statue unlocking particle water splash) ;;;
 PreInst_EnemyProj_TourianStatueUnlockingParticleWaterSplash:
 ;; Parameters:
 ;;     X: Enemy projectile index
@@ -9258,7 +9260,7 @@ PreInst_EnemyProj_TourianStatueUnlockingParticleWaterSplash:
     RTS                                                                  ;86B981;
 
 
-;;; $B982: Pre-instruction - enemy projectile $BA78 (Tourian statue unlocking particle) ;;;
+;;; $B982: Pre-instruction - enemy projectile $BA78 (Tourian entrance statue unlocking particle) ;;;
 PreInst_EnemyProjectile_TourianStatueUnlockingParticle:
 ;; Parameters:
 ;;     X: Enemy projectile index
@@ -9322,7 +9324,7 @@ PreInst_EnemyProjectile_TourianStatueUnlockingParticle:
     RTS                                                                  ;86B9FC;
 
 
-;;; $B9FD: Pre-instruction - enemy projectile $BA94 (Tourian statue's soul) ;;;
+;;; $B9FD: Pre-instruction - enemy projectile $BA94 (Tourian entrance statue's soul) ;;;
 PreInstruction_EnemyProjectile_TourianStatuesSoul:
 ;; Parameters:
 ;;     X: Enemy projectile index
@@ -9354,7 +9356,7 @@ PreInstruction_EnemyProjectile_TourianStatuesSoul:
     RTS                                                                  ;86BA36;
 
 
-;;; $BA37: Pre-instruction - Tourian statue - base decoration - allow processing to finish ;;;
+;;; $BA37: Pre-instruction - Tourian entrance statue - base decoration - allow processing to finish ;;;
 PreInst_EnemyProj_TourianStatueBaseDecoration_AllowProcess:
 ;; Parameters:
 ;;     X: Enemy projectile index
@@ -9364,7 +9366,7 @@ PreInst_EnemyProj_TourianStatueBaseDecoration_AllowProcess:
     TSB.W TourianStatueFinishedProcessing                                ;86BA3F; fallthrough to PreInst_EnemyProj_TourianStatue_Ridley_Phantoon_BaseDecor
 
 
-;;; $BA42: Pre-instruction - enemy projectile $BAA2/$BAB0/$BABE (Tourian statue - Ridley / Phantoon / base decoration) ;;;
+;;; $BA42: Pre-instruction - enemy projectile $BAA2/$BAB0/$BABE (Tourian entrance statue - Ridley / Phantoon / base decoration) ;;;
 PreInst_EnemyProj_TourianStatue_Ridley_Phantoon_BaseDecor:
 ;; Parameters:
 ;;     X: Enemy projectile index
@@ -9381,7 +9383,7 @@ PreInst_EnemyProj_TourianStatue_Ridley_Phantoon_BaseDecor:
     RTS                                                                  ;86BA5B;
 
 
-;;; $BA5C: Enemy projectiles - Tourian statue ;;;
+;;; $BA5C: Enemy projectiles - Tourian entrance statue ;;;
 EnemyProjectile_TourianStatueWaterSplash:                                ;86BA5C;
     %EnemyProjectile(\
     %initAI(InitAI_EnemyProj_TourianStatueUnlockingParticleWaterSplash),
@@ -10861,9 +10863,10 @@ Handle_OnionRing_Collision_with_Samus:
 ;;; $C35C: Hurt Samus ;;;
 Hurt_Samus:
 ;; Parameters:
+;;     A: Damage
 ;;     X: Enemy projectile index
 
-; Jump destination for UNUSED_DoFireballDamageToSamus_TurnIntoSmoke_869442
+; Called only by UNUSED_DoFireballDamageToSamus_TurnIntoSmoke_869442
     JSL.L Suit_Damage_Division                                           ;86C35C;
     JSL.L Deal_A_Damage_to_Samus                                         ;86C360;
     LDA.W #$0060                                                         ;86C364;

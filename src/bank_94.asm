@@ -1818,12 +1818,12 @@ SamusBlockCollisionReaction_SpikeBlock_BTS0_GenericSpike:
     LDA.W PoseXDirection                                                 ;948EB8;
     EOR.W #$000C                                                         ;948EBB;
     BIT.W #$0008                                                         ;948EBE;
-    BEQ .left                                                            ;948EC1;
+    BEQ .facingRight                                                     ;948EC1;
     LDA.W #$0001                                                         ;948EC3;
     STA.W KnockbackXDirection                                            ;948EC6;
     BRA .return                                                          ;948EC9;
 
-  .left:
+  .facingRight:
     STZ.W KnockbackXDirection                                            ;948ECB;
 
   .return:
@@ -1839,7 +1839,7 @@ SamusBlockCollisionReaction_SpikeBlock_BTS1_KraidsLairSpike:
     LDA.W #$000A                                                         ;948EDA;
     STA.W SamusKnockbackTimer                                            ;948EDD;
     LDA.W PeriodicSubDamage                                              ;948EE0;
-    CLC                                                                  ;948EE3;>.<
+    CLC                                                                  ;948EE3; >.<
     ADC.W #$0000                                                         ;948EE4;
     STA.W PeriodicSubDamage                                              ;948EE7;
     LDA.W PeriodicDamage                                                 ;948EEA;
@@ -1848,13 +1848,13 @@ SamusBlockCollisionReaction_SpikeBlock_BTS1_KraidsLairSpike:
     LDA.W PoseXDirection                                                 ;948EF3;
     EOR.W #$000C                                                         ;948EF6;
     BIT.W #$0008                                                         ;948EF9;
-    BEQ .left                                                            ;948EFC;
+    BEQ .facingRight                                                     ;948EFC;
     LDA.W #$0001                                                         ;948EFE;
     STA.W KnockbackXDirection                                            ;948F01;
     BRA .return                                                          ;948F04;
 
 
-  .left:
+  .facingRight:
     STZ.W KnockbackXDirection                                            ;948F06;
 
   .return:

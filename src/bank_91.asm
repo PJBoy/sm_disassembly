@@ -121,9 +121,8 @@ RTS_918086:
 ;;; $8087: Normal Samus pose input handler - [Samus movement type] = crouching ;;;
 NormalSamusPoseInputHandler_Crouching:
 ; Note that this routine is not called when time is frozen (CurrentStateHandler = $E713 during reserve tanks, PoseInputHandler = $E918 during x-ray),
-; so the call to XraySamusPoseInputHandler is dead code.
-; I also don't think there's any way to transition directly from crouching to standing, (actually: check x-ray stand up)
-; so the Y position adjustment is dead code too.
+; so the call to XraySamusPoseInputHandler is dead code
+; I also don't think there's any way to transition directly from crouching to standing, so the Y position adjustment is dead code too
     PHP                                                                  ;918087;
     REP #$30                                                             ;918088;
     LDA.W TimeIsFrozenFlag                                               ;91808A;
@@ -405,8 +404,8 @@ DetermineProspectivePoseFromTransitionTable:
 ; Iterate through transition table entry for current pose, if transition found with the required inputs being pressed:
 ;     If transition pose is the current pose, return carry clear
 ;     Else, set prospective pose and return carry set
-; If not pressing nothing and transition table entry is empty, return carry clear
-; Else, execute $91:82D9 and return carry clear
+; If pressing nothing or transition table entry is non-empty, execute $91:82D9
+; Return carry clear
 
 ; $12: The controller 1 input bits *not* newly pressed (not including start/select)
 ; $14: The controller 1 input bits *not* pressed (not including start/select)
@@ -805,6 +804,8 @@ DemoInputObjectHandler:
 
 ;;; $83F2: Process demo input object ;;;
 ProcessDemoInputObject:
+; The delete instruction pops the return address pushed to the stack by $8409 to return out of *this* routine
+; (marked "terminate processing demo input object")
     LDX.W #$0000                                                         ;9183F2;
     JSR.W (DemoInput_PreInstruction,X)                                   ;9183F5;
     DEC.W DemoInput_InstructionTimer                                     ;9183F8;
@@ -847,6 +848,10 @@ Instruction_DemoInputObject_Delete:
 
 ;;; $8434: Instruction - pre-instruction = [[Y]] ;;;
 Instruction_DemoInputObject_PreInstructionInY:
+;; Parameters:
+;;     Y: Pointer to instruction arguments
+;; Returns:
+;;     Y: Pointer to next instruction
     REP #$30                                                             ;918434;
     LDA.W $0000,Y                                                        ;918436;
     STA.W DemoInput_PreInstruction                                       ;918439;
@@ -867,6 +872,10 @@ Instruction_DemoInputObject_ClearPreInstruction:
 
 ;;; $8448: Instruction - go to [[Y]] ;;;
 Instruction_DemoInputObject_GotoY:
+;; Parameters:
+;;     Y: Pointer to instruction arguments
+;; Returns:
+;;     Y: Pointer to next instruction
     REP #$30                                                             ;918448;
     LDA.W $0000,Y                                                        ;91844A;
     TAY                                                                  ;91844D;
@@ -875,6 +884,10 @@ Instruction_DemoInputObject_GotoY:
 
 ;;; $844F: Instruction - decrement timer and go to [[Y]] if non-zero ;;;
 Instruction_DemoInputObject_DecrementTimer_GotoYIfNonZero:
+;; Parameters:
+;;     Y: Pointer to instruction arguments
+;; Returns:
+;;     Y: Pointer to next instruction
     REP #$30                                                             ;91844F;
     DEC.W DemoInput_Timer                                                ;918451;
     BNE Instruction_DemoInputObject_GotoY                                ;918454;
@@ -1564,6 +1577,8 @@ DemoSamusSetup_StandingFacingRight:
 
 ;;; $8A56: Initialise Samus with pose = [A] ;;;
 InitializeSamusWithPoseInA:
+;; Parameters:
+;;     A: Samus pose
     STA.W Pose                                                           ;918A56;
     JSL.L InitializeSamusPose_1                                          ;918A59;
     JSL.L Set_Samus_AnimationFrame_if_PoseChanged                        ;918A5D;
@@ -4689,8 +4704,8 @@ AnimationDelays_B0_B1:                                                   ;91B2C0
     db $10, $FE,$01
 
 AnimationDelays_B2_B3:                                                   ;91B2C4;
-; B2h: Facing clockwise   -   grapple - in air
-; B3h: Facing anticlockwise - grapple - in air
+; B2h: Facing clockwise     - grapple swinging
+; B3h: Facing anticlockwise - grapple swinging
 ; These delays don't really take effect, Samus animation frame is set every frame during grapple swinging
     ; Swinging
     db $08,$08,$08,$08,$08,$08,$08,$08,$08,$08,$08,$08,$08,$08,$08,$08
@@ -5970,11 +5985,11 @@ UNUSED_PoseDefinitions_B1_91BBB1:
     db $04,$16,$70,$06,$08,$00,$13,$00                                   ;91BBB1;
 
 PoseDefinitions_B2:
-; B2h: Facing clockwise   -   grapple
+; B2h: Facing clockwise   -   grapple swinging
     db $08,$16,$B2,$FF,$10,$00,$11,$00                                   ;91BBB9;
 
 PoseDefinitions_B3:
-; B3h: Facing anticlockwise - grapple
+; B3h: Facing anticlockwise - grapple swinging
     db $04,$16,$B3,$FF,$10,$00,$11,$00                                   ;91BBC1;
 
 UNUSED_PoseDefinitions_B4_91BBC9:
@@ -9958,7 +9973,7 @@ XraySetup_8_BackdropColor:
     RTL                                                                  ;91D2D0;
 
 
-;;; $D2D1: RTS ;;;
+;;; $D2D1: Unused. RTS ;;;
 RTS_91D2D1:
     PHP                                                                  ;91D2D1;
     REP #$30                                                             ;91D2D2;
@@ -11365,6 +11380,9 @@ HandleCrystalFlashPalette:
 
 ;;; $DC34: Set crystal flash Samus colours ;;;
 SetCrystalFlashSamusColors:
+;; Parameters:
+;;     Y: Pointer to crystal flash Samus colours
+
 ; Sprite palette 6 colours 0..9 = 14h bytes from $9B:[Y]
     PHB                                                                  ;91DC34;
     PEA.W SamusPalettes_PowerSuit>>8&$FF00                               ;91DC35;
@@ -11396,6 +11414,9 @@ SetCrystalFlashSamusColors:
 
 ;;; $DC82: Set crystal flash bubble colours ;;;
 SetCrystalFlashBubbleColors:
+;; Parameters:
+;;     Y: Pointer to crystal flash bubble colours
+
 ; Sprite palette 6 colours Ah..Fh = Ch bytes from $9B:[Y]
     PHB                                                                  ;91DC82;
     PEA.W SamusPalettes_PowerSuit>>8&$FF00                               ;91DC83;
@@ -11422,11 +11443,11 @@ HandleXrayPalette:
 ;; Returns:
 ;;     Carry: Clear to use normal suit palette, set otherwise
     LDA.W Xray_BeamSizeFlag                                              ;91DCB4;
-    BMI .finish                                                          ;91DCB7;
-    BNE .paletteSet                                                      ;91DCB9;
+    BMI .stop                                                            ;91DCB7;
+    BNE .fullBeam                                                        ;91DCB9;
     LDA.W Xray_State                                                     ;91DCBB;
     CMP.W #$0002                                                         ;91DCBE;
-    BPL .notWidening                                                     ;91DCC1;
+    BPL .finishedWidening                                                ;91DCC1;
     DEC.W CommonPaletteTimer                                             ;91DCC3;
     BEQ .timerExpired                                                    ;91DCC6;
     BPL .returnCarrySet                                                  ;91DCC8;
@@ -11448,14 +11469,14 @@ HandleXrayPalette:
     SEC                                                                  ;91DCE8;
     RTS                                                                  ;91DCE9;
 
-  .notWidening:
+  .finishedWidening:
     LDA.W #$0006                                                         ;91DCEA;
     STA.W SpecialSamusPaletteFrame                                       ;91DCED;
     LDA.W #$0001                                                         ;91DCF0;
     STA.W CommonPaletteTimer                                             ;91DCF3;
     STA.W Xray_BeamSizeFlag                                              ;91DCF6;
 
-  .paletteSet:
+  .fullBeam:
     DEC.W CommonPaletteTimer                                             ;91DCF9;
     BEQ .resetTimer                                                      ;91DCFC;
     BPL .returnCarrySet                                                  ;91DCFE;
@@ -11478,7 +11499,7 @@ HandleXrayPalette:
     SEC                                                                  ;91DD21;
     RTS                                                                  ;91DD22;
 
-  .finish:
+  .stop:
     STZ.W SpecialSamusPaletteType                                        ;91DD23;
     STZ.W SpecialSamusPaletteFrame                                       ;91DD26;
     STZ.W CommonPaletteTimer                                             ;91DD29;
@@ -11493,11 +11514,21 @@ RTS_91DD31:
 
 
 if !FEATURE_KEEP_UNREFERENCED
-;;; $DD32:  ;;;
-UNUSED_91DD32:
-; Seemingly completely unreferenced
-    db $01,$00,$00,$01,$00,$00,$01,$00,$00,$01,$01,$00,$01,$00,$01,$00   ;91DD32;
-    db $01,$00,$01,$00,$01,$00,$01,$00,$01,$00                           ;91DD42;
+;;; $DD32: Unused ;;;
+UNUSED_91DD32:                                                           ;91DD32;
+; 12 bytes of 1, 14 bytes of 0
+    db $01,$00,$00
+    db $01,$00,$00
+    db $01,$00,$00
+    db $01
+    db $01,$00
+    db $01,$00
+    db $01,$00
+    db $01,$00
+    db $01,$00
+    db $01,$00
+    db $01,$00
+    db $01,$00
 
 
 ;;; $DD4C: Unused. Set Samus palette to $9B:9500 ;;;
@@ -11518,6 +11549,8 @@ endif ; !FEATURE_KEEP_UNREFERENCED
 
 ;;; $DD5B: Samus palette = 20h bytes from $9B:[X] ;;;
 Load20BytesOfSamusPaletteInX:
+;; Parameters:
+;;     X: Pointer to Samus palette
     PHP                                                                  ;91DD5B;
     REP #$30                                                             ;91DD5C;
     PHB                                                                  ;91DD5E;
@@ -11563,6 +11596,9 @@ Load20BytesOfSamusPaletteInX:
 
 ;;; $DDD7: Target Samus palette = 20h bytes from $9B:[X] ;;;
 Load20BytesOfSamusTargetPaletteInX:
+;; Parameters:
+;;     X: Pointer to Samus palette
+
 ; Used only by LoadSamusSuitTargetPalette
     PHP                                                                  ;91DDD7;
     REP #$30                                                             ;91DDD8;
@@ -11727,6 +11763,8 @@ LoadSamusSuitTargetPalette:
 
 ;;; $DF12: Restore [A] health to Samus ;;;
 Restore_A_Energy_ToSamus:
+;; Parameters:
+;;     A: Health
     PHP                                                                  ;91DF12;
     PHB                                                                  ;91DF13;
     PHK                                                                  ;91DF14;
@@ -11767,8 +11805,13 @@ Restore_A_Energy_ToSamus:
 
 ;;; $DF51: Deal [A] damage to Samus ;;;
 Deal_A_Damage_to_Samus:
-; Does NOT do any damage if damage = 300 (#$12C) or if time is paused by x-ray / reserve tanks, ignores suits.
-; NOTE: If damage is negative, game will stop (JML $808573) (change $91DF65 to 00 to skip 300-damage check)
+;; Parameters:
+;;     A: Damage. 300 is treated like 0. Negative = crash
+
+; Ignores suits, call $A0:A45E for suit-adjusted damage
+; There are no enemies or enemy projectiles that do 300 damage,
+; there are some projectiles - which if reflected - could do 300 damage,
+; in any case it's unclear what the 300 damage check is for
     PHP                                                                  ;91DF51;
     PHB                                                                  ;91DF52;
     PHK                                                                  ;91DF53;
@@ -11805,6 +11848,9 @@ Deal_A_Damage_to_Samus:
 
 ;;; $DF80: Restore [A] missiles to Samus ;;;
 Restore_A_Missiles_ToSamus:
+;; Parameters:
+;;     A: Missiles
+
 ; Samus reserve missiles = min(99, [Samus max missiles], [Samus reserve missiles] + max(0, [Samus missiles] + [A] - [Samus max missiles]))
 ; Samus missiles = min([Samus missiles] + [A], [Samus max missiles])
 
@@ -11857,6 +11903,8 @@ Restore_A_Missiles_ToSamus:
 
 ;;; $DFD3: Restore [A] super missiles to Samus ;;;
 Restore_A_SuperMissiles_ToSamus:
+;; Parameters:
+;;     A: Super missiles
     PHP                                                                  ;91DFD3;
     PHB                                                                  ;91DFD4;
     PHK                                                                  ;91DFD5;
@@ -11879,6 +11927,8 @@ Restore_A_SuperMissiles_ToSamus:
 
 ;;; $DFF0: Restore [A] power bombs to Samus ;;;
 Restore_A_PowerBombs_ToSamus:
+;; Parameters:
+;;     A: Power bombs
     PHP                                                                  ;91DFF0;
     PHB                                                                  ;91DFF1;
     PHK                                                                  ;91DFF2;
@@ -12503,6 +12553,8 @@ DrainedSamusController:
 
 ;;; $E4F8: Drained Samus controller - 0: let drained Samus fall ;;;
 DrainedSamusController_0_LetDrainedSamusFall:
+;; Returns:
+;;     Carry: Set. Cancel any pending pose transition
     LDA.W #$0015                                                         ;91E4F8;
     SEC                                                                  ;91E4FB;
     SBC.W SamusYRadius                                                   ;91E4FC;
@@ -12556,7 +12608,8 @@ DrainedSamusController_0_LetDrainedSamusFall:
 
 ;;; $E571: Drained Samus controller - 1: put Samus into standing drained pose ;;;
 DrainedSamusController_1_PutSamusIntoStandingDrainedPose:
-; Put Samus into standing drained pose
+;; Returns:
+;;     Carry: Set. Cancel any pending pose transition
     LDA.W #$0010                                                         ;91E571;
     STA.W SamusAnimationFrameTimer                                       ;91E574;
     STZ.W SamusAnimationFrame                                            ;91E577;
@@ -12580,6 +12633,8 @@ DrainedSamusController_1_PutSamusIntoStandingDrainedPose:
 
 ;;; $E59B: Drained Samus controller - 2: release Samus from drained pose ;;;
 DrainedSamusController_2_ReleaseSamusFromDrainedPose:
+;; Returns:
+;;     Carry: Set. Cancel any pending pose transition
     LDA.W Pose                                                           ;91E59B;
     CMP.W #$00E8                                                         ;91E59E;
     BEQ .crouchingFalling                                                ;91E5A1;
@@ -12624,6 +12679,8 @@ DrainedSamusController_2_ReleaseSamusFromDrainedPose:
 
 ;;; $E5F0: Drained Samus controller - 3: enable hyper beam ;;;
 DrainedSamusController_3_EnableHyperBeam:
+;; Returns:
+;;     Carry: Clear. Allow any pending pose transition
     LDA.W #$1009                                                         ;91E5F0;
     STA.W EquippedBeams                                                  ;91E5F3;
     JSL.L Update_Beam_Tiles_and_Palette                                  ;91E5F6;
@@ -12638,6 +12695,8 @@ DrainedSamusController_3_EnableHyperBeam:
 
 ;;; $E60C: Drained Samus controller - 4: put Samus into crouching/falling drained pose ;;;
 DrainedSamusController_4_SetSamusCrouchingFallingDrainedPose:
+;; Returns:
+;;     Carry: Set. Cancel any pending pose transition
     LDA.W #$0010                                                         ;91E60C;
     STA.W SamusAnimationFrameTimer                                       ;91E60F;
     LDA.W #$0008                                                         ;91E612;
@@ -13247,6 +13306,8 @@ PSP_Landed_MorphBallGrounded:
 
 ;;; $EA15: Set prospective Samus pose according to solid vertical collision result - landed - morph ball grounded - not bouncing ;;;
 PSP_Landed_MorphBallGrounded_NotBouncing:
+;; Returns:
+;;     Carry: clear
     LDA.W SamusYSpeed                                                    ;91EA15;
     CMP.W #$0003                                                         ;91EA18;
     BMI PSP_Landed_MorphBallGrounded_SecondBounce                        ;91EA1B;
@@ -13258,6 +13319,8 @@ PSP_Landed_MorphBallGrounded_NotBouncing:
 
 ;;; $EA25: Set prospective Samus pose according to solid vertical collision result - landed - morph ball grounded - first bounce ;;;
 PSP_Landed_MorphBallGrounded_FirstBounce:
+;; Returns:
+;;     Carry: clear
     LDA.W Pose                                                           ;91EA25;
     STA.W ProspectivePose                                                ;91EA28;
     CLC                                                                  ;91EA2B;
@@ -13266,6 +13329,8 @@ PSP_Landed_MorphBallGrounded_FirstBounce:
 
 ;;; $EA2D: Set prospective Samus pose according to solid vertical collision result - landed - morph ball grounded - second bounce ;;;
 PSP_Landed_MorphBallGrounded_SecondBounce:
+;; Returns:
+;;     Carry: clear
     LDA.W PoseXDirection                                                 ;91EA2D;
     AND.W #$00FF                                                         ;91EA30;
     CMP.W #$0004                                                         ;91EA33;
@@ -13285,6 +13350,8 @@ PSP_Landed_MorphBallGrounded_SecondBounce:
 
 ;;; $EA48: Set prospective Samus pose according to solid vertical collision result - landed - unused ;;;
 UNUSED_PSP_Landed_91EA48:
+;; Returns:
+;;     Carry: clear
     LDA.W PoseXDirection                                                 ;91EA48;
     AND.W #$00FF                                                         ;91EA4B;
     CMP.W #$0004                                                         ;91EA4E;
@@ -13340,6 +13407,8 @@ PSP_Landed_SpringBallGrounded_NotBouncing:
 
 ;;; $EA93: Set prospective Samus pose according to solid vertical collision result - landed - spring ball grounded - first bounce ;;;
 PSP_Landed_SpringBallGrounded_FirstBounce:
+;; Returns:
+;;     Carry: clear
     LDA.W Pose                                                           ;91EA93;
     STA.W ProspectivePose                                                ;91EA96;
     CLC                                                                  ;91EA99;
@@ -13348,6 +13417,8 @@ PSP_Landed_SpringBallGrounded_FirstBounce:
 
 ;;; $EA9B: Set prospective Samus pose according to solid vertical collision result - landed - spring ball grounded - second bounce ;;;
 PSP_Landed_SpringBallGrounded_SecondBounce:
+;; Returns:
+;;     Carry: clear
     LDA.W PoseXDirection                                                 ;91EA9B;
     AND.W #$00FF                                                         ;91EA9E;
     CMP.W #$0004                                                         ;91EAA1;
@@ -13684,9 +13755,35 @@ UNUSED_91EC9D:
     STA.W SamusAnimationFrameTimer                                       ;91ECB0;
     RTS                                                                  ;91ECB3;
 
-  .data:
-    db $00,$00,$02,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00   ;91ECB4;
-    db $00,$00,$00,$00,$00,$00,$00,$00,$00,$02,$00,$00                   ;91ECC4;
+  .data:                                                                 ;91ECB4;
+    db $00 ; 0: Standing
+    db $00 ; 1: Running
+    db $02 ; 2: Normal jumping
+    db $00 ; 3: Spin jumping
+    db $00 ; 4: Morph ball - on ground
+    db $00 ; 5: Crouching
+    db $00 ; 6: Falling
+    db $00 ; 7: Unused
+    db $00 ; 8: Morph ball - falling
+    db $00 ; 9: Unused
+    db $00 ; Ah: Knockback / crystal flash ending
+    db $00 ; Bh: Unused
+    db $00 ; Ch: Unused
+    db $00 ; Dh: Unused
+    db $00 ; Eh: Turning around - on ground
+    db $00 ; Fh: Crouching/standing/morphing/unmorphing transition
+    db $00 ; 10h: Moonwalking
+    db $00 ; 11h: Spring ball - on ground
+    db $00 ; 12h: Spring ball - in air
+    db $00 ; 13h: Spring ball - falling
+    db $00 ; 14h: Wall jumping
+    db $00 ; 15h: Ran into a wall
+    db $00 ; 16h: Grappling
+    db $00 ; 17h: Turning around - jumping
+    db $00 ; 18h: Turning around - falling
+    db $02 ; 19h: Damage boost
+    db $00 ; 1Ah: Grabbed by Draygon
+    db $00 ; 1Bh: Shinespark / crystal flash / drained by metroid / damaged by MB's attacks
 endif ; !FEATURE_KEEP_UNREFERENCED
 
 
@@ -14495,6 +14592,7 @@ HandleLandingGraphics_Tourian:
 
 ;;; $F1D3: Solid vertical collision - landed - set Samus as not bouncing ;;;
 SolidVerticalCollision_Landed_SetSamusAsNotBouncing:
+; More of a "set grounded state" operation
     STZ.W SamusIsFallingFlag                                             ;91F1D3;
     STZ.W neverRead0B1A                                                  ;91F1D6;
     STZ.W neverRead0B2A                                                  ;91F1D9;
@@ -14508,6 +14606,8 @@ SolidVerticalCollision_Landed_SetSamusAsNotBouncing:
 
 ;;; $F1EC: Solid vertical collision - landed - [Samus downwards movement solid collision result] = grounded ;;;
 SolidVerticalCollision_Landed_Grounded:
+;; Returns:
+;;     Carry: Clear. Grounded
     LDA.W PoseInputHandler                                               ;91F1EC;
     CMP.W #SamusPoseInputHandler_Demo                                    ;91F1EF;
     BEQ .return                                                          ;91F1F2;
@@ -14521,6 +14621,9 @@ SolidVerticalCollision_Landed_Grounded:
 
 ;;; $F1FC: Solid vertical collision - landed - [Samus downwards movement solid collision result] = morph ball grounded ;;;
 SolidVerticalCollision_Landed_MorphBallGrounded:
+;; Returns:
+;;     Carry: Set if ungrounded, otherwise clear
+
 ; Morph ball bounce - no springball
     LDA.W MorphBallBounceState                                           ;91F1FC;
     ASL                                                                  ;91F1FF;
@@ -14535,6 +14638,8 @@ SolidVerticalCollision_Landed_MorphBallGrounded:
 
 ;;; $F20A: Morph ball bounce - morph ball - not bouncing ;;;
 MorphBallBounce_MorphBall_NotBouncing:
+;; Returns:
+;;     Carry: Set. Ungrounded
     LDA.W SamusYSpeed                                                    ;91F20A;
     CMP.W #$0003                                                         ;91F20D;
     BMI MorphBallBounce_MorphBall_SecondBounce                           ;91F210;
@@ -14551,6 +14656,8 @@ MorphBallBounce_MorphBall_NotBouncing:
 
 ;;; $F22B: Morph ball bounce - morph ball - first bounce ;;;
 MorphBallBounce_MorphBall_FirstBounce:
+;; Returns:
+;;     Carry: Set. Ungrounded
     INC.W MorphBallBounceState                                           ;91F22B;
     LDA.W #$0001                                                         ;91F22E;
     STA.W SamusYDirection                                                ;91F231;
@@ -14565,6 +14672,8 @@ MorphBallBounce_MorphBall_FirstBounce:
 
 ;;; $F245: Morph ball bounce - morph ball - second bounce ;;;
 MorphBallBounce_MorphBall_SecondBounce:
+;; Returns:
+;;     Carry: Clear. Grounded
     STZ.W MorphBallBounceState                                           ;91F245;
     STZ.W SamusYDirection                                                ;91F248;
     STZ.W SamusYSubSpeed                                                 ;91F24B;
@@ -14575,6 +14684,8 @@ MorphBallBounce_MorphBall_SecondBounce:
 
 ;;; $F253: Solid vertical collision - landed - [Samus downwards movement solid collision result] = 2 ;;;
 SolidVerticalCollision_Landed_2:
+;; Returns:
+;;     Carry: Clear. Grounded
     STZ.W MorphBallBounceState                                           ;91F253;
     LDA.W #$0003                                                         ;91F256;
     STA.W HorizontalSlopeCollision                                       ;91F259;
@@ -14584,6 +14695,9 @@ SolidVerticalCollision_Landed_2:
 
 ;;; $F25E: Solid vertical collision - landed - [Samus downwards movement solid collision result] = spring ball grounded ;;;
 SolidVerticalCollision_Landed_SpringBallGrounded:
+;; Returns:
+;;     Carry: Clear. Grounded
+
 ; Morph ball bounce - springball
     LDA.B DP_Controller1Input                                            ;91F25E;
     BIT.W JumpBinding                                                    ;91F260;
@@ -14608,6 +14722,8 @@ SolidVerticalCollision_Landed_SpringBallGrounded:
 
 ;;; $F27F: Morph ball bounce - spring ball - not bouncing ;;;
 MorphBallBounce_SpringBall_NotBouncing:
+;; Returns:
+;;     Carry: Set. Ungrounded
     LDA.W SamusYSpeed                                                    ;91F27F;
     CMP.W #$0003                                                         ;91F282;
     BMI MorphBallBounce_SpringBall_SecondBounce                          ;91F285;
@@ -14625,6 +14741,8 @@ MorphBallBounce_SpringBall_NotBouncing:
 
 ;;; $F2A3: Morph ball bounce - spring ball - first bounce ;;;
 MorphBallBounce_SpringBall_FirstBounce:
+;; Returns:
+;;     Carry: Clear. Grounded
     LDA.W #$0602                                                         ;91F2A3;
     STA.W MorphBallBounceState                                           ;91F2A6;
     LDA.W #$0001                                                         ;91F2A9;
@@ -14650,6 +14768,8 @@ MorphBallBounce_SpringBall_SecondBounce:
 
 ;;; $F2CE: Solid vertical collision - landed - [Samus downwards movement solid collision result] = 5 ;;;
 SolidVerticalCollision_5:
+;; Returns:
+;;     Carry: Clear. Grounded
     STZ.W MorphBallBounceState                                           ;91F2CE;
     CLC                                                                  ;91F2D1;
     RTS                                                                  ;91F2D2;
@@ -14671,8 +14791,8 @@ SolidVerticalCollision_WallJumpTriggered:
 
 ;;; $F2F0: Solid vertical collision - [Samus solid vertical collision result] = 6 ;;;
 SolidVerticalCollision_6:
-; Only code in the game that sets HorizontalSlopeCollision to a non-3 value,
-; the only code in the game that checks this variable only cares if the 2 bit is set or not,
+; This is the only code in the game that sets $0A46 to a non-3 value
+; Code that checks this variable only cares if the 2 bit is set or not,
 ; so it's not known what the intended difference between 0 and 1 is here
     LDA.W SamusXSpeedKilledDueToCollisionFlag                            ;91F2F0;
     BEQ .return                                                          ;91F2F3;
@@ -14979,6 +15099,8 @@ CLCRTS_91F4DA:
 
 ;;; $F4DC: Initialise Samus pose - standing ;;;
 InitializeSamusPose_Standing:
+;; Returns:
+;;     Carry: Clear. No movement change
     LDA.W Pose                                                           ;91F4DC;
     ASL                                                                  ;91F4DF;
     ASL                                                                  ;91F4E0;
@@ -15012,6 +15134,8 @@ InitializeSamusPose_Standing:
 
 ;;; $F50C: Initialise Samus pose - running ;;;
 InitializeSamusPose_Running:
+;; Returns:
+;;     Carry: Clear. No movement change
     LDA.W PreviousMovementType                                           ;91F50C;
     AND.W #$00FF                                                         ;91F50F;
     CMP.W #$0001                                                         ;91F512;
@@ -15049,6 +15173,9 @@ InitializeSamusPose_Running:
 
 ;;; $F543: Initialise Samus pose - normal jumping ;;;
 InitializeSamusPose_NormalJumping:
+;; Returns:
+;;     Carry: Set if movement changed, otherwise clear
+
 ; The .noAnimationSkip section seems kinda pointless(?)
 ; NOPing it causes fire to be required to be held for more than 1 frame to fire from a spin-jump,
 ; otherwise, if charge is equipped, fire only needs to be held for one frame.
@@ -15149,6 +15276,8 @@ InitializeSamusPose_NormalJumping:
 
 ;;; $F5EB: Initialise Samus pose - crouching ;;;
 InitializeSamusPose_Crouching:
+;; Returns:
+;;     Carry: Clear. No movement change
     LDA.W Pose                                                           ;91F5EB;
     CMP.W #$0085                                                         ;91F5EE;
     BEQ .crouchingAimingUp                                               ;91F5F1;
@@ -15173,6 +15302,8 @@ InitializeSamusPose_Crouching:
 
 ;;; $F60D: Initialise Samus pose - falling ;;;
 InitializeSamusPose_Falling:
+;; Returns:
+;;     Carry: Clear. No movement change
     LDA.W SamusXExtraRunSpeed                                            ;91F60D;
     BNE .nonZeroExtraRunSpeed                                            ;91F610;
     LDA.W SamusXExtraRunSubSpeed                                         ;91F612;
@@ -15191,6 +15322,8 @@ InitializeSamusPose_Falling:
 
 ;;; $F624: Initialise Samus pose - spin jumping ;;;
 InitializeSamusPose_SpinJumping:
+;; Returns:
+;;     Carry: Clear. No movement change
     LDA.W PreviousMovementType                                           ;91F624;
     AND.W #$00FF                                                         ;91F627;
     CMP.W #$0003                                                         ;91F62A;
@@ -15412,6 +15545,9 @@ InitializeSamusPose_TransitionPoses:
 
 ;;; $F7B0: Initialise Samus pose - crouching transition ;;;
 InitializeSamusPose_CrouchingTransition:
+;; Returns:
+;;     Carry: Clear. No movement change
+
 ; Gives Samus shinespark
     LDA.W SamusBoostTimer                                                ;91F7B0;
     AND.W #$FF00                                                         ;91F7B3;
@@ -15436,6 +15572,8 @@ CLCRTS_91F7CC:
 
 ;;; $F7CE: Initialise Samus pose - morphing transition ;;;
 InitializeSamusPose_MorphingTransition:
+;; Returns:
+;;     Carry: Set if movement changed, otherwise clear
     LDA.W EquippedItems                                                  ;91F7CE;
     BIT.W #$0004                                                         ;91F7D1;
     BEQ .noMorphBall                                                     ;91F7D4;
@@ -15460,6 +15598,8 @@ InitializeSamusPose_MorphingTransition:
 
 ;;; $F7F4: Initialise Samus pose - unused pose 39h ;;;
 UNUSED_InitializeSamusPose_UnusedPose39_91F7F4:
+;; Returns:
+;;     Carry: Set. Movement changed
     LDA.W PreviousMovementType                                           ;91F7F4;
     AND.W #$00FF                                                         ;91F7F7;
     CMP.W #$0008                                                         ;91F7FA;
@@ -15505,6 +15645,8 @@ UNUSED_InitializeSamusPose_UnusedPose39_91F7F4:
 
 ;;; $F840: Initialise Samus pose - unused pose 3Ah ;;;
 UNUSED_InitializeSamusPose_UnusedPose3A_91F840:
+;; Returns:
+;;     Carry: Set. Movement changed
     LDA.W PreviousMovementType                                           ;91F840;
     AND.W #$00FF                                                         ;91F843;
     CMP.W #$0008                                                         ;91F846;
@@ -15550,6 +15692,8 @@ UNUSED_InitializeSamusPose_UnusedPose3A_91F840:
 
 ;;; $F88C: Initialise Samus pose - moonwalking ;;;
 InitializeSamusPose_Moonwalking:
+;; Returns:
+;;     Carry: Set if movement changed, otherwise clear
     LDA.W Moonwalk                                                       ;91F88C;
     BEQ .enabled                                                         ;91F88F;
     CLC                                                                  ;91F891;
@@ -15575,6 +15719,9 @@ InitializeSamusPose_Moonwalking:
 
 ;;; $F8AE: Initialise Samus pose - damage boost ;;;
 InitializeSamusPose_DamageBoost:
+;; Returns:
+;;     Carry: Clear. No movement change
+
 ; Looks like a BRA past leftover code to me
     BRA .nonDeadCode                                                     ;91F8AE;
 
@@ -15603,6 +15750,8 @@ InitializeSamusPose_DamageBoost:
 
 ;;; $F8D3: Initialise Samus pose - turning around - on ground ;;;
 InitializeSamusPose_TurningAround_OnGround:
+;; Returns:
+;;     Carry: Set. Movement changed
     LDA.W PreviousPose                                                   ;91F8D3;
     BEQ .done                                                            ;91F8D6;
     CMP.W #$009B                                                         ;91F8D8;
@@ -15668,6 +15817,8 @@ InitializeSamusPose_TurningAround_OnGround:
 
 ;;; $F952: Initialise Samus pose - turning around - jumping ;;;
 InitializeSamusPose_TurningAround_Jumping:
+;; Returns:
+;;     Carry: Set. Movement changed
     LDA.W PreviousPose                                                   ;91F952;
     ASL                                                                  ;91F955;
     ASL                                                                  ;91F956;
@@ -15696,6 +15847,8 @@ InitializeSamusPose_TurningAround_Jumping:
 
 ;;; $F98A: Initialise Samus pose - turning around - falling ;;;
 InitializeSamusPose_TurningAround_Falling:
+;; Returns:
+;;     Carry: Set. Movement changed
     LDA.W PreviousPose                                                   ;91F98A;
     ASL                                                                  ;91F98D;
     ASL                                                                  ;91F98E;
@@ -15749,6 +15902,8 @@ TurningSamusPoses:
 
 ;;; $F9F4: Initialise Samus pose - morph ball ;;;
 InitializeSamusPose_MorphBall:
+;; Returns:
+;;     Carry: Clear. No movement change
     LDA.W PreviousMovementType                                           ;91F9F4;
     AND.W #$00FF                                                         ;91F9F7;
     CMP.W #$0004                                                         ;91F9FA;
@@ -15804,6 +15959,8 @@ ApplyMomentumIfTurningInMorphBall:
 
 ;;; $FA56: Initialise Samus pose - spring ball ;;;
 InitializeSamusPose_SpringBall:
+;; Returns:
+;;     Carry: Clear. No movement change
     LDA.W PreviousMovementType                                           ;91FA56;
     AND.W #$00FF                                                         ;91FA59;
     CMP.W #$0011                                                         ;91FA5C;
@@ -15825,6 +15982,8 @@ InitializeSamusPose_SpringBall:
 
 ;;; $FA76: Initialise Samus pose - wall jumping ;;;
 InitializeSamusPose_WallJumping:
+;; Returns:
+;;     Carry: Clear. No movement change
     JSL.L Get_Samus_Bottom_Boundary                                      ;91FA76;
     LDA.W FX_YPosition                                                   ;91FA7A;
     BMI .negativeYPosition                                               ;91FA7D;
@@ -15872,7 +16031,8 @@ InitializeSamusPose_WallJumping:
 
 ;;; $FACA: Initialise Samus pose - shinespark / crystal flash / drained by metroid / damaged by MB's attacks ;;;
 InitializeSamusPose_Shinespark_CF_Drained_DamagedMB:
-; Need to check what happens with poses C7h/C8h (vertical shinespark windup)
+;; Returns:
+;;     Carry: Clear. No movement change
     LDA.W Pose                                                           ;91FACA;
     CMP.W #$00CF                                                         ;91FACD;
     BPL .returnCarryClear                                                ;91FAD0;
@@ -15988,6 +16148,14 @@ Set_Samus_AnimationFrame_if_PoseChanged:
 ;;; $FB8E:  ;;;
 PossiblyNoPurpose_91FB8E:
 ; Don't think this routine serves any purpose...
+; Called by:
+;     $EC50: Prospective pose change command 1 - decelerate
+;     $EC85: Prospective pose change command 6 - kill X speed
+;     $EC8E: Prospective pose change command 8 - kill run speed
+
+; In the $EC50 case, Samus movement type is running / normal jumping / morph ball in air, so this routine will never reach $FBAC
+; In the $EC85 case, Samus movement type is morph ball on ground / spring ball / wall jumping / grappling, so this routine will never reach $FBAC
+; In the $EC8E case, Samus movement type is falling, but that command is only set due to transition table lookup failure, so the previous movement type will also be falling
     PHP                                                                  ;91FB8E;
     PHB                                                                  ;91FB8F;
     PHK                                                                  ;91FB90;
@@ -16107,6 +16275,7 @@ HandleJumpTransition_SpringBall_InAir:
 
 ;;; $FC42: Handle jump transition - Samus movement type Dh (unused) ;;;
 UNUSED_HandleJumpTransition_MovementTypeD_91FC42:
+; Poses 63h..66h are all of the movement type Dh poses (and are all unused)
     LDA.W Pose                                                           ;91FC42;
     CMP.W #$0065                                                         ;91FC45;
     BNE .notPose65                                                       ;91FC48;
@@ -16542,6 +16711,8 @@ PoseChangeCollision_SolidEnemy_FromBelow:
 
 ;;; $FF20: Handle block collision due to pose change - collision from above ;;;
 PoseChangeCollision_Block_FromAbove:
+;; Returns:
+;;     Carry: Set if there's no space for Samus pose, clear otherwise
     LDA.W YRadiusDifference                                              ;91FF20;
     SEC                                                                  ;91FF23;
     SBC.W SpaceToMoveUpBlock                                             ;91FF24;
@@ -16567,6 +16738,8 @@ PoseChangeCollision_Block_FromAbove:
 
 ;;; $FF49: Handle block collision due to pose change - collision from below ;;;
 PoseChangeCollision_Block_FromBelow:
+;; Returns:
+;;     Carry: Set if there's no space for Samus pose, clear otherwise
     LDA.W YRadiusDifference                                              ;91FF49;
     SEC                                                                  ;91FF4C;
     SBC.W SpaceToMoveDownBlock                                           ;91FF4D;
@@ -16594,6 +16767,8 @@ PoseChangeCollision_Block_FromBelow:
 
 ;;; $FF76: Handle block collision due to pose change - no collision ;;;
 PoseChangeCollision_NoCollision:
+;; Returns:
+;;     Carry: Set if there's no space for Samus pose, clear otherwise
     LDA.W SolidEnemyCollisionFlags                                       ;91FF76;
     ASL                                                                  ;91FF79;
     TAX                                                                  ;91FF7A;
@@ -16615,6 +16790,8 @@ CLCRTS_91FF87:
 
 ;;; $FF89: Handle block collision to pose change - no collision - solid enemy collision from above ;;;
 HandleBlockCollisionToPoseChange_NoCollision_Enemy_FromAbove:
+;; Returns:
+;;     Carry: Clear. There's space for Samus pose
     LDA.W SamusYPosition                                                 ;91FF89;
     CLC                                                                  ;91FF8C;
     ADC.W SpaceToMoveUpEnemy                                             ;91FF8D;
@@ -16626,6 +16803,8 @@ HandleBlockCollisionToPoseChange_NoCollision_Enemy_FromAbove:
 
 ;;; $FF98: Handle block collision to pose change - no collision - solid enemy collision from below ;;;
 HandleBlockCollisionToPoseChange_NoCollision_Enemy_FromBelow:
+;; Returns:
+;;     Carry: Clear. There's space for Samus pose
     LDA.W SamusYPosition                                                 ;91FF98;
     SEC                                                                  ;91FF9B;
     SBC.W SpaceToMoveDownEnemy                                           ;91FF9C;
@@ -16637,6 +16816,8 @@ HandleBlockCollisionToPoseChange_NoCollision_Enemy_FromBelow:
 
 ;;; $FFA7: Handle collision from both sides due to pose change ;;;
 HandleCollisionFromBothSidesDueToPoseChange:
+;; Returns:
+;;     Carry: Set if there's no space for Samus pose, clear otherwise
     LDA.W SamusYRadius                                                   ;91FFA7;
     CMP.W #$0008                                                         ;91FFAA;
     BPL .notMorphBall                                                    ;91FFAD;

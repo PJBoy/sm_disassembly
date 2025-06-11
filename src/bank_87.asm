@@ -641,7 +641,7 @@ Instruction_AnimTilesObject_GotoYIfAnyBossBitsYSetForAreaY:
     RTS                                                                  ;87831F;
 
 
-;;; $8320: Instruction - spawn Tourian statue eye glow enemy projectile with parameter [[Y]] ;;;
+;;; $8320: Instruction - spawn Tourian entrance statue eye glow enemy projectile with parameter [[Y]] ;;;
 Instruction_AnimTilesObject_SpawnTourianStatueEyeGlowParamY:
 ;; Parameters:
 ;;     Y: Pointer to instruction arguments
@@ -657,7 +657,7 @@ Instruction_AnimTilesObject_SpawnTourianStatueEyeGlowParamY:
     RTS                                                                  ;87832E;
 
 
-;;; $832F: Instruction - spawn Tourian statue's soul enemy projectile with parameter [[Y]] ;;;
+;;; $832F: Instruction - spawn Tourian entrance statue's soul enemy projectile with parameter [[Y]] ;;;
 Instruction_AnimTilesObject_SpawnTourianStatuesSoulParamY:
 ;; Parameters:
 ;;     Y: Pointer to instruction arguments
@@ -673,7 +673,7 @@ Instruction_AnimTilesObject_SpawnTourianStatuesSoulParamY:
     RTS                                                                  ;87833D;
 
 
-;;; $833E: Instruction - go to [[Y]] if Tourian statue is busy releasing lock ;;;
+;;; $833E: Instruction - go to [[Y]] if Tourian entrance statue is busy releasing lock ;;;
 Instruction_AnimatedTilesObject_GotoYIfTourianStatueBusy:
 ;; Parameters:
 ;;     Y: Pointer to instruction arguments
@@ -689,7 +689,7 @@ Instruction_AnimatedTilesObject_GotoYIfTourianStatueBusy:
     RTS                                                                  ;878348;
 
 
-;;; $8349: Instruction - Tourian statue animation state |= [[Y]] ;;;
+;;; $8349: Instruction - Tourian entrance statue animation state |= [[Y]] ;;;
 Instruction_AnimatedTilesObject_TourianStatueSetAnimStateY:
 ;; Parameters:
 ;;     Y: Pointer to instruction arguments
@@ -702,7 +702,7 @@ Instruction_AnimatedTilesObject_TourianStatueSetAnimStateY:
     RTS                                                                  ;878351;
 
 
-;;; $8352: Instruction - Tourian statue animation state &= ~[[Y]] ;;;
+;;; $8352: Instruction - Tourian entrance statue animation state &= ~[[Y]] ;;;
 Instruction_AnimatedTilesObject_TourianStatueResetAnimStateY:
 ;; Parameters:
 ;;     Y: Pointer to instruction arguments
@@ -779,7 +779,7 @@ Instruction_AnimatedTilesObject_Write8ColorsOfTargetPaletteD:
     dw $3800,$7F58,$6ED5,$5A71,$49EE,$356A,$24E7,$1083                   ;87839C;
 
 
-;;; $83AC: Instruction list - animated tiles object $854C (Tourian statue - Phantoon) ;;;
+;;; $83AC: Instruction list - animated tiles object $854C (Tourian entrance statue - Phantoon) ;;;
 InstList_AnimatedTilesObject_TourianStatuePhantoon:
     dw Instruction_AnimatedTilesObject_TourianStatueSetAnimStateY,$0001  ;8783AC;
     dw Instruction_AnimatedTilesObject_GotoYIfEventYSet,$0006            ;8783B0;
@@ -821,7 +821,7 @@ InstList_AnimatedTilesObject_TourianStatuePhantoon_grey:
     dw Instruction_AnimatedTilesObject_Delete                            ;878412;
 
 
-;;; $8414: Instruction list - animated tiles object $8552 (Tourian statue - Ridley) ;;;
+;;; $8414: Instruction list - animated tiles object $8552 (Tourian entrance statue - Ridley) ;;;
 InstList_AnimatedTilesObject_TourianStatueRidley:
     dw Instruction_AnimatedTilesObject_TourianStatueSetAnimStateY,$0002  ;878414;
     dw Instruction_AnimatedTilesObject_GotoYIfEventYSet,$0007            ;878418;
@@ -863,7 +863,7 @@ InstList_AnimatedTilesObject_TourianStatueRidley_grey:
     dw Instruction_AnimatedTilesObject_Delete                            ;87847A;
 
 
-;;; $847C: Instruction list - animated tiles object $8558 (Tourian statue - Kraid) ;;;
+;;; $847C: Instruction list - animated tiles object $8558 (Tourian entrance statue - Kraid) ;;;
 InstList_AnimatedTilesObject_TourianStatueKraid:
     dw Instruction_AnimatedTilesObject_TourianStatueSetAnimStateY,$0004  ;87847C;
     dw Instruction_AnimatedTilesObject_GotoYIfEventYSet,$0009            ;878480;
@@ -905,7 +905,7 @@ InstList_AnimatedTilesObject_TourianStatueKraid_grey:
     dw Instruction_AnimatedTilesObject_Delete                            ;8784E2;
 
 
-;;; $84E4: Instruction list - animated tiles object $855E (Tourian statue - Draygon) ;;;
+;;; $84E4: Instruction list - animated tiles object $855E (Tourian entrance statue - Draygon) ;;;
 InstList_AnimatedTilesObject_TourianStatueDraygon:
     dw Instruction_AnimatedTilesObject_TourianStatueSetAnimStateY,$0008  ;8784E4;
     dw Instruction_AnimatedTilesObject_GotoYIfEventYSet,$0008            ;8784E8;

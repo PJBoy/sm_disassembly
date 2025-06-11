@@ -8108,28 +8108,28 @@ InstList_PaletteFXObject_Nothing:
     dw Instruction_Delete_8DC5CF                                         ;8DE220;
 
 
-;;; $E222: Instruction list - palette FX object $F749 (grey out Tourian statue - Draygon) ;;;
+;;; $E222: Instruction list - palette FX object $F749 (grey out Tourian entrance statue - Draygon) ;;;
 InstList_PaletteFXObject_GreyOutTourianStatue_Draygon:
     dw Instruction_PaletteFXObject_ColorIndexInY,$00C0                   ;8DE222;
     dw Instruction_PaletteFXObject_GotoY                                 ;8DE226;
     dw InstList_PaletteFXObject_Common_GreyOutTourianStatue              ;8DE228;
 
 
-;;; $E22A: Instruction list - palette FX object $F74D (grey out Tourian statue - Kraid) ;;;
+;;; $E22A: Instruction list - palette FX object $F74D (grey out Tourian entrance statue - Kraid) ;;;
 InstList_PaletteFXObject_GreyOutTourianStatue_Kraid:
     dw Instruction_PaletteFXObject_ColorIndexInY,$00E0                   ;8DE22A;
     dw Instruction_PaletteFXObject_GotoY                                 ;8DE22E;
     dw InstList_PaletteFXObject_Common_GreyOutTourianStatue              ;8DE230;
 
 
-;;; $E232: Instruction list - palette FX object $F751 (grey out Tourian statue - Ridley) ;;;
+;;; $E232: Instruction list - palette FX object $F751 (grey out Tourian entrance statue - Ridley) ;;;
 InstList_PaletteFXObject_GreyOutTourianStatue_Ridley:
     dw Instruction_PaletteFXObject_ColorIndexInY,$0120                   ;8DE232;
     dw Instruction_PaletteFXObject_GotoY                                 ;8DE236;
     dw InstList_PaletteFXObject_Common_GreyOutTourianStatue              ;8DE238;
 
 
-;;; $E23A: Instruction list - palette FX object $F755 (grey out Tourian statue - Phantoon) ;;;
+;;; $E23A: Instruction list - palette FX object $F755 (grey out Tourian entrance statue - Phantoon) ;;;
 InstList_PaletteFXObject_GreyOutTourianStatue_Phantoon:
     dw Instruction_PaletteFXObject_ColorIndexInY,$0140                   ;8DE23A;
 
@@ -9633,29 +9633,29 @@ Setup_PaletteFXObject_Brinstar8:
     RTS                                                                  ;8DF744;
 
 
-;;; $F745: Palette FX objects ;;;
+;;; $F745: Palette FX objects - Tourian entrance statue / torizo belly ;;;
 PaletteFXObjects_Nothing:
 ; Nothing
     dw RTS_8DC685                                                        ;8DF745;
     dw InstList_PaletteFXObject_Nothing                                  ;8DF747;
 
 PaletteFXObjects_GreyOutTourianStatue_Draygon:
-; Grey out Tourian statue - Draygon
+; Grey out Tourian entrance statue - Draygon
     dw RTS_8DC685                                                        ;8DF749;
     dw InstList_PaletteFXObject_GreyOutTourianStatue_Draygon             ;8DF74B;
 
 PaletteFXObjects_GreyOutTourianStatue_Kraid:
-; Grey out Tourian statue - Kraid
+; Grey out Tourian entrance statue - Kraid
     dw RTS_8DC685                                                        ;8DF74D;
     dw InstList_PaletteFXObject_GreyOutTourianStatue_Kraid               ;8DF74F;
 
 PaletteFXObjects_GreyOutTourianStatue_Ridley:
-; Grey out Tourian statue - Ridley
+; Grey out Tourian entrance statue - Ridley
     dw RTS_8DC685                                                        ;8DF751;
     dw InstList_PaletteFXObject_GreyOutTourianStatue_Ridley              ;8DF753;
 
 PaletteFXObjects_GreyOutTourianStatue_Phantoon:
-; Grey out Tourian statue - Phantoon
+; Grey out Tourian entrance statue - Phantoon
     dw RTS_8DC685                                                        ;8DF755;
     dw InstList_PaletteFXObject_GreyOutTourianStatue_Phantoon            ;8DF757;
 
@@ -9669,6 +9669,8 @@ PaletteFXObjects_GoldenTorizoBelly:
     dw RTS_8DC685                                                        ;8DF75D;
     dw InstList_PaletteFXObject_GoldenTorizoBelly_0                      ;8DF75F;
 
+
+;;; $F761: Palette FX objects - FX - non escape sequence ;;;
 PaletteFXObjects_Norfair1_Tourian1:
 ; Norfair 1 / Tourian 1
     dw Setup_PaletteFXObject_Norfair1_Tourian1                           ;8DF761;
