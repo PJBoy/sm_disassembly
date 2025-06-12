@@ -357,7 +357,7 @@ UNUSED_Instruction_AnimatedTilesObject_UnlockSamus_878162:
 endif ; !FEATURE_KEEP_UNREFERENCED
 
 
-;;; $816A: Instruction list - animated tiles object $8251 (vertical spikes) ;;;
+;;; $816A: Instruction list - animated tiles object $8251 (all areas 1 - vertical spikes) ;;;
 InstList_AnimatedTilesObject_VerticalSpikes:
     dw $0008,AnimatedTiles_VerticalSpikes_0                              ;87816A;
     dw $0008,AnimatedTiles_VerticalSpikes_1                              ;87816E;
@@ -367,7 +367,7 @@ InstList_AnimatedTilesObject_VerticalSpikes:
     dw InstList_AnimatedTilesObject_VerticalSpikes                       ;87817C;
 
 
-;;; $817E: Instruction list - animated tiles object $8257 (horizontal spikes) ;;;
+;;; $817E: Instruction list - animated tiles object $8257 (all areas 2 - horizontal spikes) ;;;
 InstList_AnimatedTilesObject_HorizontalSpikes:
     dw $0008,AnimatedTiles_HorizontalSpikes_0                            ;87817E;
     dw $0008,AnimatedTiles_HorizontalSpikes_1                            ;878182;
@@ -377,7 +377,7 @@ InstList_AnimatedTilesObject_HorizontalSpikes:
     dw InstList_AnimatedTilesObject_HorizontalSpikes                     ;878190;
 
 
-;;; $8192: Instruction list - animated tiles object $825D (Crateria lake) ;;;
+;;; $8192: Instruction list - animated tiles object $825D (Crateria 4 - Crateria lake) ;;;
 InstList_AnimatedTilesObject_CrateriaLake:
     dw $000A,AnimatedTiles_CrateriaLake_0                                ;878192;
     dw $000A,AnimatedTiles_CrateriaLake_1                                ;878196;
@@ -387,7 +387,7 @@ InstList_AnimatedTilesObject_CrateriaLake:
     dw InstList_AnimatedTilesObject_CrateriaLake                         ;8781A4;
 
 
-;;; $81A6: Instruction list - animated tiles object $8263/$8269 (Crateria lava) ;;;
+;;; $81A6: Instruction list - animated tiles object $8263/$8269 (Crateria 8 - unused Crateria lava) ;;;
 UNUSED_InstList_AnimatedTilesObject_CrateriaLava_8781A6:
     dw $000A,UNUSED_AnimatedTiles_CrateriaLava_0_878B64                  ;8781A6;
     dw $000A,UNUSED_AnimatedTiles_CrateriaLava_1_878C24                  ;8781AA;
@@ -412,7 +412,7 @@ Instruction_AnimatedTilesObject_WaitUntilAreaBossIsDead:
     RTS                                                                  ;8781CA;
 
 
-;;; $81CB: Instruction list - animated tiles object $826F (Wrecked Ship screen) ;;;
+;;; $81CB: Instruction list - animated tiles object $826F (Wrecked Ship 10h - Wrecked Ship screen) ;;;
 InstList_AnimatedTilesObject_WreckedShipScreen_0:
     dw Instruction_AnimatedTilesObject_WaitUntilAreaBossIsDead           ;8781CB;
 
@@ -425,7 +425,7 @@ InstList_AnimatedTilesObject_WreckedShipScreen_1:
     dw InstList_AnimatedTilesObject_WreckedShipScreen_1                  ;8781DF;
 
 
-;;; $81E1: Instruction list - animated tiles object $8275 (Wrecked Ship treadmill - rightwards) ;;;
+;;; $81E1: Instruction list - animated tiles object $8275 (Wrecked Ship 4 - Wrecked Ship treadmill - rightwards) ;;;
 InstList_AnimTilesObject_WreckedShipTreadmill_Rightwards_0:
     dw Instruction_AnimatedTilesObject_WaitUntilAreaBossIsDead           ;8781E1;
 
@@ -438,7 +438,7 @@ InstList_AnimTilesObject_WreckedShipTreadmill_Rightwards_1:
     dw InstList_AnimTilesObject_WreckedShipTreadmill_Rightwards_1        ;8781F5;
 
 
-;;; $81F7: Instruction list - animated tiles object $827B (Wrecked Ship treadmill - leftwards) ;;;
+;;; $81F7: Instruction list - animated tiles object $827B (Wrecked Ship 8 - Wrecked Ship treadmill - leftwards) ;;;
 InstList_AnimTilesObject_WreckedShipTreadmill_Leftwards_0:
     dw Instruction_AnimatedTilesObject_WaitUntilAreaBossIsDead           ;8781F7;
 
@@ -451,17 +451,17 @@ InstList_AnimTilesObject_WreckedShipTreadmill_Leftwards_1:
     dw InstList_AnimTilesObject_WreckedShipTreadmill_Leftwards_1         ;87820B;
 
 
-;;; $820D: Instruction list - animated tiles object $8281 (Brinstar mouth) ;;;
-InstList_AnimatedTilesObject_BrinstarMouth:
+;;; $820D: Instruction list - animated tiles object $8281 (Brinstar 4 - Brinstar plant) ;;;
+InstList_AnimatedTilesObject_BrinstarPlant:
     dw $0010,AnimatedTiles_BrinstarMouth_0                               ;87820D;
     dw $0010,AnimatedTiles_BrinstarMouth_1                               ;878211;
     dw $0010,AnimatedTiles_BrinstarMouth_2                               ;878215;
     dw $0010,AnimatedTiles_BrinstarMouth_1                               ;878219;
     dw Instruction_AnimatedTilesObject_GotoY                             ;87821D;
-    dw InstList_AnimatedTilesObject_BrinstarMouth                        ;87821F;
+    dw InstList_AnimatedTilesObject_BrinstarPlant                        ;87821F;
 
 
-;;; $8221: Instruction list - animated tiles object $8287 (Maridia sand ceiling) ;;;
+;;; $8221: Instruction list - animated tiles object $8287 (Maridia 4 - Maridia sand ceiling) ;;;
 InstList_AnimatedTilesObject_MaridiaSandCeiling:
     dw $000A,AnimatedTiles_MaridiaSandCeiling_0                          ;878221;
     dw $000A,AnimatedTiles_MaridiaSandCeiling_1                          ;878225;
@@ -471,7 +471,7 @@ InstList_AnimatedTilesObject_MaridiaSandCeiling:
     dw InstList_AnimatedTilesObject_MaridiaSandCeiling                   ;878233;
 
 
-;;; $8235: Instruction list - animated tiles object $828D (Maridia sand falling) ;;;
+;;; $8235: Instruction list - animated tiles object $828D (Maridia 8 - Maridia sand falling) ;;;
 InstList_AnimatedTilesObject_MaridiaSandFalling:
     dw $000A,AnimatedTiles_MaridiaSandFalling_0                          ;878235;
     dw $000A,AnimatedTiles_MaridiaSandFalling_1                          ;878239;
@@ -536,7 +536,7 @@ AnimatedTilesObjects_FX_wreckedShipTreadmillLeftwards:
 
 AnimatedTilesObjects_FX_brinstarMouth:
 ; Brinstar 4 - Brinstar plant
-    dw InstList_AnimatedTilesObject_BrinstarMouth                        ;878281;
+    dw InstList_AnimatedTilesObject_BrinstarPlant                        ;878281;
     dw $00E0,$0410                                                       ;878283;
 
 AnimatedTilesObjects_FX_maridiaSandCeiling:

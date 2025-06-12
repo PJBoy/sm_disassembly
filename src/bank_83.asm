@@ -9760,7 +9760,7 @@ Brinstar_PaletteFXObjectList:
 Brinstar_AnimatedTilesObjectList:
     dw AnimatedTilesObjects_FX_horizontalSpikes                          ;83AC96;
     dw AnimatedTilesObjects_FX_verticalSpikes                            ;83AC98;
-    dw AnimatedTilesObjects_FX_brinstarMouth                             ;83AC9A;
+    dw AnimatedTilesObjects_FX_brinstarPlant                             ;83AC9A;
     dw AnimatedTilesObjects_FX_nothing                                   ;83AC9C;
     dw AnimatedTilesObjects_FX_nothing                                   ;83AC9E;
     dw AnimatedTilesObjects_FX_nothing                                   ;83ACA0;
