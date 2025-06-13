@@ -200,13 +200,12 @@ LayerBlending_Handler:
     dw LayerBlending_2C                                                  ;88806A;
     dw LayerBlending_2E                                                  ;88806C;
     dw LayerBlending_18_1E_30_Water_LavaAcid_Fog                         ;88806E;
-    dw LayerBlending_32                                                  ;888070;
+    dw UNUSED_LayerBlending_32_88814A                                    ;888070;
     dw LayerBlending_34                                                  ;888072;
 
 
-;;; $8074: RTS. Layer blending configuration 2 ;;;
+;;; $8074: RTS. Layer blending configuration 0/2 ;;;
 RTS_888074:
-; This appears to be the default for rooms that have FX data (74 such rooms)
     RTS                                                                  ;888074;
 
 
@@ -247,7 +246,7 @@ UNUSED_LayerBlending_6_888099:
     RTS                                                                  ;8880A1;
 
 
-;;; $80A2: Layer blending configuration 8 ;;;
+;;; $80A2: Layer blending configuration 8 - coven (semi-transparent sprites on BG2) ;;;
 LayerBlending_8_WreckedShipPowerOff:
 ; Used in:
 ;     Room $CA52, state $CA64. Wrecked Ship attic - default
@@ -464,7 +463,7 @@ LayerBlending_2E:
 
 
 ;;; $814A: Unused. Layer blending configuration 32h - dimmed by BG3, BG3 hidden by BG1 ;;;
-LayerBlending_32:
+UNUSED_LayerBlending_32_88814A:
     LDA.B #$44                                                           ;88814A;
     STA.B DP_SubScreenLayers                                             ;88814C;
     LDA.B #$B2                                                           ;88814E;

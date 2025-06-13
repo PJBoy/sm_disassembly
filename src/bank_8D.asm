@@ -9693,10 +9693,12 @@ PaletteFXObjects_WreckedShip1_GreenLights:
     dw RTS_8DC685                                                        ;8DF76D;
     dw InstList_PaletteFXObject_WreckedShip1_0                           ;8DF76F;
 
-PaletteFXObjects_WreckedShip1_GreenLights_duplicate:
+if !FEATURE_KEEP_UNREFERENCED
+UNUSED_PaletteFXObjects_WreckedShip1_GreenLights_dup_8DF771:
 ; Unused clone of Wrecked Ship 1
     dw RTS_8DC685                                                        ;8DF771;
     dw InstList_PaletteFXObject_WreckedShip1_0                           ;8DF773;
+endif ; !FEATURE_KEEP_UNREFERENCED
 
 PaletteFXObjects_Brinstar1_BlueBackgroundSpores:
 ; Brinstar 1 - blue background spores

@@ -2545,7 +2545,7 @@ Samus_X_Movement:
 if !FEATURE_KEEP_UNREFERENCED
 ;;; $8E75: Unused ;;;
 UNUSED_SamusMovement_908E75:
-; Seems vaguely close to falling X movement, $919F in particular
+; Seems vaguely close to falling X movement, Samus_Morphed_Falling_Movement in particular
     PHP                                                                  ;908E75;
     REP #$30                                                             ;908E76;
     JSR.W Determine_SamusXSpeedTable_EntryPointer                        ;908E78;
