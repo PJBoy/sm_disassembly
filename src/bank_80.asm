@@ -963,7 +963,7 @@ Boot:
     SEP #$20                                                             ;808423;
     LDA.B #$01                                                           ;808425;
     STA.W $420D                                                          ;808427; Enable FastROM
-    STA.B $86                                                            ;80842A;
+    STA.B DP_ROMAccessSpeed                                              ;80842A;
     REP #$30                                                             ;80842C;
     LDX.W #$1FFF                                                         ;80842E;
     TXS                                                                  ;808431; Allocate stack memory
@@ -1319,7 +1319,7 @@ NTSC_PAL_SRAM_MappingCheck:
     LDX.W #$1FFE                                                         ;808695;
 
   .backupSRAM:
-    LDA.L $700000,X                                                      ;808698;
+    LDA.L SRAM_Start,X                                                   ;808698;
     STA.L $7F0000,X                                                      ;80869C; $7F:0000..1FFF = [$70:0000..1FFF]
     DEX                                                                  ;8086A0;
     DEX                                                                  ;8086A1;
@@ -1328,7 +1328,7 @@ NTSC_PAL_SRAM_MappingCheck:
     LDX.W #$1FFE                                                         ;8086A7;
 
   .clearSRAM:
-    STA.L $700000,X                                                      ;8086AA; Clear $70:0000..1FFF
+    STA.L SRAM_Start,X                                                   ;8086AA; Clear $70:0000..1FFF
     DEX                                                                  ;8086AE;
     DEX                                                                  ;8086AF;
     BPL .clearSRAM                                                       ;8086B0;
@@ -1345,7 +1345,7 @@ NTSC_PAL_SRAM_MappingCheck:
     LDX.W #$1FFE                                                         ;8086C4;
 
   .loop:
-    CMP.L $700000,X                                                      ;8086C7;
+    CMP.L SRAM_Start,X                                                   ;8086C7;
     BNE .failedSRAMCheck                                                 ;8086CB; If [$70:0000..1FFF] != 0..FFFh: go to .failedSRAMCheck
     INC                                                                  ;8086CD;
     DEX                                                                  ;8086CE;
@@ -1357,7 +1357,7 @@ NTSC_PAL_SRAM_MappingCheck:
 
   .restoreSRAM:
     LDA.L $7F0000,X                                                      ;8086D5;
-    STA.L $700000,X                                                      ;8086D9; $70:0000..1FFF = [$7F:0000..1FFF]
+    STA.L SRAM_Start,X                                                   ;8086D9; $70:0000..1FFF = [$7F:0000..1FFF]
     DEX                                                                  ;8086DD;
     DEX                                                                  ;8086DE;
     BPL .restoreSRAM                                                     ;8086DF;
@@ -1443,7 +1443,7 @@ Initialise_CPU_IO_Registers:
 
 ;;; $8792: Initialise PPU registers ;;;
 InitialisePPURegisters:
-; These BG/sprites addresses aren't used, $8B:8000 (set up PPU for title sequence) overwrites them
+; These BG/sprites addresses aren't used, Setup_PPU_TitleSequence overwrites them
     LDA.B #$8F                                                           ;808792;
     STA.W $2100                                                          ;808794; Enable forced blank
     STA.B DP_Brightness                                                  ;808797;

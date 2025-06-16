@@ -2049,6 +2049,7 @@ BTS: skip $3200 ; $7F6402..9601
 CustomBackground: skip $6400 ; $7F9602..FA01
 
 org $7F0000 ; non-gameplay
+BackupSRAM: ; $7F0000..1FFF
 EndingShipTiles: ; $7F0000..3FFF
 CreditsTilemap: ; $7F0000..1FFF
 SamusWaitingForCreditsToEndTiles: ; $7F0000..??
@@ -3944,6 +3945,7 @@ check bankcross on
 ; SRAM $700000..2000
 
 org $700000
+SRAM_Start: skip 0 ; $700000
 SRAM_Slot0Checksum0: skip 2 ; $700000
 SRAM_Slot1Checksum0: skip 2 ; $700002
 SRAM_Slot2Checksum0: skip 2 ; $700004
@@ -3967,3 +3969,5 @@ skip 2
 SRAM_Slot0Complement1: skip 2 ; $701FF8
 SRAM_Slot1Complement1: skip 2 ; $701FFA
 SRAM_Slot2Complement1: skip 2 ; $701FFC
+skip 2
+SRAM_Mirror: skip 0 ; $702000
