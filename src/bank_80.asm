@@ -4951,7 +4951,7 @@ DrawTimerSpritemap:
 ;; Parameters:
 ;;     A: X position offset
 ;;     DB:Y: Spritemap pointer
-    STA.B $14                                                            ;809FB3;
+    STA.B DP_Temp14                                                      ;809FB3;
     LDA.W TimerXSubPosition                                              ;809FB5;
     XBA                                                                  ;809FB8;
     AND.W #$00FF                                                         ;809FB9;
@@ -5457,7 +5457,7 @@ CalculateLayer2YPosition:
     STA.W $4202                                                          ;80A34B;
     LDA.W Layer1YPosition                                                ;80A34E;
     STA.W $4203                                                          ;80A351;
-    STZ.W $0934                                                          ;80A354;
+    STZ.W PositionOfScrollBoundary                                       ;80A354;
     PHA                                                                  ;80A357;
     PLA                                                                  ;80A358;
     LDA.W $4217                                                          ;80A359;
@@ -5934,12 +5934,12 @@ HandleScrollZones_ScrollingRight:
     REP #$30                                                             ;80A649;
     LDA.W Layer1XPosition                                                ;80A64B;
     STA.W ProposedScrolledLayer1XPosition                                ;80A64E;
-    LDA.W $0B0A                                                          ;80A651;
+    LDA.W IdealLayer1XPosition                                           ;80A651;
     CMP.W Layer1XPosition                                                ;80A654;
     BPL +                                                                ;80A657;
-    LDA.W $0B0A                                                          ;80A659;
+    LDA.W IdealLayer1XPosition                                           ;80A659;
     STA.W Layer1XPosition                                                ;80A65C;
-    STZ.W $090F                                                          ;80A65F;
+    STZ.W Layer1XSubPosition                                             ;80A65F;
 
 +   LDA.W RoomWidthScrolls                                               ;80A662;
     DEC                                                                  ;80A665;
@@ -5998,11 +5998,11 @@ HandleScrollZones_ScrollingLeft:
     REP #$30                                                             ;80A6C3;
     LDA.W Layer1XPosition                                                ;80A6C5;
     STA.W ProposedScrolledLayer1XPosition                                ;80A6C8;
-    CMP.W $0B0A                                                          ;80A6CB;
+    CMP.W IdealLayer1XPosition                                           ;80A6CB;
     BPL +                                                                ;80A6CE;
-    LDA.W $0B0A                                                          ;80A6D0;
+    LDA.W IdealLayer1XPosition                                           ;80A6D0;
     STA.W Layer1XPosition                                                ;80A6D3;
-    STZ.W $090F                                                          ;80A6D6;
+    STZ.W Layer1XSubPosition                                             ;80A6D6;
 
 +   LDA.W Layer1XPosition                                                ;80A6D9;
     BPL +                                                                ;80A6DC;
@@ -6108,7 +6108,7 @@ HandleScrollZones_VerticalAutoscrolling:
     AND.W #$00FF                                                         ;80A761;
     CLC                                                                  ;80A764;
     ADC.W $4216                                                          ;80A765;
-    STA.B $14                                                            ;80A768;
+    STA.B DP_Temp14                                                      ;80A768;
     TAX                                                                  ;80A76A;
     LDA.L Scrolls,X                                                      ;80A76B;
     AND.W #$00FF                                                         ;80A76F;

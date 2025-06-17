@@ -12748,7 +12748,7 @@ CinematicFunction_PostCredits_WavySamus:
 
   .loopTilemap:
     LDA.L Tilemap_PostCredits_DeeRForCe,X                                ;8BE1A2;
-    STA.L $7E3240,X                                                      ;8BE1A6;
+    STA.L PostCreditsTilemap_DeeRForCe,X                                 ;8BE1A6;
     INX                                                                  ;8BE1AA;
     INX                                                                  ;8BE1AB;
     CPX.W #$0240                                                         ;8BE1AC;
@@ -12875,7 +12875,7 @@ CinematicFunction_PostCredits_IdleSamus1:
     LDA.W #$007F                                                         ;8BE2A2;
 
   .loopTilemap9:
-    STA.L $7E3240,X                                                      ;8BE2A5;
+    STA.L PostCreditsTilemap_DeeRForCe,X                                 ;8BE2A5;
     DEX                                                                  ;8BE2A9;
     DEX                                                                  ;8BE2AA;
     BPL .loopTilemap9                                                    ;8BE2AB;
@@ -12883,7 +12883,7 @@ CinematicFunction_PostCredits_IdleSamus1:
 
   .loopTilemapC:
     LDA.L Tilemap_PostCredits_1994Nintendo,X                             ;8BE2B0;
-    STA.L $7E3300,X                                                      ;8BE2B4;
+    STA.L PostCreditsTilemap_1994Nintendo,X                              ;8BE2B4;
     INX                                                                  ;8BE2B8;
     INX                                                                  ;8BE2B9;
     CPX.W #$0080                                                         ;8BE2BA;

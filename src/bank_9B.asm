@@ -1499,7 +1499,7 @@ Handle_Death_Animation_Flashing:
     BRA .returnFlashingEnded                                             ;9BB4AB;
 
   .debug:
-    STZ.W $0DEC                                                          ;9BB4AD;
+    STZ.W DebugDeathAnimationFlag                                        ;9BB4AD;
 
   .returnFlashingEnded:
     LDA.W #$0001                                                         ;9BB4B0;

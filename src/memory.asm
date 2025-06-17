@@ -268,6 +268,7 @@ RemainingEnemySpritemapEntries: ; $060B
 LoopCounterEnemyDeath: ; $060B
 BotwoonSpitAngleParam: ; $060B
 NumberOfDrops: ; $060B
+Temp_Minimap: ; $060B
 skip 2
 RemainingEnemyHitboxEntries: ; $060D
 NumberOfExtendedTilemapTiles: ; $060D
@@ -1555,7 +1556,8 @@ MessageBoxBG3YScrollHDMADataTable: ; $7E3000..31DF
 skip $1D8
 DummySamusWireframeTilemap: ; $7E31D8..33E7
 skip $28
-MessageBoxTilemap: skip $180 ; $7E3200..337F
+MessageBoxTilemap: skip $40 ; $7E3200..337F
+CreditsTilemap_DeeRForCe: skip $140 ; $7E3240..??
 MessageBoxBG3YScrollIndirectHDMATable: ; $7E3380..86
 
 org $7E3300

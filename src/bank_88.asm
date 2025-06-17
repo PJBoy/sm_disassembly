@@ -11068,7 +11068,7 @@ Spawn_WavyPhantoon_HDMAObject:
     STA.W Phantoon.nextWavyPhantoonMode                                  ;88E48E;
     STZ.W Phantoon.wavyPhantoonPhaseAmplitude                            ;88E491;
     STZ.W Phantoon.wavyPhantoonPhaseDeltaDirection                       ;88E494;
-    LDA.B $16                                                            ;88E497;
+    LDA.B DP_Temp16                                                      ;88E497;
     STA.W Phantoon.wavyPhantoonPhaseDelta                                ;88E499;
     JSL.L Spawn_HDMAObject                                               ;88E49C;
     db $42,$0F                                                           ;88E4A0;

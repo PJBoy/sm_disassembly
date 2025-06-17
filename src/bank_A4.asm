@@ -3375,7 +3375,7 @@ MainAI_Crocomire_DeathSequence_46_SkeletonFalls:
     LDA.W #$0025                                                         ;A49A7E;
     JSL.L QueueSound_Lib2_Max6                                           ;A49A81;
     LDA.W Enemy.palette                                                  ;A49A85;
-    STA.W $0FD6                                                          ;A49A88;
+    STA.W Enemy[1].palette                                               ;A49A88;
     LDA.W #InstList_CrocomireCorpse_Skeleton_FallsApart_0                ;A49A8B;
     STA.W Enemy.instList                                                 ;A49A8E;
     LDA.W #$0001                                                         ;A49A91;

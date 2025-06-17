@@ -6474,20 +6474,20 @@ Update_HUD_Minimap_Tilemap:
     LSR                                                                  ;90AA4B;
     CLC                                                                  ;90AA4C;
     ADC.B DP_Temp12                                                      ;90AA4D;
-    STA.W $060B                                                          ;90AA4F;
+    STA.W Temp_Minimap                                                   ;90AA4F;
     LDA.B DP_Temp22                                                      ;90AA52;
     BEQ .notLeftMapPage                                                  ;90AA54;
-    LDA.W $060B                                                          ;90AA56;
+    LDA.W Temp_Minimap                                                   ;90AA56;
     AND.W #$001F                                                         ;90AA59;
     CMP.W #$0002                                                         ;90AA5C;
     BPL .notLeftMapPage                                                  ;90AA5F;
-    LDA.W $060B                                                          ;90AA61;
+    LDA.W Temp_Minimap                                                   ;90AA61;
     SEC                                                                  ;90AA64;
     SBC.W #$0402                                                         ;90AA65;
     BRA +                                                                ;90AA68;
 
   .notLeftMapPage:
-    LDA.W $060B                                                          ;90AA6A;
+    LDA.W Temp_Minimap                                                   ;90AA6A;
     SEC                                                                  ;90AA6D;
     SBC.W #$0022                                                         ;90AA6E;
 
@@ -12882,7 +12882,7 @@ SamusMovementHandler_CrystalFlash_RaiseSamus_GenerateBubble:
     LDA.W #$0006                                                         ;90D68F;
     STA.W SamusAnimationFrame                                            ;90D692;
     LDA.W SamusYPosition                                                 ;90D695;
-    STA.W $0DF0                                                          ;90D698;
+    STA.W CrystalFlash_SamusYPosition                                    ;90D698;
     LDA.W #SamusMovementHandler_CrystalFlash_DecrementAmmo               ;90D69B;
     STA.W MovementHandler                                                ;90D69E;
     STZ.W SamusInvincibilityTimer                                        ;90D6A1;
@@ -12996,7 +12996,7 @@ CrystalFlash_DecrementPowerBombs:
 ;;; $D75B: Samus movement handler - crystal flash - finish ;;;
 SamusMovementHandler_CrystalFlash_Finish:
     LDA.W SamusYPosition                                                 ;90D75B;
-    CMP.W $0DF0                                                          ;90D75E;
+    CMP.W CrystalFlash_SamusYPosition                                    ;90D75E;
     BEQ +                                                                ;90D761;
     INC                                                                  ;90D763;
     STA.W SamusYPosition                                                 ;90D764;

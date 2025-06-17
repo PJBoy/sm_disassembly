@@ -3738,7 +3738,7 @@ Draw_FileSelect_Slot_SamusHelmet:
     ASL                                                                  ;819E11;
     TAY                                                                  ;819E12;
     LDA.W #$0E00                                                         ;819E13;
-    STA.B $03                                                            ;819E16;
+    STA.B DP_Temp03                                                      ;819E16;
     LDA.W .data,Y                                                        ;819E18;
     PHA                                                                  ;819E1B;
     LDA.W Mode7Object_InstructionTimers+2,X                              ;819E1C;
@@ -4181,7 +4181,7 @@ Draw_FileSelection_Time:
     PHA                                                                  ;81A19F;
     PLA                                                                  ;81A1A0;
     REP #$20                                                             ;81A1A1;
-    LDX.B $1A                                                            ;81A1A3;
+    LDX.B DP_Temp1A                                                      ;81A1A3;
     LDA.W $4216                                                          ;81A1A5;
     CLC                                                                  ;81A1A8;
     ADC.W #$2060                                                         ;81A1A9;

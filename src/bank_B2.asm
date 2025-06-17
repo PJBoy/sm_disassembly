@@ -666,9 +666,9 @@ EnemyShot_SpacePirate_Normal:
 NormalPirateShot:
     LDX.W EnemyIndex                                                     ;B28789;
     LDA.W Enemy.XPosition,X                                              ;B2878C;
-    STA.L $7EF434                                                        ;B2878F;
+    STA.L EnemyProjectileData_SpecialDeathItemDropXOriginPosition        ;B2878F;
     LDA.W Enemy.YPosition,X                                              ;B28793;
-    STA.L $7EF436                                                        ;B28796;
+    STA.L EnemyProjectileData_SpecialDeathItemDropYOriginPosition        ;B28796;
     JSL.L NormalEnemyShotAI_NoDeathCheck_NoEnemyShotGraphic_External     ;B2879A;
     LDA.W Enemy.health,X                                                 ;B2879E;
     BNE .return                                                          ;B287A1;

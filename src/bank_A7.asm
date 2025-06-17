@@ -4261,7 +4261,7 @@ KraidBody_vs_Projectile_CollisionHandling:
     LDA.L Kraid.mouthReopenFlags                                         ;A7B18F;
     AND.W #$FFFE                                                         ;A7B193;
     STA.L Kraid.mouthReopenFlags                                         ;A7B196;
-    STZ.B $30                                                            ;A7B19A;
+    STZ.B DP_Temp30                                                      ;A7B19A;
     LDA.W Kraid.instListPointer                                          ;A7B19C;
     SEC                                                                  ;A7B19F;
     SBC.W #$0008                                                         ;A7B1A0;

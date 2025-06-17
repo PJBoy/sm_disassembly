@@ -173,7 +173,7 @@ PostGrappleCollisionDetection_Vertical_Slope_NonSquare:
     RTS                                                                  ;948106;
 
   ..centerInBlock:
-    LDA.B $20                                                            ;948107;
+    LDA.B DP_Temp20                                                      ;948107;
     AND.W #$000F                                                         ;948109;
     STA.W SamusBottomTopYOffset                                          ;94810C;
     LDA.L BTS,X                                                          ;94810F;
@@ -235,7 +235,7 @@ PostGrappleCollisionDetection_Vertical_Slope_NonSquare:
     RTS                                                                  ;94816C;
 
   ..centerInBlock:
-    LDA.B $20                                                            ;94816D;
+    LDA.B DP_Temp20                                                      ;94816D;
     AND.W #$000F                                                         ;94816F;
     STA.W SamusBottomTopYOffset                                          ;948172;
     LDA.L BTS,X                                                          ;948175;
@@ -476,7 +476,7 @@ PostGrappleCollisionDetection_Horizontal_Solid:
 ;; Returns:
 ;;     Carry: Set (Samus collides with block)
 ;;     A: X depth into block in pixels
-    LDA.B $20                                                            ;9482BE;
+    LDA.B DP_Temp20                                                      ;9482BE;
     AND.W #$000F                                                         ;9482C0;
     SEC                                                                  ;9482C3;
     RTS                                                                  ;9482C4;
@@ -509,7 +509,7 @@ PostGrappleCollisionDetection_Vertical_Solid:
 ;; Returns:
 ;;     Carry: Set (Samus collides with block)
 ;;     A: Y depth into block in pixels
-    LDA.B $20                                                            ;9482DA;
+    LDA.B DP_Temp20                                                      ;9482DA;
     AND.W #$000F                                                         ;9482DC;
     SEC                                                                  ;9482DF;
     RTS                                                                  ;9482E0;
@@ -5602,7 +5602,7 @@ MoveBeamVertically_WaveBeam:
     ADC.W $4216                                                          ;94A43D;
     ASL                                                                  ;94A440;
     TAY                                                                  ;94A441;
-    LDA.B $26                                                            ;94A442;
+    LDA.B DP_Temp26                                                      ;94A442;
     CMP.W #$0010                                                         ;94A444;
     BPL .returnNoCollision                                               ;94A447;
     LDA.W SamusProjectile_XPositions,X                                   ;94A449;

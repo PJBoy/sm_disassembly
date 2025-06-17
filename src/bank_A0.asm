@@ -4644,7 +4644,7 @@ Suit_Damage_Division:
 ;; Returns:
 ;;     A/$12: Damage divided by 1/2/4 if power/varia/gravity suit equipped
     STA.B DP_Temp12                                                      ;A0A45E;
-    LDA.W $09A2                                                          ;A0A460;
+    LDA.W EquippedItems                                                  ;A0A460;
     BIT.W #$0020                                                         ;A0A463;
     BNE .quarterDamage                                                   ;A0A466;
     LSR                                                                  ;A0A468;
