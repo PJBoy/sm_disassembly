@@ -47,9 +47,11 @@ UploadToAPU_long:
 UploadToAPU:
 ;; Parameter
 ;;     $00: APU data pointer
+if !DEBUG
     LDA.L DebugConst_DisableAudio                                        ;808028;
     BEQ .upload                                                          ;80802C; If [DebugConst_DisableAudio] != 0:
     RTS                                                                  ;80802E; Return
+endif
 
   .upload:
     PHP                                                                  ;80802F;
@@ -1121,8 +1123,10 @@ CommonBootSection:
     STA.W APU_MusicQueueTimers+10                                        ;80854F;
     STA.W APU_MusicQueueTimers+12                                        ;808552;
     STA.W APU_MusicQueueTimers+14                                        ;808555;
+if !DEBUG
     LDA.L DebugConst_DebugMode                                           ;808558;
     STA.W Debug_Enable                                                   ;80855C; Mirror debug byte to RAM
+endif
     JSR.W NTSC_PAL_SRAM_MappingCheck                                     ;80855F; NTSC/PAL and SRAM mapping check
     REP #$30                                                             ;808562;
     JSL.L DetermineNumberOfDemoSets                                      ;808564; Check for non-corrupt SRAM
@@ -3357,11 +3361,14 @@ ReadControllerInput:
   .heldEnd:
     LDA.B DP_Controller1Input                                            ;80948C;
     STA.B DP_Controller1Prev                                             ;80948E;
+if !DEBUG
     LDA.W Debug_Enable                                                   ;809490;
     BNE .debug                                                           ;809493;
+endif
     PLP                                                                  ;809495;
     RTL                                                                  ;809496;
 
+if !DEBUG
   .debug:
     LDA.W $421A                                                          ;809497;
     STA.B DP_Controller2Input                                            ;80949A;
@@ -3481,6 +3488,7 @@ ReadControllerInput:
   .return:
     PLP                                                                  ;809581;
     RTL                                                                  ;809582;
+endif
 
 
 ;;; $9583: NMI ;;;
@@ -4452,16 +4460,20 @@ HandleHUDTilemap_PausedAndRunning:
     BEQ .handlePowerBombs                                                ;809C21;
     STA.W PreviousSuperMissiles                                          ;809C23;
     LDX.W #$009C                                                         ;809C26;
+if !DEBUG
     LDA.W Debug_Options                                                  ;809C29;
     BIT.W #$1F40                                                         ;809C2C;
     BNE .debugSuperMissiles                                              ;809C2F;
+endif
     LDA.W PreviousSuperMissiles                                          ;809C31;
     JSR.W DrawTwoHUDDigits                                               ;809C34;
+if !DEBUG
     BRA .handlePowerBombs                                                ;809C37;
 
   .debugSuperMissiles:
     LDA.W PreviousSuperMissiles                                          ;809C39;
     JSR.W DrawThreeHUDDigits                                             ;809C3C;
+endif
 
   .handlePowerBombs:
     LDA.W MaxPowerBombs                                                  ;809C3F;
@@ -4674,12 +4686,10 @@ DrawTwoHUDDigits:
 Tilemap_HUDDigits:
 ; Starting with zero
   .health:
-    dw $2C09,$2C00,$2C01,$2C02,$2C03,$2C04,$2C05,$2C06                   ;809DBF;
-    dw $2C07,$2C08                                                       ;809DCF;
+    dw $2C09,$2C00,$2C01,$2C02,$2C03,$2C04,$2C05,$2C06,$2C07,$2C08       ;809DBF;
 
   .ammo:
-    dw $2C09,$2C00,$2C01,$2C02,$2C03,$2C04,$2C05,$2C06                   ;809DD3;
-    dw $2C07,$2C08                                                       ;809DE3;
+    dw $2C09,$2C00,$2C01,$2C02,$2C03,$2C04,$2C05,$2C06,$2C07,$2C08       ;809DD3;
 
 
 ;;; $9DE7: Process timer ;;;
@@ -5233,9 +5243,9 @@ UNUSED_QueueClearingOfBG2Tilemap_80A1E3:
     LDX.W VRAMWriteStack                                                 ;80A1F1;
     LDA.W #$1000                                                         ;80A1F4;
     STA.B VRAMWrite.size,X                                               ;80A1F7;
-    LDA.W #$4000                                                         ;80A1F9;
+    LDA.W #BG2Tilemap                                                    ;80A1F9;
     STA.B VRAMWrite.src,X                                                ;80A1FC;
-    LDA.W #$007E                                                         ;80A1FE;
+    LDA.W #BG2Tilemap>>16                                                ;80A1FE;
     STA.B VRAMWrite.src+2,X                                              ;80A201;
     LDA.W #$4800                                                         ;80A203;
     STA.B VRAMWrite.dest,X                                               ;80A206;
@@ -5262,9 +5272,9 @@ QueueClearingOfFXTilemap:
     LDX.W VRAMWriteStack                                                 ;80A21F;
     LDA.W #$0F00                                                         ;80A222;
     STA.B VRAMWrite.size,X                                               ;80A225;
-    LDA.W #$4000                                                         ;80A227;
+    LDA.W #ClearingFXTilemap                                             ;80A227;
     STA.B VRAMWrite.src,X                                                ;80A22A;
-    LDA.W #$007E                                                         ;80A22C;
+    LDA.W #ClearingFXTilemap>>16                                         ;80A22C;
     STA.B VRAMWrite.src+2,X                                              ;80A22F;
     LDA.W #$5880                                                         ;80A231;
     STA.B VRAMWrite.dest,X                                               ;80A234;
@@ -5305,7 +5315,7 @@ ClearBG2Tilemap:
     STA.W $2116                                                          ;80A271;
     LDA.W #$1908                                                         ;80A274;
     STA.W $4310                                                          ;80A277;
-    LDA.W #.addr                                                         ;80A27A;
+    LDA.W #.addr                                                         ;80A27A; >_<
     STA.W $4312                                                          ;80A27D;
     LDA.W #$0080                                                         ;80A280;
     STA.W $4314                                                          ;80A283;
@@ -6395,6 +6405,7 @@ HandleScrollZones_ScrollingUp:
     RTL                                                                  ;80A9AB;
 
 
+if !DEBUG
 ;;; $A9AC: Debug layer 1 position save/loading ;;;
 Debug_Layer1Position_Saving_Loading:
     LDA.B DP_Controller2New                                              ;80A9AC;
@@ -6417,6 +6428,7 @@ Debug_Layer1Position_Saving_Loading:
     LDA.W Layer1YPosition                                                ;80A9CF;
     STA.W Debug_Layer1Y                                                  ;80A9D2;
     RTL                                                                  ;80A9D5;
+endif
 
 
 ;;; $A9D6: Update background data column ;;;
@@ -8406,7 +8418,9 @@ LoadStationListPointers:
     dw LoadStations_Maridia                                              ;80C4BD;
     dw LoadStations_Tourian                                              ;80C4BF;
     dw LoadStations_Ceres                                                ;80C4C1;
+if !DEBUG
     dw LoadStations_Debug                                                ;80C4C3;
+endif
 
 
 ; Load station lists are indexed by LoadStationIndex
@@ -9029,6 +9043,7 @@ LoadStations_Ceres:
     dw $0000,$0000,$0000,$0040,$0000                                     ;80CC0F;
 
 
+if !DEBUG
 LoadStations_Debug:
 ; Debug room (from ?)
     dw RoomHeader_Debug                                                  ;80CC19;
@@ -9180,6 +9195,7 @@ SetDebugElevatorAsUsed:
   ..wreckedShip:
 ; Wrecked Ship elevator bits
     db $00,$00,$00,$00                                                   ;80CD8A;
+endif
 
 
 Freespace_Bank80_CD8E:                                                   ;80CD8E;

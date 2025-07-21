@@ -1011,6 +1011,7 @@ Pause_Terminate_Reset_DemoRecorder:
     RTL                                                                  ;91852E;
 
 
+if !DEBUG
 ;;; $852F: Draw recorded demo duration ;;;
 Draw_RecordedDemoDuration:
 ;; Parameters:
@@ -1088,6 +1089,7 @@ Draw_RecordedDemoDuration:
     ADC.W #$0004                                                         ;9185C6;
     JSL.L Add_Debug_Spritemap_to_OAM                                     ;9185C9;
     RTS                                                                  ;9185CD;
+endif
 
 
 if !FEATURE_KEEP_UNREFERENCED
@@ -11957,8 +11959,10 @@ InitializeSamus:
     PHK                                                                  ;91E00F;
     PLB                                                                  ;91E010;
     REP #$30                                                             ;91E011;
+if !DEBUG
     LDA.W DebugInvincibility                                             ;91E013;
     STA.B DP_Temp12                                                      ;91E016;
+endif
     LDX.W #DistanceToEjectSamusDownDueToPostGrappleCollision+1           ;91E018;
     SEP #$20                                                             ;91E01B;
     LDA.B #$00                                                           ;91E01D;
@@ -12002,8 +12006,10 @@ InitializeSamus:
     STZ.W SuperSpecialProspectivePoseChangeCommand                       ;91E07D;
     LDA.W #SamusPoseInputHandler_Normal                                  ;91E080;
     STA.W PoseInputHandler                                               ;91E083;
+if !DEBUG
     LDA.B DP_Temp12                                                      ;91E086;
     STA.W DebugInvincibility                                             ;91E088;
+endif
 
   .demo:
     LDA.W #$FFFF                                                         ;91E08B;
@@ -12023,8 +12029,10 @@ InitializeSamus:
 
 +   LDA.W #SamusMovementHandler_Normal                                   ;91E0AD;
     STA.W MovementHandler                                                ;91E0B0;
+if !DEBUG
     LDA.W #RTS_90F534                                                    ;91E0B3;
     STA.W DebugCommandPointer                                            ;91E0B6;
+endif
     LDA.W #$0032                                                         ;91E0B9;
     STA.W PreviousEnergyHurtCheck                                        ;91E0BC;
     LDA.W #$0601                                                         ;91E0BF;
@@ -12082,7 +12090,9 @@ InitializeSamus:
     STZ.W SamusInvincibilityTimer                                        ;91E14D;
     STZ.W SamusKnockbackTimer                                            ;91E150;
     STZ.W HurtFlashCounter                                               ;91E153;
+if !DEBUG
     STZ.W DebugInvincibility                                             ;91E156;
+endif
     LDA.W GameState                                                      ;91E159;
     CMP.W #$0028                                                         ;91E15C;
     BNE .notDemo                                                         ;91E15F;
@@ -12348,6 +12358,7 @@ Set_NonXray_SamusPose:
     RTL                                                                  ;91E354;
 
 
+if !DEBUG
 ;;; $E355: Debug. Handle debug mode select + L + B ;;;
 Debug_HandleSelectL_B:
 ; Give ammo, all items, switch to next beam configuration, toggle Samus tile viewer
@@ -12418,6 +12429,7 @@ Debug_HandleSelectL_B:
   .return:
     PLP                                                                  ;91E3F4;
     RTL                                                                  ;91E3F5;
+endif
 
 
 ;;; $E3F6: Make Samus face forward ;;;

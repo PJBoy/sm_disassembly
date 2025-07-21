@@ -13945,12 +13945,14 @@ SamusIsHit_Interruption:
     REP #$30                                                             ;90DDEA;
     LDA.W SamusKnockbackTimer                                            ;90DDEC;
     BEQ .knockbackTimerZero                                              ;90DDEF;
+if !DEBUG
     LDA.W DebugInvincibility                                             ;90DDF1;
     CMP.W #$0007                                                         ;90DDF4;
     BMI .notInvincible                                                   ;90DDF7;
     STZ.W SamusInvincibilityTimer                                        ;90DDF9;
     STZ.W SamusKnockbackTimer                                            ;90DDFC;
     BRA .returnUpper                                                     ;90DDFF;
+endif
 
   .notInvincible:
     LDA.W TimeIsFrozenFlag                                               ;90DE01;
@@ -15561,6 +15563,7 @@ SamusNewStateHandler_Normal:
     PLP                                                                  ;90E757;
     RTL                                                                  ;90E758;
 
+if !DEBUG
 ; Handle demo recorder
     LDA.W SamusPlacementMode                                             ;90E759; Demo recorder. Remove the three instructions above and set DebugConst_DemoRecorder at $808002 to enable
     BNE +                                                                ;90E75C;
@@ -15647,6 +15650,7 @@ SamusNewStateHandler_Debug:
     PLB                                                                  ;90E7F2;
     PLP                                                                  ;90E7F3;
     RTL                                                                  ;90E7F4;
+endif
 
 
 ;;; $E7F5: Samus new state handler - title demo ;;;
@@ -15664,7 +15668,9 @@ SamusNewStateHandler_TitleDemo:
     JSL.L SetProspectiveSamusPoseAccordingToSolidVerticalCollision_PSP   ;90E80B;
     JSL.L UpdateSamusPose                                                ;90E80F;
     JSL.L HandleSamusPalette                                             ;90E813;
+if !DEBUG
     JSR.W DebugCommandHandler                                            ;90E817;
+endif
     LDA.W BackupController1InputDemo                                     ;90E81A;
     STA.B DP_Controller1Input                                            ;90E81D;
     LDA.W BackupController1NewDemo                                       ;90E81F;
@@ -15721,12 +15727,14 @@ SamusNewStateHandler_SamusAppearance:
     STA.W SamusPreviousYPosition                                         ;90E880;
     JSL.L PlaySamusFanfare                                               ;90E883;
     BCC .return                                                          ;90E887;
+if !DEBUG
     LDA.W DebugInvincibility                                             ;90E889;
     CMP.W #$0007                                                         ;90E88C;
     BMI .disableInvincibility                                            ;90E88F;
     LDA.B DP_Controller2Input                                            ;90E891;
     BIT.W #$8000                                                         ;90E893;
     BNE .keepInvincibility                                               ;90E896;
+endif
 
   .disableInvincibility:
     STZ.W DebugInvincibility                                             ;90E898;
@@ -16129,6 +16137,7 @@ HandleSamus_AutoJumpTimer_HurtFlashCounter_PrevInputEnergy:
     LDA.W #$0001                                                         ;90EAE4;
     STA.W HurtFlashCounter                                               ;90EAE7;
 
+if !DEBUG
   .debugInvincibility:
     LDA.W DebugInvincibility                                             ;90EAEA;
     CMP.W #$0007                                                         ;90EAED;
@@ -16136,6 +16145,7 @@ HandleSamus_AutoJumpTimer_HurtFlashCounter_PrevInputEnergy:
     LDA.W PreviousEnergyHurtCheck                                        ;90EAF2;
     STA.W Energy                                                         ;90EAF5;
     BRA .return                                                          ;90EAF8;
+endif
 
   .setPreviousEnergy:
     LDA.W Energy                                                         ;90EAFA;
@@ -17962,6 +17972,7 @@ UNUSED_ResumeSounds_90F507:
 endif ; !FEATURE_KEEP_UNREFERENCED
 
 
+if !DEBUG
 ;;; $F52F: Debug command handler ;;;
 DebugCommandHandler:
 ; RTS'd out as you can see
@@ -18020,6 +18031,7 @@ DebugCommandHandler_ReleaseSamusFromDrainedPoseIfYNewlyPress:
 
   .return:
     RTS                                                                  ;90F575;
+endif
 
 
 ;;; $F576: Handle unspin sound effects, cancelling echo sound and setting time up game state ;;;
@@ -18080,6 +18092,7 @@ Handle_UnspinSFX_CancellingEchoSound_SettingTimeUpGameState:
     STA.W ResumeChargingBeamSFXFlag                                      ;90F5E1;
 
   .checkDebug:
+if !DEBUG
     LDA.W Debug_Enable                                                   ;90F5E4;
     BEQ .debugEnd                                                        ;90F5E7;
     LDA.W Pose                                                           ;90F5E9;
@@ -18106,6 +18119,7 @@ Handle_UnspinSFX_CancellingEchoSound_SettingTimeUpGameState:
 
   .resetInvincibility:
     STZ.W DebugInvincibility                                             ;90F616;
+endif
 
   .debugEnd:
     LDA.W #$000E                                                         ;90F619;

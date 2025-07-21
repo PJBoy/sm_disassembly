@@ -534,7 +534,7 @@ AnimatedTilesObjects_FX_wreckedShipTreadmillLeftwards:
     dw InstList_AnimTilesObject_WreckedShipTreadmill_Leftwards_0         ;87827B;
     dw $0020,$00E0                                                       ;87827D;
 
-AnimatedTilesObjects_FX_brinstarMouth:
+AnimatedTilesObjects_FX_brinstarPlant:
 ; Brinstar 4 - Brinstar plant
     dw InstList_AnimatedTilesObject_BrinstarPlant                        ;878281;
     dw $00E0,$0410                                                       ;878283;

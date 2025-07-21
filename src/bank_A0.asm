@@ -837,6 +837,7 @@ Draw_Samus_Projectiles_Enemies_and_Enemy_Projectiles:
     RTL                                                                  ;A088CF;
 
 
+if !DEBUG
 ;;; $88D0: Record enemy spawn data ;;;
 Record_EnemySpawnData:
 ;; Parameters:
@@ -987,6 +988,7 @@ Debug_LoadEnemySetData:
 
   .return:
     RTL                                                                  ;A08A1D;
+endif
 
 
 ;;; $8A1E: Load enemies (load and process enemy set, clear enemy data, load enemy tile data) ;;;
@@ -1000,8 +1002,10 @@ Load_Enemies:
     PLB                                                                  ;A08A23;
     PLB                                                                  ;A08A24;
     REP #$30                                                             ;A08A25;
+if !DEBUG
     JSL.L Debug_LoadEnemySetData                                         ;A08A27;
     STZ.W DebugTimeIsFrozenForEnemies                                    ;A08A2B;
+endif
     STZ.W BossID                                                         ;A08A2E;
     LDA.W #RTL_A0804C>>16                                                ;A08A31;
     STA.W EnemyGraphicsDrawnHook+2                                       ;A08A34;
@@ -1854,8 +1858,10 @@ Main_Enemy_Routine:
     JMP.W .interactEnd                                                   ;A0902E;
 
   .notInvincible:
+if !DEBUG
     LDA.W DebugDisableSpriteInteractions                                 ;A09031;
     BNE .interactEnd                                                     ;A09034;
+endif
     LDA.W TimeIsFrozenFlag                                               ;A09036;
     ORA.W DebugTimeIsFrozenForEnemies                                    ;A09039;
     BNE .checkParalyzed                                                  ;A0903C;
@@ -1920,7 +1926,9 @@ Main_Enemy_Routine:
     JML.W [EnemyAIPointer]                                               ;A090A3;
 
 +   LDA.W TimeIsFrozenFlag                                               ;A090A6;
+if !DEBUG
     ORA.W DebugTimeIsFrozenForEnemies                                    ;A090A9;
+endif
     BNE .processAIEnd                                                    ;A090AC;
     LDX.W EnemyIndex                                                     ;A090AE;
     INC.W Enemy.frameCounter,X                                           ;A090B1;
@@ -1971,7 +1979,9 @@ Main_Enemy_Routine:
     LDA.W Enemy.flashTimer,X                                             ;A0911B;
     BEQ +                                                                ;A0911E;
     LDA.W TimeIsFrozenFlag                                               ;A09120;
+if !DEBUG
     ORA.W DebugTimeIsFrozenForEnemies                                    ;A09123;
+endif
     BNE +                                                                ;A09126;
     DEC.W Enemy.flashTimer,X                                             ;A09128;
     LDA.W Enemy.flashTimer,X                                             ;A0912B;
@@ -2129,6 +2139,7 @@ DeleteEnemyAndAnyConnectedEnemies:
     RTL                                                                  ;A0924A;
 
 
+if !DEBUG
 ;;; $924B: Debug. Spawn enemy to enemy index [Y] ;;;
 Debug_SpawnEnemy_ToEnemyIndex_inY:
 ;; Parameters:
@@ -2149,6 +2160,7 @@ Debug_SpawnEnemy_ToEnemyIndex_inY:
     AND.W #$00FF                                                         ;A0926C;
     STA.W Temp_NumberOfEnemyPartsToSpawn                                 ;A0926F;
     JMP.W SpawnEnemy_AlwaysSucceed                                       ;A09272;
+endif
 
 
 ;;; $9275: Spawn enemy ;;;
@@ -2788,7 +2800,9 @@ Handle_Queuing_Enemy_BG2_Tilemap_VRAM_Transfer:
     LDA.W RequestEnemyBG2TilemapTransferFlag                             ;A09726;
     BEQ .clearTransferFlag                                               ;A09729;
     LDA.W TimeIsFrozenFlag                                               ;A0972B;
+if !DEBUG
     ORA.W DebugTimeIsFrozenForEnemies                                    ;A0972E;
+endif
     BNE .clearTransferFlag                                               ;A09731;
     LDX.W VRAMWriteStack                                                 ;A09733;
     LDA.W EnemyBG2TilemapSize                                            ;A09736;

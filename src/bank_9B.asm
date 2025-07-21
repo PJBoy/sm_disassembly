@@ -1490,6 +1490,7 @@ Handle_Death_Animation_Flashing:
 
   .end:
     JSR.W FinishDeathAnimationFlashing                                   ;9BB498;
+if !DEBUG
     LDA.B DP_Controller2Input                                            ;9BB49B;
     AND.W #$00B0                                                         ;9BB49D;
     CMP.W #$00B0                                                         ;9BB4A0;
@@ -1500,6 +1501,7 @@ Handle_Death_Animation_Flashing:
 
   .debug:
     STZ.W DebugDeathAnimationFlag                                        ;9BB4AD;
+endif
 
   .returnFlashingEnded:
     LDA.W #$0001                                                         ;9BB4B0;
@@ -1753,8 +1755,10 @@ HandleDeathSequenceWhiteOut:
     REP #$30                                                             ;9BB711;
     LDA.W #Palettes>>8&$FF00                                             ;9BB713;
     STA.B DP_Temp01                                                      ;9BB716;
+if !DEBUG
     LDA.W DebugDeathAnimationFlag                                        ;9BB718;
     BNE .return                                                          ;9BB71B;
+endif
     LDA.W DeathAnimation_Index                                           ;9BB71D;
     BEQ .return                                                          ;9BB720;
     LDA.W DeathAnimation_Counter                                         ;9BB722;

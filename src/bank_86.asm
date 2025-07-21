@@ -6724,6 +6724,7 @@ RTS_86A919:
 
 
 if !FEATURE_KEEP_UNREFERENCED
+if !DEBUG
 ;;; $A91A: Unused. Debug. Move enemy projectile with controller 2 ;;;
 UNUSED_Debug_MoveEnemyProjectileWithController2:
 ;; Parameters:
@@ -6761,6 +6762,7 @@ UNUSED_Debug_MoveEnemyProjectileWithController2:
   .moveVertically:
     JSR.W Move_EnemyProjectile_Vertically                                ;86A957;
     RTS                                                                  ;86A95A;
+endif
 endif ; !FEATURE_KEEP_UNREFERENCED
 
 

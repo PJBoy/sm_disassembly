@@ -2134,6 +2134,7 @@ EnemyGraphicsDrawnHook_Draygon_SetBG2XYScroll:
     RTL                                                                  ;A59366;
 
 
+if !DEBUG
 ;;; $9367: Unused. Debug. Draygon controller 2 input handling ;;;
 Debug_DraygonController2InputHandling:
     LDX.W #$0000                                                         ;A59367;
@@ -2300,6 +2301,7 @@ Debug_MoveDraygonWithDpad_Fast:
 
   .return:
     RTL                                                                  ;A594A8;
+endif
 
 
 ;;; $94A9: Move Samus with Draygon ;;;

@@ -1647,6 +1647,7 @@ AddSpritemapToOAM_WithBaseTileNumber_Offscreen_8C7F:
     RTL                                                                  ;818CF3;
 
 
+if !DEBUG
 ;;; $8CF4: Debug game over menu ;;;
 Debug_GameOverMenu:
 ; Game state 1Dh
@@ -1668,6 +1669,7 @@ Debug_GameOverMenu:
     dw DebugGameOverMenu_Index3_Main                                     ;818D09;
     dw Debug_GameOverMenu_Index24_FadeIn                                 ;818D0B;
     dw DebugGameOverMenu_Index5_Continue                                 ;818D0D;
+endif
 
 
 ;;; $8D0F: (Debug) game over menu - index 0: fade out and configure graphics for menu ;;;
@@ -1716,6 +1718,7 @@ Debug_GameOverMenu_Index0_FadeOut_ConfigureGraphicsForMenu:
     RTS                                                                  ;818D6C;
 
 
+if !DEBUG
 ;;; $8D6D: Debug game over menu - index 1: initialise ;;;
 Debug_GameOverMenu_Index1_Initialise:
     REP #$30                                                             ;818D6D;
@@ -1759,6 +1762,7 @@ Debug_GameOverMenu_Index24_FadeIn:
 
   .return:
     RTS                                                                  ;818DB9;
+endif
 
 
 ;;; $8DBA: Map VRAM for menu ;;;
@@ -1858,6 +1862,7 @@ LoadMenuPalettes:
     RTS                                                                  ;818E7E;
 
 
+if !DEBUG
 ;;; $8E7F: Load debug game over menu tilemap ;;;
 LoadDebugGameOverMenuTilemap:
 ;; Parameters:
@@ -2074,6 +2079,7 @@ DebugGameOverMenu_Index5_Continue:
     STA.W GameState                                                      ;8190A5;
     STZ.W FileSelectMapAreaIndex                                         ;8190A8;
     JMP.W RestorePalettesAndIORegistersFromDebugGameOverMenu             ;8190AB;
+endif
 
 
 ;;; $90AE: Game over menu ;;;
@@ -4938,15 +4944,19 @@ FileSelectMap_Index6_AreaSelectMap:
     LDA.B DP_Controller1New                                              ;81A802;
     BIT.W #$0A00                                                         ;81A804;
     BEQ +                                                                ;81A807;
+if !DEBUG
     LDA.W Debug_Enable                                                   ;81A809; <-- clobbers A >_<;
     BEQ .checkB                                                          ;81A80C;
     JMP.W .debug                                                         ;81A80E;
+endif
 
 +   BIT.W #$2500                                                         ;81A811;
     BEQ .checkB                                                          ;81A814;
+if !DEBUG
     LDA.W Debug_Enable                                                   ;81A816; <-- clobbers A >_<;
     BEQ .checkB                                                          ;81A819;
     JMP.W .debugNext                                                     ;81A81B;
+endif
 
   .checkB:
     BIT.W #$8000                                                         ;81A81E;
@@ -4963,6 +4973,7 @@ FileSelectMap_Index6_AreaSelectMap:
   .JMP_DrawAreaSelectMapLabels:
     JMP.W DrawAreaSelectMapLabels                                        ;81A83B;
 
+if !DEBUG
   .debug:
     STZ.B DP_Temp18                                                      ;81A83E; >_<
     LDA.B DP_Temp16                                                      ;81A840;
@@ -4979,6 +4990,7 @@ FileSelectMap_Index6_AreaSelectMap:
     JSR.W A_equals_A_Minus_1_Mod_6                                       ;81A85B;
     JSR.W Debug_Check_FileSelectMapArea_CanBeSelected                    ;81A85E;
     BEQ .JMP_DrawAreaSelectMapLabels                                     ;81A861;
+endif
 
   .selected:
     LDA.W #$0037                                                         ;81A863;
@@ -4986,11 +4998,13 @@ FileSelectMap_Index6_AreaSelectMap:
     JSR.W Switch_Active_FileSelectMapArea                                ;81A86A;
     JMP.W DrawAreaSelectMapLabels                                        ;81A86D;
 
+if !DEBUG
   .debugNext:
     LDA.W #$0006                                                         ;81A870;
     STA.B DP_Temp16                                                      ;81A873;
     LDA.W FileSelectMapAreaIndex                                         ;81A875;
     STA.B DP_Temp1C                                                      ;81A878;
+endif
 
   .loop:
     LDA.B DP_Temp1C                                                      ;81A87A;
@@ -5033,14 +5047,17 @@ A_equals_A_Plus_1_Mod_6:
 ;;; $A8A9: Select file select map area ;;;
 Select_FileSelectMap_Area:
     INC.W PauseMenu_MenuIndex                                            ;81A8A9;
+if !DEBUG
     LDA.W Debug_Enable                                                   ;81A8AC;
     BNE .debugEnabled                                                    ;81A8AF;
+endif
     LDA.L SRAMMirror_AreaIndex                                           ;81A8B1;
     STA.W AreaIndex                                                      ;81A8B5;
     LDA.L SRAMMirror_SaveStationIndex                                    ;81A8B8;
     STA.W LoadStationIndex                                               ;81A8BC;
     JMP.W FileSelectMap_Index6_AreaSelectMap_JMP_DrawAreaSelectMapLabels ;81A8BF;
 
+if !DEBUG
   .debugEnabled:
     LDA.W FileSelectMapAreaIndex                                         ;81A8C2;
     ASL                                                                  ;81A8C5;
@@ -5164,6 +5181,7 @@ Switch_Active_FileSelectMapArea:
     LDA.W FileSelectMapArea_IndexTable,X                                 ;81A977;
     TAY                                                                  ;81A97A;
     JMP.W Load_AreaSelect_BackgroundTilemap                              ;81A97B;
+endif
 
 
 ;;; $A97E: Draw area select map labels ;;;
@@ -5216,11 +5234,13 @@ DrawAreaSelectMapLabels:
     TAX                                                                  ;81A9D5;
     DEC.B DP_Temp1E                                                      ;81A9D6;
     BNE .loopSavePoints                                                  ;81A9D8;
+if !DEBUG
     LDA.W Debug_Enable                                                   ;81A9DA;
     BEQ .PLBNext                                                         ;81A9DD;
     LDA.W $0000,X                                                        ;81A9DF;
     CMP.W #$FFFF                                                         ;81A9E2;
     BEQ .PLBNext                                                         ;81A9E5;
+endif
 
   .foundUsedSavePoint:
     PLB                                                                  ;81A9E7;
@@ -5668,11 +5688,13 @@ FileSelectMap_IndexA_RoomSelectMap:
     JSR.W Handle_FileSelectMap_ScrollArrows                              ;81AD85;
     JSL.L MapScrolling                                                   ;81AD88;
     JSL.L Display_Map_Elevator_Destinations                              ;81AD8C;
+if !DEBUG
     LDA.W Debug_Enable                                                   ;81AD90;
     BEQ +                                                                ;81AD93;
     LDA.B DP_Controller2New                                              ;81AD95;
     BIT.W #$2000                                                         ;81AD97;
     BNE .debug                                                           ;81AD9A;
+endif
 
 +   LDA.B DP_Controller1New                                              ;81AD9C;
     BIT.W #$8000                                                         ;81AD9E;
@@ -5711,6 +5733,7 @@ FileSelectMap_IndexA_RoomSelectMap:
     JSL.L QueueSound_Lib1_Max6                                           ;81ADDB;
     RTS                                                                  ;81ADDF;
 
+if !DEBUG
   .debug:
     LDA.W #$0038                                                         ;81ADE0;
     JSL.L QueueSound_Lib1_Max6                                           ;81ADE3;
@@ -5854,6 +5877,7 @@ FileSelectMap_IndexA_RoomSelectMap:
   .return:
     PLB                                                                  ;81AEC6;
     RTS                                                                  ;81AEC7;
+endif
 
 
 if !FEATURE_KEEP_UNREFERENCED

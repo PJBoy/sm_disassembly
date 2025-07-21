@@ -4620,6 +4620,7 @@ RTL_A2A7D7:
 
 
 if !FEATURE_KEEP_UNREFERENCED
+if !DEBUG
 ;;; $A7D8: Unused. Gunship function - rise to Y position 80h and then descend ;;;
 UNUSED_Function_Ship_RiseToYPosition80_Descend:
 ; Probably a little debug function for testing the landing sequence
@@ -4646,6 +4647,7 @@ UNUSED_Function_Ship_RiseToYPosition80_Descend:
 
   .return:
     RTL                                                                  ;A2A80B;
+endif
 endif ; !FEATURE_KEEP_UNREFERENCED
 
 
@@ -5002,9 +5004,11 @@ Function_Ship_SamusEntered_LiftoffOrRestoreSamusEnergyAmmo:
     BMI .return                                                          ;A2AAED;
     BRA .continue                                                        ;A2AAEF;
 
+if !DEBUG
     LDA.B DP_Controller2Input                                            ;A2AAF1;
     BIT.W #$8000                                                         ;A2AAF3;
     BEQ .continue                                                        ;A2AAF6;
+endif
 
   .liftoff:
     LDA.W #Function_Ship_Liftoff_LoadDustCloudTiles                      ;A2AAF8;

@@ -416,6 +416,7 @@ TitleSequenceSpritemaps_METRO:
 
 
 if !FEATURE_KEEP_UNREFERENCED
+if !DEBUG
 ;;; $8626: Unused. Debug Nintendo copyright ;;;
 UNUSED_TitleSequenceSpritemaps_DebugNintendoCopyright:
 ; '©️ 1994 Nintendo'
@@ -438,6 +439,7 @@ UNUSED_TitleSequenceSpritemaps_DebugNintendoCopyright:
     %spritemapEntry(0, $1E8, $FC, 0, 0, 3, 0, $1C3)
     %spritemapEntry(0, $1E0, $FC, 0, 0, 3, 0, $1C2)
     %spritemapEntry(0, $1D8, $FC, 0, 0, 3, 0, $1C1)
+endif
 endif ; !FEATURE_KEEP_UNREFERENCED
 
 

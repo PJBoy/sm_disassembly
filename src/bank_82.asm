@@ -1137,7 +1137,9 @@ MainGameLoop:
     PLB                                                                  ;82893E;
     REP #$20                                                             ;82893F;
     STZ.W GameState                                                      ;828941;
+if !DEBUG
     STZ.W DebugSpareCPUDisplayFlag                                       ;828944;
+endif
     CLI                                                                  ;828947;
 
   .loop:
@@ -1157,7 +1159,9 @@ MainGameLoop:
     JSR.W (.gamemodes,X)                                                 ;82896B;
     JSL.L HandleSounds                                                   ;82896E;
     JSL.L Finalise_OAM                                                   ;828972;
+if !DEBUG
     JSL.L ShowSpareCPUDebug_UpdatePrevCtrl1Input                         ;828976;
+endif
     JSL.L WaitForNMI                                                     ;82897A;
     PLP                                                                  ;82897E;
     BRA .loop                                                            ;82897F;
@@ -1212,7 +1216,9 @@ MainGameLoop:
 
 ;;; $89DB: Game state 1Dh (debug game over menu) ;;;
 GameState_1D_DebugGameOverMenu:
+if !DEBUG
     JSL.L Debug_GameOverMenu                                             ;8289DB;
+endif
     RTS                                                                  ;8289DF;
 
 
@@ -1387,6 +1393,7 @@ ResetSoundQueues:
     RTL                                                                  ;828AAF;
 
 
+if !DEBUG
 ;;; $8AB0: Show spare CPU (debug) and update previous controller 1 input ;;;
 ShowSpareCPUDebug_UpdatePrevCtrl1Input:
 ; Lowers the brightness to show remaining v-draw time graphically
@@ -1418,6 +1425,7 @@ ShowSpareCPUDebug_UpdatePrevCtrl1Input:
     STA.W PreviousController1InputDrawing                                ;828ADF;
     PLP                                                                  ;828AE2;
     RTL                                                                  ;828AE3;
+endif
 
 
 ;;; $8AE4: Game state 0 (reset/start) ;;;
@@ -1504,13 +1512,17 @@ GameState_8_MainGameplay:
     PHP                                                                  ;828B44;
     REP #$30                                                             ;828B45;
     JSL.L Determine_Which_Enemies_to_Process                             ;828B47;
+if !DEBUG
     JSL.L DebugHandler                                                   ;828B4B;
     AND.W #$FFFF                                                         ;828B4F;
     BNE .skipProcessing                                                  ;828B52;
+endif
     JSL.L PaletteFXObject_Handler                                        ;828B54;
     JSL.L SamusCurrentStateHandler                                       ;828B58;
+if !DEBUG
     LDA.W DebugDisableSpriteInteractions                                 ;828B5C;
     BNE +                                                                ;828B5F;
+endif
     JSL.L Samus_Projectiles_Interaction_Handling                         ;828B61;
 
 +   JSL.L Main_Enemy_Routine                                             ;828B65;
@@ -1518,16 +1530,20 @@ GameState_8_MainGameplay:
     JSL.L Enemy_Projectile_Handler                                       ;828B6D;
     JSL.L PLM_Handler                                                    ;828B71;
     JSL.L AnimatedTilesObject_Handler                                    ;828B75;
+if !DEBUG
     LDA.W DebugDisableSpriteInteractions                                 ;828B79;
     BNE +                                                                ;828B7C;
+endif
     JSL.L EnemyProjectile_Samus_Collision_Handling                       ;828B7E;
     JSL.L Projectile_vs_Projectile_Collision_Handling                    ;828B82;
     JSL.L Process_Enemy_PowerBomb_Interaction                            ;828B86;
 
 +   JSL.L Main_Scrolling_Routine                                         ;828B8A;
+if !DEBUG
     LDA.L DebugConst_DebugScrolling                                      ;828B8E;
     BEQ +                                                                ;828B92;
     JSL.L Debug_Layer1Position_Saving_Loading                            ;828B94;
+endif
 
 +   JSL.L Draw_Samus_Projectiles_Enemies_and_Enemy_Projectiles           ;828B98;
     JSL.L Handle_Queuing_Enemy_BG2_Tilemap_VRAM_Transfer                 ;828B9C;
@@ -7090,11 +7106,13 @@ Draw_Map_Icons:
     LDX.W #MapIcon_PositionTablePointers_savePoints                      ;82B6A5;
     LDA.W #$0008                                                         ;82B6A8;
     JSR.W Draw_SaveStation_MapIcons                                      ;82B6AB;
+if !DEBUG
     LDA.W Debug_Enable                                                   ;82B6AE;
     BEQ +                                                                ;82B6B1;
     LDX.W #MapIcon_PositionTablePointers_debugSavePoints                 ;82B6B3;
     LDA.W #$0008                                                         ;82B6B6;
     JSR.W Draw_Simple_MapIcons                                           ;82B6B9;
+endif
 
 +   LDA.W AreaIndex                                                      ;82B6BC;
     BNE .return                                                          ;82B6BF;
@@ -7174,6 +7192,7 @@ Draw_FileSelectMap_Icons:
     PLX                                                                  ;82B74C;
     PLA                                                                  ;82B74D;
     JSL.L AddSpritemapFrom_82C569_TableToOAM                             ;82B74E;
+if !DEBUG
     LDA.W Debug_Enable                                                   ;82B752;
     BEQ +                                                                ;82B755;
     LDA.W #$0600                                                         ;82B757;
@@ -7187,6 +7206,7 @@ Draw_FileSelectMap_Icons:
     LDX.W #MapIcon_PositionTablePointers_debugSavePoints                 ;82B76E;
     LDA.W #$000C                                                         ;82B771;
     JSR.W Draw_Simple_MapIcons                                           ;82B774;
+endif
 
 +   LDA.W AreaIndex                                                      ;82B777;
     BNE .return                                                          ;82B77A;
@@ -7244,6 +7264,7 @@ Draw_SaveStation_MapIcons:
     db $01,$02,$04,$08,$10,$20,$40,$80                                   ;82B7C9;
 
 
+if !DEBUG
 ;;; $B7D1: Draw debug save map icons ;;;
 Draw_Debug_Save_MapIcons:
 ;; Parameters:
@@ -7286,6 +7307,7 @@ Draw_Debug_Elevator_Map_Icons:
     LDA.W $0000,X                                                        ;82B7FF;
     BNE Draw_MapIcons_ofGivenType                                        ;82B802;
     RTS                                                                  ;82B804;
+endif
 
 
 ;;; $B805: Draw simple map icons ;;;
@@ -9250,6 +9272,7 @@ MapIcon_PositionTablePointers:
     dw $0000                                                             ;82C817; Ceres
     dw $0000                                                             ;82C819; Debug
 
+if !DEBUG
   .debugElevatorMarkers:
     dw Crateria_MapIconPositions_debugElevatorMarkers                    ;82C81B; Crateria
     dw Brinstar_MapIconPositions_debugElevatorMarkers                    ;82C81D; Brinstar
@@ -9269,6 +9292,7 @@ MapIcon_PositionTablePointers:
     dw Tourian_MapIconPositions_debugSavePoints                          ;82C835; Tourian
     dw $0000                                                             ;82C837; Ceres
     dw $0000                                                             ;82C839; Debug
+endif
 
 
 ;;; $C83B: Crateria map icon positions ;;;
@@ -9286,11 +9310,13 @@ Crateria_MapIconPositions:
   .savePoints2:
     dw $0028,$0090, $0038,$FFFE, $FFFE,$FFFE, $FFFE,$FFFE                ;82C855;
     dw $FFFE,$FFFE, $FFFE,$FFFE, $FFFE,$FFFE, $FFFE                      ;82C865;
+if !DEBUG
   .debugElevatorMarkers:
     dw $01A0,$0058, $0110,$0040, $00B8,$0090, $0030,$0048                ;82C873;
     dw $0088,$0050, $FFFE,$FFFE, $FFFE,$FFFE, $FFFE,$FFFE                ;82C883;
   .debugSavePoints:
     dw $00D8,$0028, $0188,$0028, $FFFF                                   ;82C893;
+endif
 
 
 ;;; $C89D: Brinstar map icon positions ;;;
@@ -9306,11 +9332,13 @@ Brinstar_MapIconPositions:
   .savePoints:
     dw $0078,$0028, $0040,$0030, $0028,$0060, $0188,$0098                ;82C8BD;
     dw $0130,$0048, $FFFE,$FFFE, $FFFE,$FFFE, $FFFE,$FFFE                ;82C8CD;
+if !DEBUG
   .debugElevatorMarkers:
     dw $0048,$0018, $00D0,$0058, $0128,$0038, $0148,$0098                ;82C8DD;
     dw $FFFE,$FFFE, $FFFE,$FFFE, $FFFE,$FFFE, $FFFE,$FFFE                ;82C8ED;
   .debugSaveStations:
     dw $0048,$0018, $01B8,$00A0, $0090,$0020, $FFFF                      ;82C8FD;
+endif
 
 
 ;;; $C90B: Norfair map icon positions ;;;
@@ -9326,12 +9354,14 @@ Norfair_MapIconPositions:
   .savePoints:
     dw $0060,$0060, $00A8,$0020, $0058,$0030, $0080,$0048                ;82C923;
     dw $00A0,$0058, $0120,$0068, $FFFE,$FFFE, $FFFE,$FFFE                ;82C933;
+if !DEBUG
   .debugElevatorMarkers:
     dw $0050,$0018, $00A8,$0058, $00A8,$0070, $FFFE,$FFFE                ;82C943;
     dw $FFFE,$FFFE, $FFFE,$FFFE, $FFFE,$FFFE, $FFFE,$FFFE                ;82C953;
   .debugSavePoints:
     dw $0050,$0010, $0078,$0050, $00B0,$0088, $0050,$0058                ;82C963;
     dw $00A8,$0070, $00A0,$0080, $0010,$0008, $FFFF                      ;82C973;
+endif
 
 
 ;;; $C981: Wrecked Ship map icon positions ;;;
@@ -9347,11 +9377,13 @@ WreckedShip_MapIconPositions:
   .savePoints:
     dw $0088,$0078, $FFFE,$FFFE, $FFFE,$FFFE, $FFFE,$FFFE                ;82C991;
     dw $FFFE,$FFFE, $FFFE,$FFFE, $FFFE,$FFFE, $FFFE,$FFFE                ;82C9A1;
+if !DEBUG
   .debugElevatorMarkers:
     dw $FFFE,$FFFE, $FFFE,$FFFE, $FFFE,$FFFE, $FFFE,$FFFE                ;82C9B1;
     dw $FFFE,$FFFE, $FFFE,$FFFE, $FFFE,$FFFE, $FFFE,$FFFE                ;82C9C1;
   .debugSavePoints:
     dw $0050,$0078, $0090,$00A0, $FFFF                                   ;82C9D1;
+endif
 
 
 ;;; $C9DB: Maridia map icon positions ;;;
@@ -9367,12 +9399,14 @@ Maridia_MapIconPositions:
   .savePoints:
     dw $0060,$00A0, $0118,$0028, $0098,$0060, $0148,$0038                ;82C9F3;
     dw $FFFE,$FFFE, $FFFE,$FFFE, $FFFE,$FFFE, $FFFE,$FFFE                ;82CA03;
+if !DEBUG
   .debugElevatorMarkers:
     dw $0110,$0018, $FFFE,$FFFE, $FFFE,$FFFE, $FFFE,$FFFE                ;82CA13;
     dw $FFFE,$FFFE, $FFFE,$FFFE, $FFFE,$FFFE, $FFFE,$FFFE                ;82CA23;
   .debugSavePoints:
     dw $0090,$0028, $0148,$0050, $00B8,$0048, $00B0,$0088                ;82CA33;
     dw $FFFF                                                             ;82CA43;
+endif
 
 
 ;;; $CA45: Tourian map icon positions ;;;
@@ -9388,11 +9422,13 @@ Tourian_MapIconPositions:
   .savePoints:
     dw $0080,$0090, $00A8,$0068, $FFFE,$FFFE, $FFFE,$FFFE                ;82CA51;
     dw $FFFE,$FFFE, $FFFE,$FFFE, $FFFE,$FFFE, $FFFE,$FFFE                ;82CA61;
+if !DEBUG
   .debugElevatorMarkers:
     dw $00A0,$0060, $FFFE,$FFFE, $FFFE,$FFFE, $FFFE,$FFFE                ;82CA71;
     dw $FFFE,$FFFE, $FFFE,$FFFE, $FFFE,$FFFE, $FFFE,$FFFE                ;82CA81;
   .debugSavePoints:
     dw $0088,$0050, $0068,$00C0, $FFFF                                   ;82CA91;
+endif
 
 
 ;;; $CA9B: Ceres map icon positions ;;;
@@ -9408,11 +9444,13 @@ Ceres_MapIconPositions:
   .savePoints:
     dw $FFFE,$FFFE, $FFFE,$FFFE, $FFFE,$FFFE, $FFFE,$FFFE                ;82CAA7;
     dw $FFFE,$FFFE, $FFFE,$FFFE, $FFFE,$FFFE, $FFFE,$FFFE                ;82CAB7;
+if !DEBUG
   .debugElevatorMarkers:
     dw $FFFE,$FFFE, $FFFE,$FFFE, $FFFE,$FFFE, $FFFE,$FFFE                ;82CAC7;
     dw $FFFE,$FFFE, $FFFE,$FFFE, $FFFE,$FFFE, $FFFE,$FFFE                ;82CAD7;
   .debugSavePoints:
     dw $FFFF                                                             ;82CAE7;
+endif
 
 
 ;;; $CAE9: Menu spritemaps ;;;
@@ -11172,10 +11210,12 @@ Much_ado_about_nothing:
 
 ;;; $DF99: Save map explored if elevator ;;;
 Save_Map_Explored_If_Elevator:
+if !DEBUG
     LDA.W ElevatorDoorProperties                                         ;82DF99;
     AND.W #$000F                                                         ;82DF9C;
     BEQ +                                                                ;82DF9F;
     JSL.L SetDebugElevatorAsUsed                                         ;82DFA1;
+endif
 
 +   LDX.W DoorPointer                                                    ;82DFA5;
     LDA.L DoorHeaders_elevatorProperties,X                               ;82DFA8;
@@ -13146,7 +13186,9 @@ GameOptionsMenu_1_LoadingOptionsMenu:
     STZ.B DP_BG1YScroll                                                  ;82EC4E;
     STZ.B DP_BG2XScroll                                                  ;82EC50;
     STZ.B DP_BG2YScroll                                                  ;82EC52;
+if !DEBUG
     STZ.W DebugInvincibility                                             ;82EC54;
+endif
     LDX.W #$01FE                                                         ;82EC57;
 
 -   LDA.L Menu_Palettes,X                                                ;82EC5A;
@@ -13338,13 +13380,15 @@ GameOptionsMenu_3_OptionsMenu:
 
 ;;; $EDB1: Game options menu - options menu - start game ;;;
 GameOptionsMenu_StartGame:
+if !DEBUG
     LDA.W Debug_Enable                                                   ;82EDB1;
-    BEQ .debug                                                           ;82EDB4;
+    BEQ .notDebug                                                        ;82EDB4;
     LDA.B DP_Controller1Input                                            ;82EDB6;
     BIT.W #$0020                                                         ;82EDB8;
     BEQ .startGame                                                       ;82EDBB;
+endif
 
-  .debug:
+  .notDebug:
     LDA.L SRAMMirror_LoadingGameState                                    ;82EDBD;
     CMP.W #$0005                                                         ;82EDC1;
     BNE .fadeScreen                                                      ;82EDC4;
@@ -13477,11 +13521,13 @@ GameOptionsMenu_C_FadingOutOptionsMenuToStartGame:
 ;;; $EEB4: Game options menu - [menu index] = 4 (start game) ;;;
 GameOptionsMenu_4_StartGame:
     STZ.W GameOptionsMenuIndex                                           ;82EEB4;
+if !DEBUG
     LDA.W Debug_Enable                                                   ;82EEB7;
     BEQ .checkLoadingState                                               ;82EEBA;
     LDA.B DP_Controller1Input                                            ;82EEBC;
     BIT.W #$0020                                                         ;82EEBE;
     BEQ .debug                                                           ;82EEC1;
+endif
 
   .checkLoadingState:
     LDA.L SRAMMirror_LoadingGameState                                    ;82EEC3;
@@ -13508,6 +13554,7 @@ GameOptionsMenu_4_StartGame:
     STZ.W GameOptionsMenuIndex                                           ;82EEF2;
     RTS                                                                  ;82EEF5;
 
+if !DEBUG
   .debug:
     LDA.L SRAMMirror_LoadingGameState                                    ;82EEF6;
     CMP.W #$0005                                                         ;82EEFA;
@@ -13523,6 +13570,7 @@ GameOptionsMenu_4_StartGame:
     LDA.W #$0005                                                         ;82EF11;
     STA.W GameState                                                      ;82EF14;
     RTS                                                                  ;82EF17;
+endif
 
 
 ;;; $EF18: Game options menu - [menu index] = 5 (dissolve out screen) ;;;
@@ -13943,6 +13991,7 @@ GameOptionsMenu_7_ControllerSettings:
 
   .backOnTrack:
     TAY                                                                  ;82F1DB;
+if !DEBUG
     BEQ .otherReturn                                                     ;82F1DC;
     LDA.W MenuOptionIndex                                                ;82F1DE;
     CMP.W #$0008                                                         ;82F1E1;
@@ -13962,16 +14011,19 @@ GameOptionsMenu_7_ControllerSettings:
 
   .debugInvulOff:
     STZ.W DebugInvincibility                                             ;82F200;
+endif
 
   .otherReturn:
     RTS                                                                  ;82F203;
 
+if !DEBUG
   .inputs:                                                               ;82F204;
     dw $0020,$0020,$0020,$0020 ; L
     dw $0010,$0010,$0010,$0010,$0010,$0010 ; R
     dw $4000 ; Y
     dw $0040,$0040 ; X
     dw $0080,$0080,$0080 ; A
+endif
 
 
 ;;; $F224: Game options - controller settings - reset to default ;;;

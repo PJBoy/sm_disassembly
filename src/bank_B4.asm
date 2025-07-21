@@ -2614,6 +2614,7 @@ EnemySets_Debug:
     db $00                                                               ;B492C5;
 
 
+if !DEBUG
 ;;; $92C6: Debug handler - [debug index] = 7: enemy debugger - enemy spawn data editor ;;;
 DebugHandler_7_EnemyDebugger_EnemySpawnDataEditor:
 ;; Returns:
@@ -6279,6 +6280,7 @@ DebugSpritemaps_92_EnemyNames_ROBO2:
     %spritemapEntry(0, $1F0, $E0, 0, 0, 3, 0, $B1)
     %spritemapEntry(0, $1E8, $E0, 0, 0, 3, 0, $C0)
     %spritemapEntry(0, $1E0, $E0, 0, 0, 3, 0, $C3)
+endif
 
 
 ;;; $BC26: Create sprite object ;;;
@@ -6351,7 +6353,9 @@ HandleSpriteObjects:
     PLB                                                                  ;B4BC8A;
     REP #$30                                                             ;B4BC8B;
     LDA.W TimeIsFrozenFlag                                               ;B4BC8D;
+if !DEBUG
     ORA.W DebugTimeIsFrozenForEnemies                                    ;B4BC90;
+endif
     BNE .return                                                          ;B4BC93;
     LDX.W #$003E                                                         ;B4BC95;
     STX.W SpriteObjectIndex                                              ;B4BC98;
@@ -9415,6 +9419,7 @@ SpriteObjectSpritemaps_3D_DraygonFoamingAtTheMouth_7:
     %spritemapEntry(1, $1F8, $DC, 0, 0, 3, 2, $1EE)
 
 
+if !DEBUG
 ;;; $DD89: Enemy names ;;;
 ; Enemy name in ASCII
 ; Enemy population pointer (for debug enemy spawner)
@@ -11282,6 +11287,7 @@ DebugEnemyPopulationData_RobotNoPower:                                   ;B4EC09
     %extraProperties($0000),
     %speedParams($0001, $0000))
     dw $FFFF : db $01
+endif
 
 
 ; see labels.asm for EnemyVulnerabilities:

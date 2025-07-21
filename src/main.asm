@@ -11,9 +11,17 @@ math pri on
 !FEATURE_KEEP_UNREFERENCED ?= 1
 
 if !FEATURE_KEEP_UNREFERENCED
-    print "KEEP UNREFERENCED ASSEMBLY"
+print "KEEP UNREFERENCED ASSEMBLY"
 else
-    print "REMOVE UNREFERENCED ASSEMBLY"
+print "REMOVE UNREFERENCED ASSEMBLY"
+endif
+
+!DEBUG ?= 1
+
+if !DEBUG
+print "DEBUG FEATURES ENABLED"
+else
+print "DEBUG FEATURES REMOVED"
 endif
 
 ; Fixes labels to their vanilla asm locations using the %anchor macros. Useful

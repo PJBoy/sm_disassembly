@@ -519,6 +519,7 @@ Setup_PPU_Credits:
 
 
 if !FEATURE_KEEP_UNREFERENCED
+if !DEBUG
 ;;; $8488: Unused. Debug. Modify mode 7 transformation and BG1 position with controller ;;;
 UNUSED_ModifyMode7TransformAndBG1PosWithController_8B8488:
     PHP                                                                  ;8B8488;
@@ -602,6 +603,7 @@ UNUSED_ModifyMode7TransformAndBG1PosWithController_8B8488:
   .return:
     PLP                                                                  ;8B8516;
     RTS                                                                  ;8B8517;
+endif
 endif ; !FEATURE_KEEP_UNREFERENCED
 
 
@@ -851,6 +853,7 @@ Deactivate_TileSequence_BlueLight:
     RTS                                                                  ;8B8696;
 
 
+if !DEBUG
 ;;; $8697: Debug. Display version info ;;;
 Debug_DisplayVersionInfo:
 ; Removing the RTS and the title screen shows:
@@ -981,6 +984,7 @@ Debug_DisplayVersionInfo:
 ; Version string ('0123456789ABCDEF') OAM entry tile numbers and attributes
     dw $39F4,$39F5,$39F6,$39F7,$39F8,$39F9,$39FA,$39FB                   ;8B8780;
     dw $39FC,$39FD,$39D0,$39D1,$39D2,$39D3,$39D4,$39D5                   ;8B8790;
+endif
 
 
 ;;; $87A0: Update 32x30 cinematic BG tilemap ;;;
@@ -4716,13 +4720,17 @@ CinematicFunction_TitleScreen:
     STA.W ScreenFadeCounter                                              ;8B9F4B;
 
   .merge:
+if !DEBUG
     JSR.W Debug_DisplayVersionInfo                                       ;8B9F4E;
+endif
     RTS                                                                  ;8B9F51;
 
 
 ;;; $9F52: Cinematic function - title sequence - transition to file select menu ;;;
 CinematicFunction_TransitionToFileSelectMenu:
+if !DEBUG
     JSR.W Debug_DisplayVersionInfo                                       ;8B9F52;
+endif
     JSR.W AdvanceSlowScreenFadeOut                                       ;8B9F55;
     BCC .return                                                          ;8B9F58;
     JSL.L EnableNMI                                                      ;8B9F5A;
@@ -4771,7 +4779,9 @@ CinematicFunction_TransitionToFileSelectMenu:
 
 ;;; $9FAE: Cinematic function - title sequence - transition to demos ;;;
 CinematicFunction_TransitionToDemos:
+if !DEBUG
     JSR.W Debug_DisplayVersionInfo                                       ;8B9FAE;
+endif
     JSR.W AdvanceSlowScreenFadeOut                                       ;8B9FB1;
     BCC .return                                                          ;8B9FB4;
     JSL.L EnableNMI                                                      ;8B9FB6;
@@ -12748,7 +12758,7 @@ CinematicFunction_PostCredits_WavySamus:
 
   .loopTilemap:
     LDA.L Tilemap_PostCredits_DeeRForCe,X                                ;8BE1A2;
-    STA.L PostCreditsTilemap_DeeRForCe,X                                 ;8BE1A6;
+    STA.L CreditsTilemap_DeeRForCe,X                                     ;8BE1A6;
     INX                                                                  ;8BE1AA;
     INX                                                                  ;8BE1AB;
     CPX.W #$0240                                                         ;8BE1AC;
@@ -12875,7 +12885,7 @@ CinematicFunction_PostCredits_IdleSamus1:
     LDA.W #$007F                                                         ;8BE2A2;
 
   .loopTilemap9:
-    STA.L PostCreditsTilemap_DeeRForCe,X                                 ;8BE2A5;
+    STA.L CreditsTilemap_DeeRForCe,X                                     ;8BE2A5;
     DEX                                                                  ;8BE2A9;
     DEX                                                                  ;8BE2AA;
     BPL .loopTilemap9                                                    ;8BE2AB;
@@ -12883,7 +12893,7 @@ CinematicFunction_PostCredits_IdleSamus1:
 
   .loopTilemapC:
     LDA.L Tilemap_PostCredits_1994Nintendo,X                             ;8BE2B0;
-    STA.L PostCreditsTilemap_1994Nintendo,X                              ;8BE2B4;
+    STA.L CinematicBGTilemap_RowsCD,X                                    ;8BE2B4;
     INX                                                                  ;8BE2B8;
     INX                                                                  ;8BE2B9;
     CPX.W #$0080                                                         ;8BE2BA;
@@ -15809,9 +15819,11 @@ CinematicBGObjectDefinitions_PostCredits_ItemPercentage:
     dw CinematicBGObjectInstLists_Ending_ItemPercentage                  ;8BF752; Instruction list (bank $8C)
 
 
+if !DEBUG
 ;;; $F754: Debug. Version string ;;;
 Debug_VersionString:
     db "02.02.21.30", $00                                                ;8BF754;
+endif
 
 
 Freespace_Bank8B_F760:                                                   ;8BF760;

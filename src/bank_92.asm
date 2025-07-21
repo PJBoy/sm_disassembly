@@ -12717,6 +12717,7 @@ PlaySamusFanfare:
     RTL                                                                  ;92ED79;
 
 
+if !DEBUG
 ;;; $ED7A: Debug. Samus tile viewer ;;;
 Debug_SamusTileViewer:
     PHP                                                                  ;92ED7A;
@@ -12748,6 +12749,7 @@ Debug_SamusTileViewer:
     PLB                                                                  ;92EDBB;
     PLP                                                                  ;92EDBC;
     RTL                                                                  ;92EDBD;
+endif
 
 
 ;;; $EDBE: Draw Samus' suit exploding ;;;
