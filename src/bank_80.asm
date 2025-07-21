@@ -5467,7 +5467,7 @@ CalculateLayer2YPosition:
     STA.W $4202                                                          ;80A34B;
     LDA.W Layer1YPosition                                                ;80A34E;
     STA.W $4203                                                          ;80A351;
-    STZ.W PositionOfScrollBoundary                                       ;80A354;
+    STZ.W PositionOfScrollBoundary+1                                     ;80A354;
     PHA                                                                  ;80A357;
     PLA                                                                  ;80A358;
     LDA.W $4217                                                          ;80A359;

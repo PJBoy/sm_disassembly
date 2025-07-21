@@ -11737,406 +11737,397 @@ SamusTilesAnimation_AnimationDefinitions_DB48:
 ; First byte indexes the top half tiles definitions pointer table ($D91E) for a pointer to a list of DMA entries that is indexed by the second byte
 ; Third byte indexes the bottom half tiles definitions pointer table ($D938) for a pointer to a list of DMA entries that is indexed by the fourth byte
 
-; 01: Facing right - normal
-; 47: Unused
-; 89: Facing right - ran into a wall
-; A8: Unused
+; 1: Facing right - normal
+; 47h: Unused (only frame 0 used)
+; 89h: Facing right - ran into a wall (only frame 0 used)
+; A8h: Facing right - grappling (only frame 0 used)
     db $07,$0C,$00,$06, $07,$0D,$00,$0E, $07,$0E,$00,$0F, $07,$0D,$00,$0E ;92DB48;
     db $00,$00,$00,$00, $07,$0C,$00,$06, $07,$0D,$00,$0E, $07,$12,$00,$0F ;92DB58;
     db $07,$0D,$00,$0E                                                   ;92DB68;
 
 SamusTilesAnimation_AnimationDefinitions_DB6C:
-; 02: Facing left-   normal
-; 48: Unused
-; 8A: Facing left-   ran into a wall
-; A9: Unused
+; 2: Facing left  - normal
+; 48h: Unused (only frame 0 used)
+; 8Ah: Facing left  - ran into a wall (only frame 0 used)
+; A9h: Facing left  - grappling (only frame 0 used)
     db $07,$0F,$00,$06, $07,$10,$00,$10, $07,$11,$00,$1D, $07,$10,$00,$10 ;92DB6C;
     db $00,$00,$00,$00, $07,$0F,$00,$06, $07,$10,$00,$10, $07,$13,$00,$1D ;92DB7C;
     db $07,$10,$00,$10                                                   ;92DB8C;
 
 SamusTilesAnimation_AnimationDefinitions_DB90:
-; A4: Facing right - landing from normal jump
+; A4h: Facing right - landing from normal jump
     db $02,$00,$01,$06, $02,$04,$00,$06                                  ;92DB90;
 
 SamusTilesAnimation_AnimationDefinitions_DB98:
-; A5: Facing left-   landing from normal jump
+; A5h: Facing left  - landing from normal jump
     db $02,$01,$01,$07, $02,$05,$00,$06                                  ;92DB98;
 
 SamusTilesAnimation_AnimationDefinitions_DBA0:
-; A6: Facing right - landing from spin jump
+; A6h: Facing right - landing from spin jump
     db $02,$04,$01,$19, $02,$00,$01,$06, $02,$04,$00,$06                 ;92DBA0;
 
 SamusTilesAnimation_AnimationDefinitions_DBAC:
-; A7: Facing left-   landing from spin jump
+; A7h: Facing left-   landing from spin jump
     db $02,$05,$01,$1A, $02,$01,$01,$07, $02,$05,$00,$06                 ;92DBAC;
 
 SamusTilesAnimation_AnimationDefinitions_DBB8:
-; E0: Facing right - landing from normal jump - aiming up
+; E0h: Facing right - landing from normal jump - aiming up
     db $00,$16,$01,$06, $00,$16,$00,$06                                  ;92DBB8;
 
 SamusTilesAnimation_AnimationDefinitions_DBC0:
-; E1: Facing left-   landing from normal jump - aiming up
+; E1h: Facing left-   landing from normal jump - aiming up
     db $00,$17,$01,$07, $00,$17,$00,$06                                  ;92DBC0;
 
 SamusTilesAnimation_AnimationDefinitions_DBC8:
-; E2: Facing right - landing from normal jump - aiming up-right
+; E2h: Facing right - landing from normal jump - aiming up-right
     db $00,$12,$01,$06, $00,$12,$00,$06                                  ;92DBC8;
 
 SamusTilesAnimation_AnimationDefinitions_DBD0:
-; E3: Facing left-   landing from normal jump - aiming up-left
+; E3h: Facing left-   landing from normal jump - aiming up-left
     db $00,$13,$01,$07, $00,$13,$00,$06                                  ;92DBD0;
 
 SamusTilesAnimation_AnimationDefinitions_DBD8:
-; E4: Facing right - landing from normal jump - aiming down-right
+; E4h: Facing right - landing from normal jump - aiming down-right
     db $00,$0E,$01,$06, $00,$0E,$00,$06                                  ;92DBD8;
 
 SamusTilesAnimation_AnimationDefinitions_DBE0:
-; E5: Facing left-   landing from normal jump - aiming down-left
+; E5h: Facing left-   landing from normal jump - aiming down-left
     db $00,$0F,$01,$07, $00,$0F,$00,$06                                  ;92DBE0;
 
 SamusTilesAnimation_AnimationDefinitions_DBE8:
-; E6: Facing right - landing from normal jump - firing
+; E6h: Facing right - landing from normal jump - firing
     db $00,$10,$01,$06, $00,$10,$00,$06                                  ;92DBE8;
 
 SamusTilesAnimation_AnimationDefinitions_DBF0:
-; E7: Facing left-   landing from normal jump - firing
+; E7h: Facing left-   landing from normal jump - firing
     db $00,$11,$01,$07, $00,$11,$00,$06                                  ;92DBF0;
 
 SamusTilesAnimation_AnimationDefinitions_DBF8:
-; D5: Facing right - x-ray - standing
+; D5h: Facing right - x-ray - standing
     db $02,$09,$00,$06, $02,$08,$00,$06, $00,$10,$00,$06, $02,$0A,$00,$06 ;92DBF8;
     db $02,$0B,$00,$06                                                   ;92DC08;
 
 SamusTilesAnimation_AnimationDefinitions_DC0C:
-; D6: Facing left-   x-ray - standing
+; D6h: Facing left-   x-ray - standing
     db $02,$0D,$00,$06, $02,$0C,$00,$06, $00,$11,$00,$06, $02,$0E,$00,$06 ;92DC0C;
     db $02,$0F,$00,$06                                                   ;92DC1C;
 
 SamusTilesAnimation_AnimationDefinitions_DC20:
-; D9: Facing right - x-ray - crouching
+; D9h: Facing right - x-ray - crouching
     db $02,$09,$00,$07, $02,$08,$00,$07, $00,$10,$00,$07, $02,$0A,$00,$07 ;92DC20;
     db $02,$0B,$00,$07                                                   ;92DC30;
 
 SamusTilesAnimation_AnimationDefinitions_DC34:
-; DA: Facing left-   x-ray - crouching
+; DAh: Facing left-   x-ray - crouching
     db $02,$0D,$00,$07, $02,$0C,$00,$07, $00,$11,$00,$07, $02,$0E,$00,$07 ;92DC34;
     db $02,$0F,$00,$07                                                   ;92DC44;
 
 SamusTilesAnimation_AnimationDefinitions_DC48:
-; 09: Moving right - not aiming
+; 9: Moving right - not aiming
     db $00,$00,$00,$00, $01,$0D,$00,$08, $00,$02,$00,$01, $00,$03,$00,$09 ;92DC48;
     db $00,$01,$00,$02, $00,$00,$00,$03, $01,$0E,$00,$0A, $00,$05,$00,$04 ;92DC58;
     db $00,$18,$00,$0B, $00,$04,$00,$05                                  ;92DC68;
 
 SamusTilesAnimation_AnimationDefinitions_DC70:
-; 0A: Moving left-   not aiming
+; Ah: Moving left  - not aiming
     db $00,$06,$00,$00, $01,$0F,$00,$08, $00,$08,$00,$01, $00,$09,$00,$09 ;92DC70;
     db $00,$07,$00,$02, $00,$06,$00,$03, $01,$10,$00,$0A, $00,$0B,$00,$04 ;92DC80;
     db $00,$19,$00,$0B, $00,$0A,$00,$05                                  ;92DC90;
 
 SamusTilesAnimation_AnimationDefinitions_DC98:
-; 0B: Moving right - gun extended
+; Bh: Moving right - gun extended
     db $09,$00,$00,$00, $09,$0E,$00,$08, $09,$02,$00,$01, $09,$03,$00,$09 ;92DC98;
     db $09,$01,$00,$02, $09,$00,$00,$03, $09,$04,$00,$0A, $09,$05,$00,$04 ;92DCA8;
     db $09,$0C,$00,$0B, $09,$04,$00,$05                                  ;92DCB8;
 
 SamusTilesAnimation_AnimationDefinitions_DCC0:
-; 0C: Moving left-   gun extended
+; Ch: Moving left  - gun extended
     db $09,$06,$00,$00, $09,$0F,$00,$08, $09,$09,$00,$01, $09,$08,$00,$09 ;92DCC0;
     db $09,$07,$00,$02, $09,$06,$00,$03, $09,$0A,$00,$0A, $09,$0D,$00,$04 ;92DCD0;
     db $09,$0B,$00,$0B, $09,$0A,$00,$05                                  ;92DCE0;
 
 SamusTilesAnimation_AnimationDefinitions_DCE8:
-; 49: Facing left-   moonwalk
+; 49h: Facing left  - moonwalk
     db $00,$11,$01,$03, $02,$1B,$01,$04, $02,$1B,$01,$15, $00,$11,$01,$00 ;92DCE8;
     db $02,$1B,$01,$05, $02,$1B,$01,$16                                  ;92DCF8;
 
 SamusTilesAnimation_AnimationDefinitions_DD00:
-; 4A: Facing right - moonwalk
+; 4Ah: Facing right - moonwalk
     db $00,$10,$01,$03, $02,$1A,$01,$04, $02,$1A,$01,$17, $00,$10,$01,$00 ;92DD00;
     db $02,$1A,$01,$05, $02,$1A,$01,$18                                  ;92DD10;
 
 SamusTilesAnimation_AnimationDefinitions_DD18:
-; 17: Facing right - normal jump - aiming down
-; AE: Unused
+; 17h: Facing right - normal jump - aiming down
+; AEh: Unused. Facing right - grappling - in air - aiming down
     db $00,$0C,$01,$0A, $01,$1A,$01,$11                                  ;92DD18;
 
 SamusTilesAnimation_AnimationDefinitions_DD20:
-; 18: Facing left-   normal jump - aiming down
-; AF: Unused
+; 18h: Facing left  - normal jump - aiming down
+; AFh: Unused. Facing left  - grappling - in air - aiming down
     db $00,$0D,$01,$0B, $01,$1B,$01,$12                                  ;92DD20;
 
 SamusTilesAnimation_AnimationDefinitions_DD28:
-; 13: Facing right - normal jump - not aiming - not moving - gun extended
-; AC: Unused
+; 13h: Facing right - normal jump - not aiming - not moving - gun extended
+; ACh: Unused. Facing right - grappling - in air
     db $00,$10,$01,$0A, $00,$10,$01,$19                                  ;92DD28;
 
 SamusTilesAnimation_AnimationDefinitions_DD30:
-; 14: Facing left-   normal jump - not aiming - not moving - gun extended
-; AD: Unused
+; 14h: Facing left  - normal jump - not aiming - not moving - gun extended
+; ADh: Unused. Facing left  - grappling - in air
     db $00,$11,$01,$0B, $00,$11,$01,$1A                                  ;92DD30;
 
 SamusTilesAnimation_AnimationDefinitions_DD38:
-; 15: Facing right - normal jump - aiming up
+; 15h: Facing right - normal jump - aiming up
     db $00,$12,$01,$0A, $00,$16,$00,$13                                  ;92DD38;
 
 SamusTilesAnimation_AnimationDefinitions_DD40:
-; 16: Facing left-   normal jump - aiming up
+; 16h: Facing left-   normal jump - aiming up
     db $00,$13,$01,$0B, $00,$17,$00,$14                                  ;92DD40;
 
 SamusTilesAnimation_AnimationDefinitions_DD48:
-; 51: Facing right - normal jump - not aiming - moving forward
+; 51h: Facing right - normal jump - not aiming - moving forward
     db $00,$10,$01,$0A, $00,$10,$01,$19                                  ;92DD48;
 
 SamusTilesAnimation_AnimationDefinitions_DD50:
-; 52: Facing left-   normal jump - not aiming - moving forward
+; 52h: Facing left-   normal jump - not aiming - moving forward
     db $00,$11,$01,$0B, $00,$11,$01,$1A                                  ;92DD50;
 
 SamusTilesAnimation_AnimationDefinitions_DD58:
-; 69: Facing right - normal jump - aiming up-right
+; 69h: Facing right - normal jump - aiming up-right
     db $00,$1A,$01,$0A, $00,$1A,$00,$13                                  ;92DD58;
 
 SamusTilesAnimation_AnimationDefinitions_DD60:
-; 6A: Facing left-   normal jump - aiming up-left
+; 6Ah: Facing left-   normal jump - aiming up-left
     db $00,$1B,$01,$0B, $00,$1B,$00,$14                                  ;92DD60;
 
 SamusTilesAnimation_AnimationDefinitions_DD68:
-; 6B: Facing right - normal jump - aiming down-right
-; B0: Unused
+; 6Bh: Facing right - normal jump - aiming down-right
+; B0h: Unused. Facing right - grappling - in air - aiming down-right
     db $00,$0C,$01,$0A, $00,$0C,$01,$19                                  ;92DD68;
 
 SamusTilesAnimation_AnimationDefinitions_DD70:
-; 6C: Facing left-   normal jump - aiming down-left
-; B1: Unused
+; 6Ch: Facing left  - normal jump - aiming down-left
+; B1h: Unused. Facing left  - grappling - in air - aiming down-left
     db $00,$0D,$01,$0B, $00,$0D,$01,$1A                                  ;92DD70;
 
 SamusTilesAnimation_AnimationDefinitions_DD78:
-; 4B: Facing right - normal jump transition
+; 4Bh: Facing right - normal jump transition
     db $02,$00,$01,$06                                                   ;92DD78;
 
 SamusTilesAnimation_AnimationDefinitions_DD7C:
-; 4C: Facing left-   normal jump transition
+; 4Ch: Facing left-   normal jump transition
     db $02,$01,$01,$07                                                   ;92DD7C;
 
 SamusTilesAnimation_AnimationDefinitions_DD80:
-; 55: Facing right - normal jump transition - aiming up
-; F1: Facing right - crouching transition - aiming up
-; F7: Facing right - standing transition - aiming up
+; 55h: Facing right - normal jump transition - aiming up
+; F1h: Facing right - crouching transition - aiming up
+; F7h: Facing right - standing transition - aiming up
     db $00,$16,$01,$06                                                   ;92DD80;
 
 SamusTilesAnimation_AnimationDefinitions_DD84:
-; 56: Facing left-   normal jump transition - aiming up
-; F2: Facing left-   crouching transition - aiming up
-; F8: Facing left-   standing transition - aiming up
+; 56h: Facing left-   normal jump transition - aiming up
+; F2h: Facing left-   crouching transition - aiming up
+; F8h: Facing left-   standing transition - aiming up
     db $00,$17,$01,$07                                                   ;92DD84;
 
 SamusTilesAnimation_AnimationDefinitions_DD88:
-; 57: Facing right - normal jump transition - aiming up-right
-; F3: Facing right - crouching transition - aiming up-right
-; F9: Facing right - standing transition - aiming up-right
+; 57h: Facing right - normal jump transition - aiming up-right
+; F3h: Facing right - crouching transition - aiming up-right
+; F9h: Facing right - standing transition - aiming up-right
     db $00,$12,$01,$06                                                   ;92DD88;
 
 SamusTilesAnimation_AnimationDefinitions_DD8C:
-; 58: Facing left-   normal jump transition - aiming up-left
-; F4: Facing left-   crouching transition - aiming up-left
-; FA: Facing left-   standing transition - aiming up-left
+; 58h: Facing left-   normal jump transition - aiming up-left
+; F4h: Facing left-   crouching transition - aiming up-left
+; FAh: Facing left-   standing transition - aiming up-left
     db $00,$13,$01,$07                                                   ;92DD8C;
 
 SamusTilesAnimation_AnimationDefinitions_DD90:
-; 59: Facing right - normal jump transition - aiming down-right
-; F5: Facing right - crouching transition - aiming down-right
-; FB: Facing right - standing transition - aiming down-right
+; 59h: Facing right - normal jump transition - aiming down-right
+; F5h: Facing right - crouching transition - aiming down-right
+; FBh: Facing right - standing transition - aiming down-right
     db $00,$0E,$01,$06                                                   ;92DD90;
 
 SamusTilesAnimation_AnimationDefinitions_DD94:
-; 5A: Facing left-   normal jump transition - aiming down-left
-; F6: Facing left-   crouching transition - aiming down-left
-; FC: Facing left-   standing transition - aiming down-left
+; 5Ah: Facing left-   normal jump transition - aiming down-left
+; F6h: Facing left-   crouching transition - aiming down-left
+; FCh: Facing left-   standing transition - aiming down-left
     db $00,$0F,$01,$07                                                   ;92DD94;
 
 SamusTilesAnimation_AnimationDefinitions_DD98:
-; 4D: Facing right - normal jump - not aiming - not moving - gun not extended
-; C7: Facing right - vertical shinespark windup
+; 4Dh: Facing right - normal jump - not aiming - not moving - gun not extended
+; C7h: Facing right - vertical shinespark windup
     db $00,$04,$00,$03, $00,$05,$01,$0E, $00,$04,$01,$08, $00,$00,$01,$08 ;92DD98;
     db $00,$01,$01,$0A, $00,$14,$01,$0C                                  ;92DDA8;
 
 SamusTilesAnimation_AnimationDefinitions_DDB0:
-; 4E: Facing left-   normal jump - not aiming - not moving - gun not extended
-; C8: Facing left-   vertical shinespark windup
+; 4Eh: Facing left-   normal jump - not aiming - not moving - gun not extended
+; C8h: Facing left-   vertical shinespark windup
     db $00,$0A,$00,$03, $00,$0B,$01,$0F, $00,$0A,$01,$09, $00,$06,$01,$09 ;92DDB0;
     db $00,$07,$01,$0B, $00,$15,$01,$0D                                  ;92DDC0;
 
 SamusTilesAnimation_AnimationDefinitions_DDC8:
-; 4F: Facing left-   damage boost
+; 4Fh: Facing left-   damage boost
     db $02,$05,$00,$11, $02,$05,$01,$0B, $0A,$0F,$00,$00, $0A,$0E,$00,$00 ;92DDC8;
     db $0A,$0D,$00,$00, $0A,$0C,$00,$00, $0A,$0B,$00,$00, $0A,$0A,$00,$00 ;92DDD8;
     db $0A,$09,$00,$00, $02,$1F,$01,$1A                                  ;92DDE8;
 
 SamusTilesAnimation_AnimationDefinitions_DDF0:
-; 50: Facing right - damage boost
+; 50h: Facing right - damage boost
     db $02,$04,$00,$12, $02,$04,$01,$0A, $0A,$0F,$00,$00, $0A,$0E,$00,$00 ;92DDF0;
     db $0A,$0D,$00,$00, $0A,$0C,$00,$00, $0A,$0B,$00,$00, $0A,$0A,$00,$00 ;92DE00;
     db $0A,$09,$00,$00, $02,$1D,$01,$19                                  ;92DE10;
 
 SamusTilesAnimation_AnimationDefinitions_DE18:
-; 27: Facing right - crouching
-; B4: Unused
+; 27h: Facing right - crouching
+; B4h: Facing right - grappling - crouching (only frame 0 used)
     db $07,$0C,$00,$07, $07,$0D,$00,$07, $07,$0E,$00,$07, $07,$0D,$00,$07 ;92DE18;
     db $00,$00,$00,$00, $07,$0C,$00,$07, $07,$0D,$00,$07, $07,$12,$00,$07 ;92DE28;
     db $07,$0D,$00,$07                                                   ;92DE38;
 
 SamusTilesAnimation_AnimationDefinitions_DE3C:
-; 28: Facing left-   crouching
-; B5: Unused
+; 28h: Facing left  - crouching
+; B5h: Facing left  - grappling - crouching (only frame 0 used)
     db $07,$0F,$00,$07, $07,$10,$00,$07, $07,$11,$00,$07, $07,$10,$00,$07 ;92DE3C;
     db $00,$00,$00,$00, $07,$0F,$00,$07, $07,$10,$00,$07, $07,$13,$00,$07 ;92DE4C;
     db $07,$10,$00,$07                                                   ;92DE5C;
 
 SamusTilesAnimation_AnimationDefinitions_DE60:
-; 29: Facing right - falling
+; 29h: Facing right - falling
     db $02,$04,$01,$0A, $02,$1C,$01,$0C, $02,$1D,$01,$0C, $00,$00,$00,$00 ;92DE60;
     db $00,$00,$00,$00, $02,$1C,$01,$0A, $02,$04,$01,$19                 ;92DE70;
 
 SamusTilesAnimation_AnimationDefinitions_DE7C:
-; 2A: Facing left-   falling
+; 2Ah: Facing left-   falling
     db $02,$05,$01,$0B, $02,$1E,$01,$0D, $02,$1F,$01,$0D, $00,$00,$00,$00 ;92DE7C;
     db $00,$00,$00,$00, $02,$1E,$01,$0B, $02,$05,$01,$1A                 ;92DE8C;
 
 SamusTilesAnimation_AnimationDefinitions_DE98:
-; 2B: Facing right - falling - aiming up
+; 2Bh: Facing right - falling - aiming up
     db $00,$12,$01,$0A, $00,$16,$01,$0C, $00,$16,$01,$19                 ;92DE98;
 
 SamusTilesAnimation_AnimationDefinitions_DEA4:
-; 2C: Facing left-   falling - aiming up
+; 2Ch: Facing left-   falling - aiming up
     db $00,$13,$01,$0B, $00,$17,$01,$0D, $00,$17,$01,$1A                 ;92DEA4;
 
 SamusTilesAnimation_AnimationDefinitions_DEB0:
-; 2D: Facing right - falling - aiming down
+; 2Dh: Facing right - falling - aiming down
     db $00,$0C,$01,$0A, $01,$1A,$01,$11                                  ;92DEB0;
 
 SamusTilesAnimation_AnimationDefinitions_DEB8:
-; 2E: Facing left-   falling - aiming down
+; 2Eh: Facing left-   falling - aiming down
     db $00,$0D,$01,$0B, $01,$1B,$01,$12                                  ;92DEB8;
 
 SamusTilesAnimation_AnimationDefinitions_DEC0:
-; 67: Facing right - falling - gun extended
+; 67h: Facing right - falling - gun extended
     db $00,$10,$01,$0A, $00,$10,$01,$0C, $00,$10,$01,$0C, $00,$00,$00,$00 ;92DEC0;
     db $00,$00,$00,$00, $00,$10,$01,$0A, $00,$10,$01,$19                 ;92DED0;
 
 SamusTilesAnimation_AnimationDefinitions_DEDC:
-; 68: Facing left-   falling - gun extended
+; 68h: Facing left-   falling - gun extended
     db $00,$11,$01,$0B, $00,$11,$01,$0D, $00,$11,$01,$0D, $00,$00,$00,$00 ;92DEDC;
     db $00,$00,$00,$00, $00,$11,$01,$0B, $00,$11,$01,$1A                 ;92DEEC;
 
 SamusTilesAnimation_AnimationDefinitions_DEF8:
-; 6D: Facing right - falling - aiming up-right
+; 6Dh: Facing right - falling - aiming up-right
     db $00,$1A,$01,$0A, $00,$1A,$01,$0C, $00,$1A,$01,$19                 ;92DEF8;
 
 SamusTilesAnimation_AnimationDefinitions_DF04:
-; 6E: Facing left-   falling - aiming up-left
+; 6Eh: Facing left-   falling - aiming up-left
     db $00,$1B,$01,$0B, $00,$1B,$01,$0D, $00,$1B,$01,$1A                 ;92DF04;
 
 SamusTilesAnimation_AnimationDefinitions_DF10:
-; 6F: Facing right - falling - aiming down-right
+; 6Fh: Facing right - falling - aiming down-right
     db $00,$0C,$01,$0A, $00,$0C,$01,$0C, $00,$0C,$01,$19                 ;92DF10;
 
 SamusTilesAnimation_AnimationDefinitions_DF1C:
-; 70: Facing left-   falling - aiming down-left
+; 70h: Facing left-   falling - aiming down-left
     db $00,$0D,$01,$0B, $00,$0D,$01,$0D, $00,$0D,$01,$1A                 ;92DF1C;
 
 SamusTilesAnimation_AnimationDefinitions_DF28:
-; 0D: Moving right - aiming up (unused)
+; Dh: Moving right - aiming up (unused)
     db $00,$16,$00,$00, $00,$16,$00,$08, $02,$0E,$00,$01, $02,$1E,$00,$09 ;92DF28;
     db $02,$0E,$00,$02, $00,$16,$00,$03, $00,$16,$00,$0A, $02,$0E,$00,$04 ;92DF38;
     db $02,$1E,$00,$0B, $02,$0E,$00,$05                                  ;92DF48;
 
 SamusTilesAnimation_AnimationDefinitions_DF50:
-; 0E: Moving left-   aiming up (unused)
+; Eh: Moving left-   aiming up (unused)
     db $00,$17,$00,$00, $00,$17,$00,$08, $02,$0F,$00,$01, $02,$1F,$00,$09 ;92DF50;
     db $02,$0F,$00,$02, $00,$17,$00,$03, $00,$17,$00,$0A, $02,$0F,$00,$04 ;92DF60;
     db $02,$1F,$00,$0B, $02,$0F,$00,$05                                  ;92DF70;
 
 SamusTilesAnimation_AnimationDefinitions_DF78:
-; 0F: Moving right - aiming up-right
+; Fh: Moving right - aiming up-right
     db $00,$1A,$00,$00, $00,$1A,$00,$08, $02,$10,$00,$01, $02,$16,$00,$09 ;92DF78;
     db $02,$10,$00,$02, $00,$1A,$00,$03, $00,$1A,$00,$0A, $02,$10,$00,$04 ;92DF88;
     db $02,$16,$00,$0B, $02,$10,$00,$05                                  ;92DF98;
 
 SamusTilesAnimation_AnimationDefinitions_DFA0:
-; 10: Moving left-   aiming up-left
+; 10h: Moving left-   aiming up-left
     db $00,$1B,$00,$00, $00,$1B,$00,$08, $02,$11,$00,$01, $02,$17,$00,$09 ;92DFA0;
     db $02,$11,$00,$02, $00,$1B,$00,$03, $00,$1B,$00,$0A, $02,$11,$00,$04 ;92DFB0;
     db $02,$17,$00,$0B, $02,$11,$00,$05                                  ;92DFC0;
 
 SamusTilesAnimation_AnimationDefinitions_DFC8:
-; 11: Moving right - aiming down-right
+; 11h: Moving right - aiming down-right
     db $00,$0C,$00,$00, $00,$0C,$00,$08, $02,$06,$00,$01, $02,$18,$00,$09 ;92DFC8;
     db $02,$06,$00,$02, $00,$0C,$00,$03, $00,$0C,$00,$0A, $02,$06,$00,$04 ;92DFD8;
     db $02,$18,$00,$0B, $02,$06,$00,$05                                  ;92DFE8;
 
 SamusTilesAnimation_AnimationDefinitions_DFF0:
-; 12: Moving left-   aiming down-left
+; 12h: Moving left-   aiming down-left
     db $00,$0D,$00,$00, $00,$0D,$00,$08, $02,$07,$00,$01, $02,$19,$00,$09 ;92DFF0;
     db $02,$07,$00,$02, $00,$0D,$00,$03, $00,$0D,$00,$0A, $02,$07,$00,$04 ;92E000;
     db $02,$19,$00,$0B, $02,$07,$00,$05                                  ;92E010;
 
 SamusTilesAnimation_AnimationDefinitions_E018:
-; 03: Facing right - aiming up
+; 3: Facing right - aiming up
     db $00,$12,$0A,$00, $00,$16,$0A,$00                                  ;92E018;
 
 SamusTilesAnimation_AnimationDefinitions_E020:
-; 04: Facing left-   aiming up
+; 4: Facing left-   aiming up
     db $00,$13,$0A,$01, $00,$17,$0A,$01                                  ;92E020;
 
 SamusTilesAnimation_AnimationDefinitions_E028:
-; 05: Facing right - aiming up-right
-; CF: Facing right - ran into a wall - aiming up-right
+; 5: Facing right - aiming up-right
+; CFh: Facing right - ran into a wall - aiming up-right
     db $00,$12,$0A,$00                                                   ;92E028;
 
 SamusTilesAnimation_AnimationDefinitions_E02C:
-; 06: Facing left-   aiming up-left
-; D0: Facing left-   ran into a wall - aiming up-left
+; 6: Facing left-   aiming up-left
+; D0h: Facing left-   ran into a wall - aiming up-left
     db $00,$13,$0A,$01                                                   ;92E02C;
 
 SamusTilesAnimation_AnimationDefinitions_E030:
-; 07: Facing right - aiming down-right
-; AA: Unused
-; D1: Facing right - ran into a wall - aiming down-right
+; 7: Facing right - aiming down-right
+; AAh: Unused
+; D1h: Facing right - ran into a wall - aiming down-right
     db $00,$0E,$0A,$00                                                   ;92E030;
 
 SamusTilesAnimation_AnimationDefinitions_E034:
-; 08: Facing left-   aiming down-left
-; AB: Unused
-; D2: Facing left-   ran into a wall - aiming down-left
+; 8: Facing left-   aiming down-left
+; ABh: Unused
+; D2h: Facing left-   ran into a wall - aiming down-left
     db $00,$0F,$0A,$01                                                   ;92E034;
 
 SamusTilesAnimation_AnimationDefinitions_E038:
-; 53: Facing right - knockback
+; 53h: Facing right - knockback
     db $00,$1D,$01,$0C, $00,$1D,$01,$1B                                  ;92E038;
 
 SamusTilesAnimation_AnimationDefinitions_E040:
-; 54: Facing left-   knockback
+; 54h: Facing left-   knockback
     db $00,$1C,$01,$0D, $00,$1C,$01,$1C                                  ;92E040;
 
 SamusTilesAnimation_AnimationDefinitions_E048:
-; 45: Unused
-; 46: Unused
-; 5B: Unused
-; B8: Facing left-   grapple wall jump pose
+; B8h: Facing left  - grapple wall jump pose
     db $01,$0C,$00,$1A                                                   ;92E048;
 
 SamusTilesAnimation_AnimationDefinitions_E04C:
-; 5C: Unused
-; B9: Facing right - grapple wall jump pose
+; B9h: Facing right - grapple wall jump pose
     db $01,$0B,$00,$19                                                   ;92E04C;
 
 SamusTilesAnimation_AnimationDefinitions_E050:
-; 5D: Unused
-; 5E: Unused
-; 5F: Unused
-; 60: Unused
-; 61: Unused
-; B2: Facing clockwise   -   grapple
+; B2h: Facing clockwise     - grapple swinging
     db $05,$08,$04,$05, $05,$07,$04,$04, $05,$06,$04,$03, $05,$05,$04,$02 ;92E050;
     db $05,$04,$04,$02, $05,$03,$04,$01, $05,$02,$04,$01, $05,$01,$04,$00 ;92E060;
     db $05,$00,$04,$00, $03,$0F,$04,$00, $03,$0E,$02,$09, $03,$0D,$02,$09 ;92E070;
@@ -12156,8 +12147,7 @@ SamusTilesAnimation_AnimationDefinitions_E050:
     db $03,$08,$02,$0B, $03,$08,$02,$0C                                  ;92E150;
 
 SamusTilesAnimation_AnimationDefinitions_E158:
-; 62: Unused
-; B3: Facing anticlockwise - grapple
+; B3h: Facing anticlockwise - grapple swinging
     db $06,$08,$06,$05, $06,$09,$06,$06, $06,$0A,$06,$07, $06,$0B,$06,$08 ;92E158;
     db $06,$0C,$06,$08, $06,$0D,$06,$09, $06,$0E,$06,$09, $06,$0F,$05,$00 ;92E168;
     db $04,$00,$05,$00, $04,$01,$05,$00, $04,$02,$05,$01, $04,$03,$05,$01 ;92E178;
@@ -12177,27 +12167,27 @@ SamusTilesAnimation_AnimationDefinitions_E158:
     db $04,$08,$05,$0B, $04,$08,$05,$0C                                  ;92E258;
 
 UNUSED_SamusTilesAnimation_AnimationDefinitions_92E260:
-; 63: Unused
+; 63h: Unused
     db $01,$14,$01,$15,$01,$0C,$00,$1A                                   ;92E260;
 
 UNUSED_SamusTilesAnimation_AnimationDefinitions_92E268:
-; 64: Unused
+; 64h: Unused
     db $01,$15,$01,$16, $01,$0B,$00,$19                                  ;92E268;
 
 UNUSED_SamusTilesAnimation_AnimationDefinitions_92E270:
-; 65: Unused
+; 65h: Unused
     db $01,$12,$01,$13, $0A,$10,$00,$00, $0A,$11,$00,$00, $0A,$12,$00,$00 ;92E270;
     db $0A,$13,$00,$00, $0A,$14,$00,$00, $0A,$15,$00,$00, $0A,$16,$00,$00 ;92E280;
     db $0A,$17,$00,$00                                                   ;92E290;
 
 UNUSED_SamusTilesAnimation_AnimationDefinitions_92E294:
-; 66: Unused
+; 66h: Unused
     db $01,$13,$01,$14, $0A,$10,$00,$00, $0A,$11,$00,$00, $0A,$12,$00,$00 ;92E294;
     db $0A,$13,$00,$00, $0A,$14,$00,$00, $0A,$15,$00,$00, $0A,$16,$00,$00 ;92E2A4;
     db $0A,$17,$00,$00                                                   ;92E2B4;
 
 SamusTilesAnimation_AnimationDefinitions_E2B8:
-; 83: Facing right - wall jump
+; 83h: Facing right - wall jump
     db $01,$12,$01,$13, $02,$04,$01,$19, $00,$00,$00,$00, $0A,$08,$00,$00 ;92E2B8;
     db $0A,$09,$00,$00, $0A,$0A,$00,$00, $0A,$0B,$00,$00, $0A,$0C,$00,$00 ;92E2C8;
     db $0A,$0D,$00,$00, $0A,$0E,$00,$00, $0A,$0F,$00,$00, $00,$00,$00,$00 ;92E2D8;
@@ -12212,7 +12202,7 @@ SamusTilesAnimation_AnimationDefinitions_E2B8:
     db $0A,$14,$09,$05, $0A,$14,$09,$06, $0A,$14,$09,$07                 ;92E368;
 
 SamusTilesAnimation_AnimationDefinitions_E374:
-; 84: Facing left-   wall jump
+; 84h: Facing left-   wall jump
     db $01,$13,$01,$14, $02,$05,$01,$1A, $00,$00,$00,$00, $0A,$08,$00,$00 ;92E374;
     db $0A,$09,$00,$00, $0A,$0A,$00,$00, $0A,$0B,$00,$00, $0A,$0C,$00,$00 ;92E384;
     db $0A,$0D,$00,$00, $0A,$0E,$00,$00, $0A,$0F,$00,$00, $00,$00,$00,$00 ;92E394;
@@ -12227,67 +12217,67 @@ SamusTilesAnimation_AnimationDefinitions_E374:
     db $0A,$14,$09,$05, $0A,$14,$09,$06, $0A,$14,$09,$07                 ;92E424;
 
 SamusTilesAnimation_AnimationDefinitions_E430:
-; 71: Facing right - crouching - aiming up-right
+; 71h: Facing right - crouching - aiming up-right
     db $00,$12,$00,$07                                                   ;92E430;
 
 SamusTilesAnimation_AnimationDefinitions_E434:
-; 72: Facing left-   crouching - aiming up-left
+; 72h: Facing left  - crouching - aiming up-left
     db $00,$13,$00,$07                                                   ;92E434;
 
 SamusTilesAnimation_AnimationDefinitions_E438:
-; 73: Facing right - crouching - aiming down-right
-; B6: Unused
+; 73h: Facing right - crouching - aiming down-right
+; B6h: Facing right - grappling - crouching - aiming down-right
     db $00,$0E,$00,$07                                                   ;92E438;
 
 SamusTilesAnimation_AnimationDefinitions_E43C:
-; 74: Facing left-   crouching - aiming down-left
-; B7: Unused
+; 74h: Facing left  - crouching - aiming down-left
+; B7h: Facing left  - grappling - crouching - aiming down-left
     db $00,$0F,$00,$07                                                   ;92E43C;
 
 SamusTilesAnimation_AnimationDefinitions_E440:
-; 85: Facing right - crouching - aiming up
+; 85h: Facing right - crouching - aiming up
     db $00,$12,$00,$07, $00,$16,$00,$07                                  ;92E440;
 
 SamusTilesAnimation_AnimationDefinitions_E448:
-; 86: Facing left-   crouching - aiming up
+; 86h: Facing left  - crouching - aiming up
     db $00,$13,$00,$07, $00,$17,$00,$07                                  ;92E448;
 
 SamusTilesAnimation_AnimationDefinitions_E450:
-; 75: Facing left-   moonwalk - aiming up-left
+; 75h: Facing left  - moonwalk - aiming up-left
     db $00,$1B,$01,$03, $02,$11,$01,$04, $02,$11,$01,$17, $00,$1B,$01,$00 ;92E450;
     db $02,$11,$01,$05, $02,$11,$01,$18                                  ;92E460;
 
 SamusTilesAnimation_AnimationDefinitions_E468:
-; 76: Facing right - moonwalk - aiming up-right
+; 76h: Facing right - moonwalk - aiming up-right
     db $00,$1A,$01,$03, $02,$10,$01,$04, $02,$10,$01,$17, $00,$1A,$01,$00 ;92E468;
     db $02,$10,$01,$05, $02,$10,$01,$18                                  ;92E478;
 
 SamusTilesAnimation_AnimationDefinitions_E480:
-; 77: Facing left-   moonwalk - aiming down-left
+; 77h: Facing left  - moonwalk - aiming down-left
     db $00,$0D,$01,$03, $02,$07,$01,$04, $02,$07,$01,$17, $00,$0D,$01,$00 ;92E480;
     db $02,$07,$01,$05, $02,$07,$01,$18                                  ;92E490;
 
 SamusTilesAnimation_AnimationDefinitions_E498:
-; 78: Facing right - moonwalk - aiming down-right
+; 78h: Facing right - moonwalk - aiming down-right
     db $00,$0C,$01,$03, $02,$06,$01,$04, $02,$06,$01,$17, $00,$0C,$01,$00 ;92E498;
     db $02,$06,$01,$05, $02,$06,$01,$18                                  ;92E4A8;
 
 SamusTilesAnimation_AnimationDefinitions_E4B0:
-; 35: Facing right - crouching transition
-; 3B: Facing right - standing transition
+; 35h: Facing right - crouching transition
+; 3Bh: Facing right - standing transition
     db $00,$10,$01,$06                                                   ;92E4B0;
 
 SamusTilesAnimation_AnimationDefinitions_E4B4:
-; 36: Facing left-   crouching transition
-; 3C: Facing left-   standing transition
+; 36h: Facing left-   crouching transition
+; 3Ch: Facing left-   standing transition
     db $00,$11,$01,$07                                                   ;92E4B4;
 
 SamusTilesAnimation_AnimationDefinitions_E4B8:
-; 37: Facing right - morphing transition
+; 37h: Facing right - morphing transition
     db $0B,$06,$00,$00, $0B,$05,$00,$00                                  ;92E4B8;
 
 SamusTilesAnimation_AnimationDefinitions_E4C0:
-; 38: Facing left-   morphing transition
+; 38h: Facing left-   morphing transition
     db $0B,$04,$00,$00, $0B,$03,$00,$00                                  ;92E4C0;
 
 SamusTilesAnimation_AnimationDefinitions_E4C8:
