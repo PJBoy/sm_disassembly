@@ -7693,7 +7693,7 @@ Instruction_SporeSpawn_SpawnDyingExplosion:
     PHY                                                                  ;A5E9B1;
     PHX                                                                  ;A5E9B2;
     JSL.L GenerateRandomNumber                                           ;A5E9B3;
-    LDA.W RandomNumberSeed                                               ;A5E9B7;
+    LDA.W RandomNumberSeed                                               ;A5E9B7; >.<
     AND.W #$007F                                                         ;A5E9BA;
     SEC                                                                  ;A5E9BD;
     SBC.W #$0040                                                         ;A5E9BE;
