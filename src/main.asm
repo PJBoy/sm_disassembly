@@ -24,6 +24,18 @@ else
 print "DEBUG FEATURES REMOVED"
 endif
 
+!PAL ?= 1
+
+if !PAL
+print "PAL VERSION"
+!FPS = 5/6 ; Multiplier to convert 60fps time to 50fps time. E.g. 1s = 60 frames NTSC = 50 frames PAL
+!SPF = 6/5 ; Multiplier to convert 60fps speed to 50fps speed. E.g. 50 px/frame NTSC = 60 px/frame PAL
+else
+print "NTSC VERSION"
+!FPS = 1
+!SPF = 1
+endif
+
 ; Fixes labels to their vanilla asm locations using the %anchor macros. Useful
 ; to prevent unrelated things from moving around, which would bloat IPS patches
 ; or break pointers in SMART for example.

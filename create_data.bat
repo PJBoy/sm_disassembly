@@ -1,8 +1,9 @@
 
 @echo off
 
-set "sfc_src=Super Metroid.sfc"
-if "%~1" neq "" set "sfc_src=%~1"
-
 echo Extracting assets from original ROM
-python tools/rip_assets.py "%sfc_src%" -o data || PAUSE
+python tools/rip_assets.py "Super Metroid JU.sfc" -o data
+python tools/rip_assets.py "Super Metroid E.sfc" --pal -o data
+
+echo Creating FF file
+python tools/ff_file.py ../FF.sfc
